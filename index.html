@@ -34,23 +34,29 @@
       margin: 20px;
     }
 
+  .filter-container button {
+    background-color: #e6e6e6; /* ボタン背景色：ライトグレー */
+    color: #2f4f60; /* ボタンテキストカラー：くすんだ青色 */
+    border: 2px solid #b0c4de; /* くすんだ青色の枠線 */
+    padding: 6px 10px; /* パディングを小さく */
+    margin: 4px; /* マージンを調整 */
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    font-size: 0.8rem; /* フォントサイズを小さく */
+  }
+
+  .filter-container button.active {
+    background-color: #2f4f60; /* アクティブ時：くすんだ青色 */
+    color: #ffffff; /* テキストを白に */
+  }
+
+  @media (max-width: 768px) {
     .filter-container button {
-      background-color: #e6e6e6; /* ボタン背景色：ライトグレー */
-      color: #2f4f60; /* ボタンテキストカラー：くすんだ青色 */
-      border: 2px solid #b0c4de; /* くすんだ青色の枠線 */
-      padding: 10px 20px;
-      margin: 5px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-      font-size: 1rem;
+      padding: 5px 8px; /* モバイル向けにさらに小さく */
+      font-size: 0.7rem;
     }
-
-    .filter-container button.active {
-      background-color: #2f4f60; /* アクティブ時：くすんだ青色 */
-      color: #ffffff; /* テキストを白に */
-    }
-
+  }
     table {
       border-collapse: collapse;
       width: 80%;
