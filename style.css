@@ -1,92 +1,99 @@
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #ffffff; /* 基準色：白 */
-      color: #333333; /* テキストカラー：ダークグレー */
-      margin: 0;
-      padding: 0;
-    }
+body {
+  font-family: Arial, sans-serif;
+  background-color: #ffffff; /* 基準色：白 */
+  color: #333333; /* テキストカラー：ダークグレー */
+  margin: 0;
+  padding: 0;
+}
 
-    h1 {
-      text-align: center;
-      margin: 20px 0;
-      font-size: 2rem;
-      color: #2f4f60; /* くすんだ青色 */
-    }
+h1 {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 2rem;
+  color: #2f4f60; /* くすんだ青色 */
+}
 
-    .filter-container {
-      text-align: center;
-      margin: 20px;
-    }
+.filter-container {
+  text-align: center;
+  margin: 20px;
+}
 
-    .filter-container button {
-      background-color: #e6e6e6; /* ボタン背景色：ライトグレー */
-      color: #2f4f60; /* ボタンテキストカラー：くすんだ青色 */
-      border: 2px solid #b0c4de; /* くすんだ青色の枠線 */
-      padding: 6px 10px; /* パディングを小さく */
-      margin: 4px; /* マージンを調整 */
-      border-radius: 20px;
-      cursor: pointer;
-      transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-      font-size: 0.8rem; /* フォントサイズを小さく */
-    }
+.filter-container button {
+  background-color: #e6e6e6; /* ボタン背景色：ライトグレー */
+  color: #2f4f60; /* ボタンテキストカラー：くすんだ青色 */
+  border: 2px solid #b0c4de; /* くすんだ青色の枠線 */
+  padding: 6px 10px; /* パディングを小さく */
+  margin: 4px; /* マージンを調整 */
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  font-size: 0.8rem; /* フォントサイズを小さく */
+  display: inline-block; /* インラインブロック要素として表示 */
+  text-align: center; /* テキストを中央揃え */
+  text-decoration: none; /* テキストの装飾を削除 */
+}
 
-    .filter-container button.active {
-      background-color: #2f4f60; /* アクティブ時：くすんだ青色 */
-      color: #ffffff; /* テキストを白に */
-    }
+.filter-container button:hover {
+  background-color: #dcdcdc; /* ホバー時の背景色を変更 */
+}
 
-    @media (max-width: 768px) {
-      .filter-container button {
-        padding: 5px 8px; /* モバイル向けにさらに小さく */
-        font-size: 0.7rem;
-      }
-    }
-    table {
-      border-collapse: collapse;
-      width: 80%;
-      margin: 20px auto;
-      background-color: #f8f8f8; /* テーブル背景色：薄いグレー */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      overflow: hidden;
-    }
+.filter-container button:active {
+  background-color: #c0c0c0; /* クリック時の背景色を変更 */
+}
 
-    th, td {
-      padding: 12px;
-      text-align: center;
-      border-bottom: 1px solid #dcdcdc;
-    }
+.filter-container button.active {
+  background-color: #2f4f60; /* アクティブ時：くすんだ青色 */
+  color: #ffffff; /* テキストを白に */
+}
 
-    th {
-      background-color: #2f4f60; /* ヘッダー背景色：くすんだ青色 */
-      color: #ffffff; /* ヘッダー文字色：白 */
-    }
+@media (max-width: 768px) {
+  .filter-container button {
+    padding: 5px 8px; /* モバイル向けにさらに小さく */
+    font-size: 0.7rem;
+  }
+}
 
-    td img {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
+table {
+  border-collapse: collapse;
+  width: 80%;
+  margin: 20px auto;
+  background-color: #f8f8f8; /* テーブル背景色：薄いグレー */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
 
-    tbody tr:hover {
-      background-color: #e0f0f8; /* ホバー時：青みがかった薄いグレー */
-    }
+th, td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #dcdcdc;
+}
 
-    tbody tr:last-child td {
-      border-bottom: none;
-    }
+th {
+  background-color: #2f4f60; /* ヘッダー背景色：くすんだ青色 */
+  color: #ffffff; /* ヘッダー文字色：白 */
+}
 
-    @media (max-width: 768px) {
-      table {
-        width: 100%;
-      }
+td img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
 
-      .filter-container button {
-        padding: 8px 15px;
-        font-size: 0.9rem;
-      }
-    }
+tbody tr:hover {
+  background-color: #e0f0f8; /* ホバー時：青みがかった薄いグレー */
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  table {
+    width: 100%;
+  }
+}
 
 /* モーダル画面の表示 */
 .modal {
