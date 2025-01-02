@@ -81,6 +81,9 @@ td img {
   border-radius: 8px;
 }
 
+table td:last-child {
+  text-align: left;
+}
 tbody tr:hover {
   background-color: #e0f0f8; /* ホバー時：青みがかった薄いグレー */
 }
