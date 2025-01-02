@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Attribute Table Filter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff; /* 基準色：白 */
+      color: #333333; /* テキストカラー：ダークグレー */
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 2rem;
+      color: #2f4f60; /* くすんだ青色 */
+    }
+
+    .filter-container {
+      text-align: center;
+      margin: 20px;
+    }
+
+    .filter-container button {
+      background-color: #e6e6e6; /* ボタン背景色：ライトグレー */
+      color: #2f4f60; /* ボタンテキストカラー：くすんだ青色 */
+      border: 2px solid #b0c4de; /* くすんだ青色の枠線 */
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+      font-size: 1rem;
+    }
+
+    .filter-container button.active {
+      background-color: #2f4f60; /* アクティブ時：くすんだ青色 */
+      color: #ffffff; /* テキストを白に */
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 80%;
+      margin: 20px auto;
+      background-color: #f8f8f8; /* テーブル背景色：薄いグレー */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #dcdcdc;
+    }
+
+    th {
+      background-color: #2f4f60; /* ヘッダー背景色：くすんだ青色 */
+      color: #ffffff; /* ヘッダー文字色：白 */
+    }
+
+    td img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    tbody tr:hover {
+      background-color: #e0f0f8; /* ホバー時：青みがかった薄いグレー */
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    @media (max-width: 768px) {
+      table {
+        width: 100%;
+      }
+
+      .filter-container button {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>アッシュテイル カード図鑑</h1>
+
+  <div class="filter-container">
+    <h3>ステータスで絞り込み</h3>
+    <!-- 攻撃 -->
+    <button onclick="toggleFilter('status', '会心率')">会心率</button>
+    <button onclick="toggleFilter('status', '会心ダメージ')">会心ダメージ</button>
+    <button onclick="toggleFilter('status', 'ダメージ倍率')">ダメージ倍率</button>
+    <button onclick="toggleFilter('status', '防御無視')">防御無視</button>
+    <button onclick="toggleFilter('status', '状態異常命中率')">状態異常命中率</button>
+    <button onclick="toggleFilter('status', '対高HP与ダメ増')">対高HP与ダメ増</button>
+
+    <!-- 防御 -->
+    <button onclick="toggleFilter('status', '防御')">防御</button>
+    <button onclick="toggleFilter('status', 'HP')">HP</button>
+    <button onclick="toggleFilter('status', '対ボス被ダメ減')">対ボス被ダメ減</button>
+    <button onclick="toggleFilter('status', '状態異常ダメ耐性')">状態異常ダメ耐性</button>
+    <!-- 対人 -->
+    <button onclick="toggleFilter('status', '対〇〇与ダメ増')">対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増</button>
+    <button onclick="toggleFilter('status', '対〇〇被ダメ減')">対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減</button>
+
+    <h3>Actions:</h3>
+    <button onclick="resetFilters()">Reset Filters</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Status(Full Op.)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-status="防御,HP,状態異常ダメ耐性,対〇〇被ダメ減">
+        <td><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/y/yoitsuki_memo/20230611/20230611222830.jpg"></td>
+        <td>クーロン</td>
+        <td>防具</td>
+        <td>防御+29%<br>HP+16%<br>状態異常ダメ耐性+6%<br>対〇〇被ダメ減+13%</td>
+      </tr>
+      <tr data-status="防御無視,状態異常命中率,HP,対〇〇与ダメ増">
+        <td><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/y/yoitsuki_memo/20230609/20230609103909.jpg"></td>
+        <td>ルドベキア</td>
+        <td>防具</td>
+        <td>防御無視+27%<br>状態異常命中率+15%<br>HP+7%<br>対〇〇与ダメ増+11%</td>
+      </tr>
+      <tr data-status="会心率,対高HP与ダメ増,HP,ダメージ倍率,対〇〇与ダメ増">
+        <td><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/y/yoitsuki_memo/20230609/20230609111350.jpg"></td>
+        <td>シエルE</td>
+        <td>防具</td>
+        <td>会心率+21%<br>対高HP与ダメ増+18%<br>HP+6%<br>ダメージ倍率+10%<br>対〇〇与ダメ増+11%</td>
+      </tr>
+      <tr data-status="状態異常ダメ耐性">
+        <td>3</td>
+        <td>Mike</td>
+        <td>防具</td>
+        <td>状態異常ダメ耐性</td>
+      </tr>
+      <tr data-status="会心ダメージ,状態異常ダメ耐性,対ボス被ダメ減,対〇〇与ダメ増">
+        <td><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/y/yoitsuki_memo/20230611/20230611223045.jpg"></td>
+        <td>ソフィア</td>
+        <td>装飾</td>
+        <td>会心ダメージ+30%<br>状態異常ダメ耐性+6%<br>対ボス被ダメ減+4%<br>対〇〇与ダメ増+11%</td>
+      </tr>
+      <tr data-status="対ボス被ダメ減">
+        <td>4</td>
+        <td>Anna</td>
+        <td>武器</td>
+        <td>対ボス被ダメ減</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    const activeFilters = { status: [] }; // 現在有効なフィルタを保存するオブジェクト
+
+    function toggleFilter(type, value) {
+      const index = activeFilters[type].indexOf(value);
+
+      // ボタンの状態を切り替え
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(button => {
+        if (button.textContent === value) {
+          button.classList.toggle('active', index === -1); // active状態を切り替え
+        }
+      });
+
+      if (index === -1) {
+        // フィルタが未適用の場合、追加
+        activeFilters[type].push(value);
+      } else {
+        // フィルタがすでに適用されている場合、削除
+        activeFilters[type].splice(index, 1);
+      }
+      
+      applyFilters(); // フィルタを適用
+    }
+
+    function applyFilters() {
+      const rows = document.querySelectorAll('tbody tr');
+      rows.forEach(row => {
+        const status = row.getAttribute('data-status');
+
+        // status属性をカンマで分割
+        const statusAttributes = status.split(',').map(attr => attr.trim());
+
+        // AND条件: 全てのフィルタ条件を満たす場合のみ表示
+        const statusMatch = activeFilters.status.every(filter =>
+          statusAttributes.includes(filter)
+        );
+
+        if (statusMatch) {
+          row.style.display = ''; // 表示
+        } else {
+          row.style.display = 'none'; // 非表示
+        }
+      });
+    }
+
+    function resetFilters() {
+      // フィルタをリセット
+      activeFilters.status = [];
+
+      // 全ボタンのactive状態を解除
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(button => button.classList.remove('active'));
+
+      // 全ての行を表示
+      const rows = document.querySelectorAll('tbody tr');
+      rows.forEach(row => (row.style.display = ''));
+    }
+  </script>
+</body>
+</html>
