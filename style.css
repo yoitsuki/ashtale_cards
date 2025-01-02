@@ -95,6 +95,7 @@ tbody tr:last-child td {
 @media (max-width: 768px) {
   table {
     width: 95%;
+    font-size: 0.7rem;
   }
 }
 
