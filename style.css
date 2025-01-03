@@ -116,8 +116,8 @@ tbody tr:last-child td {
 .modal-content {
   margin: 100px auto 0 auto;
   display: block;
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 95%;
+  max-height: 95%;
 }
 
 .close {
