@@ -18,33 +18,63 @@ h1 {
   margin: 20px;
 }
 
-/* フィルターボタン */
+/* ボタンのスタイル調整 */
 .filter-container button {
   background-color: #e6e6e6; /* ボタン背景色：ライトグレー */
   color: #2f4f60; /* ボタンテキストカラー：くすんだ青色 */
   border: 2px solid #b0c4de; /* くすんだ青色の枠線 */
-  padding: 8px 16px; /* パディングを調整 */
-  margin: 6px; /* マージンを調整 */
-  border-radius: 20px;
+  padding: 4px 8px; /* パディングを小さく */
+  margin: 4px; /* マージンを調整 */
+  border-radius: 15px; /* ボーダーの角を丸く */
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-  font-size: 0.9rem; /* フォントサイズを調整 */
+  font-size: 0.8rem; /* フォントサイズを小さく */
   display: inline-block; /* インラインブロック要素として表示 */
   text-align: center; /* テキストを中央揃え */
   text-decoration: none; /* テキストの装飾を削除 */
 }
 
+/* ボタンのホバー時のスタイル */
 .filter-container button:hover {
   background-color: #dcdcdc; /* ホバー時の背景色を変更 */
 }
 
+/* ボタンのアクティブ時のスタイル */
 .filter-container button:active {
   background-color: #c0c0c0; /* クリック時の背景色を変更 */
 }
 
+/* ボタンが選択されたときのスタイル */
 .filter-container button.active {
   background-color: #2f4f60; /* アクティブ時：くすんだ青色 */
   color: #ffffff; /* テキストを白に */
+}
+
+/* フィルターコンテナの中央揃え */
+.filter-container {
+  text-align: center;
+  margin: 20px auto; /* 上下のマージンを20px、自動で左右中央揃え */
+  max-width: 80%; /* 最大幅を80%に設定 */
+}
+
+/* テーブルの中央揃え */
+table {
+  margin: 20px auto; /* 上下のマージンを20px、自動で左右中央揃え */
+  width: 80%; /* テーブルの幅を80%に設定 */
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .filter-container button {
+    padding: 3px 6px; /* モバイル向けにさらに小さく */
+    font-size: 0.7rem; /* フォントサイズを小さく */
+  }
+  .filter-container {
+    max-width: 95%; /* モバイル向けに最大幅を95%に設定 */
+  }
+  table {
+    width: 95%; /* モバイル向けにテーブルの幅を95%に設定 */
+  }
 }
 
 /* ラジオボタンのスタイル */
