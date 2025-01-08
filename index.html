@@ -20,9 +20,14 @@
 
   <div class="filter-container">
     <h3>ステータスで絞り込む</h3>
+    <h3>検索条件</h3>
+    <label><input type="radio" name="searchType" value="AND" checked> AND検索</label>
+    <label><input type="radio" name="searchType" value="OR"> OR検索</label>
+    <br>
     <!-- 特殊 -->
     <button onclick="toggleFilter('status', '武器')">武器</button>
     <button onclick="toggleFilter('status', '腕')">腕</button>
+    <br>
     <!-- 攻撃 -->
     <button onclick="toggleFilter('status', '会心率')">会心率</button>
     <button onclick="toggleFilter('status', '会心ダメージ')">会心ダメージ</button>
@@ -30,14 +35,20 @@
     <button onclick="toggleFilter('status', '防御無視')">防御無視</button>
     <button onclick="toggleFilter('status', '状態異常命中率')">状態異常命中率</button>
     <button onclick="toggleFilter('status', '対高HP与ダメ増')">対高HP与ダメ増</button>
+    <br>
     <!-- 防御 -->
     <button onclick="toggleFilter('status', '防御')">防御</button>
     <button onclick="toggleFilter('status', 'HP')">HP</button>
+    <button onclick="toggleFilter('status', '会心率耐性')">会心率耐性</button>
+    <button onclick="toggleFilter('status', '対高低HPダメ耐性')">対高低HPダメ耐性</button>
     <button onclick="toggleFilter('status', '対ボス被ダメ減')">対ボス被ダメ減</button>
+    <button onclick="toggleFilter('status', '状態異常耐性')">状態異常耐性</button>
     <button onclick="toggleFilter('status', '状態異常ダメ耐性')">状態異常ダメ耐性</button>
+    <br>
     <!-- 対人 -->
-    <button onclick="toggleFilter('status', '対〇〇与ダメ増')">対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増</button>
-    <button onclick="toggleFilter('status', '対〇〇被ダメ減')">対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減</button>
+    <button onclick="toggleFilter('status', '対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増')">対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増</button>
+    <button onclick="toggleFilter('status', '対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減')">対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減</button>
+    <br>
     <h3>Actions:</h3>
     <button onclick="resetFilters()">Reset Filters</button>
   </div>

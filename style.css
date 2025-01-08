@@ -18,16 +18,17 @@ h1 {
   margin: 20px;
 }
 
+/* フィルターボタン */
 .filter-container button {
   background-color: #e6e6e6; /* ボタン背景色：ライトグレー */
   color: #2f4f60; /* ボタンテキストカラー：くすんだ青色 */
   border: 2px solid #b0c4de; /* くすんだ青色の枠線 */
-  padding: 6px 10px; /* パディングを小さく */
-  margin: 4px; /* マージンを調整 */
+  padding: 8px 16px; /* パディングを調整 */
+  margin: 6px; /* マージンを調整 */
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-  font-size: 0.8rem; /* フォントサイズを小さく */
+  font-size: 0.9rem; /* フォントサイズを調整 */
   display: inline-block; /* インラインブロック要素として表示 */
   text-align: center; /* テキストを中央揃え */
   text-decoration: none; /* テキストの装飾を削除 */
@@ -46,13 +47,36 @@ h1 {
   color: #ffffff; /* テキストを白に */
 }
 
+/* ラジオボタンのスタイル */
+.filter-container label {
+  font-size: 1rem;
+  color: #2f4f60;
+  margin-right: 15px;
+}
+
+.filter-container input[type="radio"] {
+  margin-right: 8px;
+  accent-color: #2f4f60; /* ラジオボタンの色 */
+  cursor: pointer;
+}
+
+.filter-container input[type="radio"]:checked + label {
+  color: #2f4f60; /* チェックされたラベルを強調 */
+}
+
+/* メディアクエリ（モバイル対応） */
 @media (max-width: 768px) {
   .filter-container button {
-    padding: 5px 8px; /* モバイル向けにさらに小さく */
-    font-size: 0.7rem;
+    padding: 6px 12px; /* モバイル向けにさらに小さく */
+    font-size: 0.8rem;
+  }
+
+  .filter-container label {
+    font-size: 0.9rem;
   }
 }
 
+/* テーブル */
 table {
   border-collapse: collapse;
   width: 80%;
@@ -84,19 +108,13 @@ td img {
 table td:last-child {
   text-align: left;
 }
+
 tbody tr:hover {
   background-color: #e0f0f8; /* ホバー時：青みがかった薄いグレー */
 }
 
 tbody tr:last-child td {
   border-bottom: none;
-}
-
-@media (max-width: 768px) {
-  table {
-    width: 95%;
-    font-size: 0.7rem;
-  }
 }
 
 /* モーダル画面の表示 */

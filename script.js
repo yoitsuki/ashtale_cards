@@ -37,30 +37,14 @@ function renderTable() {
   applyFilters(); // フィルターを適用
 }
 
-// モーダルの開閉（大画像）
-function openModal(imageSrc) {
-  const modal = document.getElementById("imageModal");
-  const modalImg = document.getElementById("modalImage");
-  modal.style.display = "block";
-  modalImg.src = imageSrc;
-}
-
-document.querySelector(".close").addEventListener("click", function() {
-  document.getElementById("imageModal").style.display = "none";
-});
-
-window.addEventListener("click", function(event) {
-  if (event.target === document.getElementById("imageModal")) {
-    document.getElementById("imageModal").style.display = "none";
-  }
-});
-
 // フィルター機能
 function toggleFilter(type, value) {
   const index = activeFilters[type].indexOf(value);
 
   document.querySelectorAll('button').forEach(button => {
-    if (button.textContent === value) {
+    // textContent を正規化して比較
+    const buttonText = button.textContent.normalize('NFKC').trim();
+    if (buttonText === value) {
       button.classList.toggle("active", index === -1);
     }
   });
@@ -74,13 +58,23 @@ function toggleFilter(type, value) {
   applyFilters();
 }
 
-// フィルター適用
+
+// フィルター適用（AND/OR切り替え）
 function applyFilters() {
   const rows = document.querySelectorAll("tbody tr");
+  const searchType = document.querySelector('input[name="searchType"]:checked').value; // AND / OR 取得
 
   rows.forEach(row => {
     const status = row.getAttribute("data-status").split(",");
-    const match = activeFilters.status.every(filter => status.includes(filter));
+    let match = false;
+
+    if (activeFilters.status.length === 0) {
+      match = true; // フィルターが空なら全て表示
+    } else if (searchType === "AND") {
+      match = activeFilters.status.every(filter => status.includes(filter));
+    } else if (searchType === "OR") {
+      match = activeFilters.status.some(filter => status.includes(filter));
+    }
 
     row.style.display = match ? "" : "none";
   });
@@ -93,16 +87,10 @@ function resetFilters() {
   document.querySelectorAll("tbody tr").forEach(row => (row.style.display = ""));
 }
 
+// 検索モード変更時にフィルター適用
+document.querySelectorAll('input[name="searchType"]').forEach(radio => {
+  radio.addEventListener("change", applyFilters);
+});
+
 // ページロード時にJSONを取得
 document.addEventListener("DOMContentLoaded", loadCards);
-// 既存の手書きテーブル行にモーダルイベントを適用
-document.addEventListener("DOMContentLoaded", function() {
-  document.querySelectorAll("tbody tr").forEach(row => {
-    const imageSrc = row.getAttribute("data-image"); // data-image 属性から画像取得
-    if (imageSrc) {
-      row.addEventListener("click", function() {
-        openModal(imageSrc);
-      });
-    }
-  });
-});
