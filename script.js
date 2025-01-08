@@ -1,113 +1,108 @@
-const activeFilters = { status: [] }; // 現在有効なフィルタを保存するオブジェクト
+const activeFilters = { status: [] };
+let cardData = [];
 
-    function toggleFilter(type, value) {
-      const index = activeFilters[type].indexOf(value);
-
-      // ボタンの状態を切り替え
-      const buttons = document.querySelectorAll('button');
-      buttons.forEach(button => {
-        if (button.textContent === value) {
-          button.classList.toggle('active', index === -1); // active状態を切り替え
-        }
-      });
-
-      if (index === -1) {
-        // フィルタが未適用の場合、追加
-        activeFilters[type].push(value);
-      } else {
-        // フィルタがすでに適用されている場合、削除
-        activeFilters[type].splice(index, 1);
-      }
-      
-      applyFilters(); // フィルタを適用
-    }
-
-    function applyFilters() {
-      const rows = document.querySelectorAll('tbody tr');
-      rows.forEach(row => {
-        const status = row.getAttribute('data-status');
-
-        // status属性をカンマで分割
-        const statusAttributes = status.split(',').map(attr => attr.trim());
-
-        // AND条件: 全てのフィルタ条件を満たす場合のみ表示
-        const statusMatch = activeFilters.status.every(filter =>
-          statusAttributes.includes(filter)
-        );
-
-        if (statusMatch) {
-          row.style.display = ''; // 表示
-        } else {
-          row.style.display = 'none'; // 非表示
-        }
-      });
-    }
-
-    function resetFilters() {
-      // フィルタをリセット
-      activeFilters.status = [];
-
-      // 全ボタンのactive状態を解除
-      const buttons = document.querySelectorAll('button');
-      buttons.forEach(button => button.classList.remove('active'));
-
-      // 全ての行を表示
-      const rows = document.querySelectorAll('tbody tr');
-      rows.forEach(row => (row.style.display = ''));
-    }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    const rows = document.querySelectorAll('tbody tr');
-    const modal = document.getElementById('imageModal');
-    const modalImg = document.getElementById('modalImage');
-    const closeBtn = document.querySelector('.close');
-
-    rows.forEach(row => {
-      row.addEventListener('click', function() {
-        const imgSrc = this.getAttribute('data-image');
-        if (imgSrc) {
-          modal.style.display = 'block';
-          modalImg.src = imgSrc;
-        }
-      });
-    });
-
-    closeBtn.addEventListener('click', function() {
-      modal.style.display = 'none';
-    });
-
-    window.addEventListener('click', function(event) {
-      if (event.target === modal) {
-        modal.style.display = 'none';
-      }
-    });
-  });
-// カードデータを動的に読み込む
-document.addEventListener("DOMContentLoaded", () => {
-    fetch("data.json")
-        .then(response => response.json())
-        .then(data => {
-            generateTable(data);
-        })
-        .catch(error => console.error("JSONの読み込みに失敗しました:", error));
-});
-
-function generateTable(data) {
-    const tableBody = document.querySelector("tbody");
-    tableBody.innerHTML = ""; // 既存の行をクリア
-
-    data.forEach(item => {
-        const row = document.createElement("tr");
-        row.setAttribute("data-status", item.status);
-        row.setAttribute("data-image", item.image);
-
-        row.innerHTML = `
-            <td><img src="${item.image}"><br>${item.name}</td>
-            <td>${item.category}</td>
-            <td>${item.status.replace(/,/g, "<br>")}</td>
-        `;
-
-        tableBody.appendChild(row);
-    });
+// JSONデータを取得
+async function loadCards() {
+  try {
+    const response = await fetch("cards.json");
+    cardData = await response.json();
+    renderTable();
+  } catch (error) {
+    console.error("カードデータの取得に失敗しました:", error);
+  }
 }
 
+// テーブルを動的に生成
+function renderTable() {
+  const tbody = document.querySelector("tbody");
+  tbody.innerHTML = ""; // 既存のデータをクリア
+
+  cardData.forEach(card => {
+    const row = document.createElement("tr");
+    row.setAttribute("data-status", card.status.join(","));
+
+    row.innerHTML = `
+      <td><img src="${card.icon}" alt="${card.name}" class="icon-img"><br>${card.name}</td>
+      <td>${card.category}</td>
+      <td>${card.full_status.join("<br>")}</td>
+    `;
+
+    row.addEventListener("click", function() {
+      openModal(card.image);
+    });
+
+    tbody.appendChild(row);
+  });
+
+  applyFilters(); // フィルターを適用
+}
+
+// モーダルの開閉（大画像）
+function openModal(imageSrc) {
+  const modal = document.getElementById("imageModal");
+  const modalImg = document.getElementById("modalImage");
+  modal.style.display = "block";
+  modalImg.src = imageSrc;
+}
+
+document.querySelector(".close").addEventListener("click", function() {
+  document.getElementById("imageModal").style.display = "none";
+});
+
+window.addEventListener("click", function(event) {
+  if (event.target === document.getElementById("imageModal")) {
+    document.getElementById("imageModal").style.display = "none";
+  }
+});
+
+// フィルター機能
+function toggleFilter(type, value) {
+  const index = activeFilters[type].indexOf(value);
+
+  document.querySelectorAll('button').forEach(button => {
+    if (button.textContent === value) {
+      button.classList.toggle("active", index === -1);
+    }
+  });
+
+  if (index === -1) {
+    activeFilters[type].push(value);
+  } else {
+    activeFilters[type].splice(index, 1);
+  }
+
+  applyFilters();
+}
+
+// フィルター適用
+function applyFilters() {
+  const rows = document.querySelectorAll("tbody tr");
+
+  rows.forEach(row => {
+    const status = row.getAttribute("data-status").split(",");
+    const match = activeFilters.status.every(filter => status.includes(filter));
+
+    row.style.display = match ? "" : "none";
+  });
+}
+
+// フィルターリセット
+function resetFilters() {
+  activeFilters.status = [];
+  document.querySelectorAll("button").forEach(button => button.classList.remove("active"));
+  document.querySelectorAll("tbody tr").forEach(row => (row.style.display = ""));
+}
+
+// ページロード時にJSONを取得
+document.addEventListener("DOMContentLoaded", loadCards);
+// 既存の手書きテーブル行にモーダルイベントを適用
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll("tbody tr").forEach(row => {
+    const imageSrc = row.getAttribute("data-image"); // data-image 属性から画像取得
+    if (imageSrc) {
+      row.addEventListener("click", function() {
+        openModal(imageSrc);
+      });
+    }
+  });
+});
