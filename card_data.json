@@ -1,0 +1,20 @@
+[
+  {
+    "name": "ルナ",
+    "category": "防具",
+    "status": "状態異常ダメ耐性",
+    "image": "8/xxxxxx.png"
+  },
+  {
+    "name": "ヤマト",
+    "category": "防具",
+    "status": "状態異常ダメ耐性",
+    "image": "8/xxxxxx.png"
+  },
+  {
+    "name": "クーロン",
+    "category": "防具",
+    "status": "防御,HP,状態異常ダメ耐性,対〇〇被ダメ減",
+    "image": "8/138506.png"
+  }
+]
