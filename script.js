@@ -82,3 +82,32 @@ const activeFilters = { status: [] }; // 現在有効なフィルタを保存す
       }
     });
   });
+// カードデータを動的に読み込む
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("data.json")
+        .then(response => response.json())
+        .then(data => {
+            generateTable(data);
+        })
+        .catch(error => console.error("JSONの読み込みに失敗しました:", error));
+});
+
+function generateTable(data) {
+    const tableBody = document.querySelector("tbody");
+    tableBody.innerHTML = ""; // 既存の行をクリア
+
+    data.forEach(item => {
+        const row = document.createElement("tr");
+        row.setAttribute("data-status", item.status);
+        row.setAttribute("data-image", item.image);
+
+        row.innerHTML = `
+            <td><img src="${item.image}"><br>${item.name}</td>
+            <td>${item.category}</td>
+            <td>${item.status.replace(/,/g, "<br>")}</td>
+        `;
+
+        tableBody.appendChild(row);
+    });
+}
+
