@@ -147,6 +147,13 @@ tbody tr:last-child td {
   border-bottom: none;
 }
 
+@media (max-width: 768px) {
+  table {
+    width: 95%;
+    font-size: 0.7rem;
+  }
+}
+
 /* モーダル画面の表示 */
 .modal {
   display: none;

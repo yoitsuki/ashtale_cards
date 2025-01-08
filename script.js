@@ -37,6 +37,22 @@ function renderTable() {
   applyFilters(); // フィルターを適用
 }
 
+// モーダルの開閉（大画像）
+function openModal(imageSrc) {
+  const modal = document.getElementById("imageModal");
+  const modalImg = document.getElementById("modalImage");
+  modal.style.display = "block";
+  modalImg.src = imageSrc;
+}
+document.querySelector(".close").addEventListener("click", function() {
+  document.getElementById("imageModal").style.display = "none";
+});
+window.addEventListener("click", function(event) {
+  if (event.target === document.getElementById("imageModal")) {
+    document.getElementById("imageModal").style.display = "none";
+  }
+});
+
 // フィルター機能
 function toggleFilter(type, value) {
   const index = activeFilters[type].indexOf(value);
