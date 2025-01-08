@@ -24,7 +24,7 @@ h1 {
   color: #2f4f60; /* ボタンテキストカラー：くすんだ青色 */
   border: 2px solid #b0c4de; /* くすんだ青色の枠線 */
   padding: 4px 8px; /* パディングを小さく */
-  margin: 4px; /* マージンを調整 */
+  margin: 2px; /* マージンを調整 */
   border-radius: 15px; /* ボーダーの角を丸く */
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
