@@ -49,7 +49,7 @@ h3 {
   background-color: #e6e6e6; /* ボタン背景色：ライトグレー */
   color: #2f4f60; /* ボタンテキストカラー：くすんだ青色 */
   border: 2px solid #b0c4de; /* くすんだ青色の枠線 */
-  padding: 1px; /* パディングを小さく */
+  padding: 4px; /* パディングを小さく */
   margin: 1px; /* マージンを調整 */
   border-radius: 15px; /* ボーダーの角を丸く */
   cursor: pointer;
