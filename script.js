@@ -74,18 +74,18 @@ function toggleFilter(type, value) {
   applyFilters();
 }
 
-
 // フィルター適用（AND/OR切り替え）
 function applyFilters() {
   const rows = document.querySelectorAll("tbody tr");
   const searchType = document.querySelector('input[name="searchType"]:checked').value; // AND / OR 取得
+  const hasFilters = activeFilters.status.length > 0; // フィルターが1つでもあるか
 
   rows.forEach(row => {
     const status = row.getAttribute("data-status").split(",");
     let match = false;
 
-    if (activeFilters.status.length === 0) {
-      match = true; // フィルターが空なら全て表示
+    if (!hasFilters) {
+      match = true; // フィルターがない場合はすべて表示
     } else if (searchType === "AND") {
       match = activeFilters.status.every(filter => status.includes(filter));
     } else if (searchType === "OR") {
@@ -93,14 +93,45 @@ function applyFilters() {
     }
 
     row.style.display = match ? "" : "none";
+
+    // ステータスのセルを取得
+    const statusCell = row.querySelector("td:nth-child(3)");
+    if (statusCell) {
+      let html = statusCell.innerHTML;
+
+      // 既存のハイライトをリセット
+      html = html.replace(/<span class="highlight-text">([^<]+)<\/span>/g, "$1");
+
+      // フィルタと一致する単語＋続くテキストを赤くする
+      if (hasFilters) {
+        activeFilters.status.forEach(filter => {
+          const regex = new RegExp(`${filter}[^<]*`, "g"); // フィルタ文字列から始まる単語全体をキャッチ
+          html = html.replace(regex, match => `<span class="highlight-text">${match}</span>`);
+        });
+      }
+
+      statusCell.innerHTML = html;
+    }
   });
 }
 
 // フィルターリセット
 function resetFilters() {
   activeFilters.status = [];
+
+  // 全ボタンのactive状態を解除
   document.querySelectorAll("button").forEach(button => button.classList.remove("active"));
-  document.querySelectorAll("tbody tr").forEach(row => (row.style.display = ""));
+
+  // 全ての行を表示 & ハイライト解除
+  document.querySelectorAll("tbody tr").forEach(row => {
+    row.style.display = "";
+    
+    // ステータス内の赤色をリセット
+    const statusCell = row.querySelector("td:nth-child(3)");
+    if (statusCell) {
+      statusCell.innerHTML = statusCell.innerHTML.replace(/<span class="highlight-text">([^<]+)<\/span>/g, "$1");
+    }
+  });
 }
 
 // 検索モード変更時にフィルター適用

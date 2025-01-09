@@ -210,3 +210,15 @@ tbody tr:last-child td {
   font-weight: bold;
   cursor: pointer;
 }
+
+/* 条件に合致した行のスタイル */
+.highlight {
+  background-color: rgba(255, 99, 71, 0.3) !important; /* 薄い赤色 */
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* フィルターと一致したテキストを赤くする */
+.highlight-text {
+  color: red;
+  font-weight: bold;
+}
