@@ -1,7 +1,49 @@
 const activeFilters = { status: [] };
 let cardData = [];
 
-// JSONデータを取得
+// いいね数取得用
+const sheetUrl = "https://script.google.com/macros/s/AKfycbyfyIIgogvBRCp7H3kBOy4sAzd_ojQxoWuVXH4-O2LyGeI2OiqPF9KDtrQnMjjkrgMnyQ/exec"; // Google Apps ScriptのデプロイURL
+const pageId = "ash_tale_card"; // ページ固有のID（スプレッドシートのA列に設定）
+
+// いいね数を取得
+async function fetchLikes() {
+    try {
+        const response = await fetch(sheetUrl + "?id=" + pageId);
+        const data = await response.json();
+        document.getElementById("like-count").textContent = data.likes;
+    } catch (error) {
+        console.error("いいね数の取得に失敗しました:", error);
+    }
+}
+
+// いいねを記録
+async function likePage() {
+  try {
+      const formData = new URLSearchParams();
+      formData.append("id", pageId);
+
+      const response = await fetch(sheetUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: formData
+      });
+
+      if (!response.ok) throw new Error("サーバーエラー");
+
+      const data = await response.json();
+      document.getElementById("like-count").textContent = data.likes;
+  } catch (error) {
+      console.error("いいねの更新に失敗しました:", error);
+  }
+}
+
+// ページが読み込まれたら、いいね数を取得
+document.addEventListener("DOMContentLoaded", function() {
+    fetchLikes();
+    document.getElementById("likeButton").addEventListener("click", likePage);
+});
+
+// カード用JSONデータを取得
 async function loadCards() {
   try {
     const response = await fetch("cards.json");

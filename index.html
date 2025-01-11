@@ -17,8 +17,14 @@
 </head>
 <body>
   <h1>アッシュテイル カード図鑑</h1>
-  <div class="filter-container">
+  <div class="text-data">
     ステータスからカードを探せます。気になったカードはタップすると実際のカードデータを閲覧できます。
+  </div>
+  <div class="text-data">
+    <button id="likeButton" onclick="likePage()">👍 いいね <span id="like-count">0</span></button>
+  </div>
+
+  <div class="filter-container">
     <h3>検索条件</h3>
     <label><input type="radio" name="searchType" value="AND" checked> AND検索</label>
     <label><input type="radio" name="searchType" value="OR"> OR検索</label>
