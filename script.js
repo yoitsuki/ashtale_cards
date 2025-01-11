@@ -2,18 +2,36 @@ const activeFilters = { status: [] };
 let cardData = [];
 
 // いいね数取得用
-const sheetUrl = "https://script.google.com/macros/s/AKfycbyfyIIgogvBRCp7H3kBOy4sAzd_ojQxoWuVXH4-O2LyGeI2OiqPF9KDtrQnMjjkrgMnyQ/exec"; // Google Apps ScriptのデプロイURL
+const sheetUrl = "https://script.google.com/macros/s/AKfycbyiXFK1JQuhpEWhZcqqjKRPlaTH9_way70o0ydYDT2ow4mWLST_6wJmHJtUb3BSgsoWxg/exec"; // Google Apps ScriptのデプロイURL
 const pageId = "ash_tale_card"; // ページ固有のID（スプレッドシートのA列に設定）
 
 // いいね数を取得
 async function fetchLikes() {
-    try {
-        const response = await fetch(sheetUrl + "?id=" + pageId);
-        const data = await response.json();
-        document.getElementById("like-count").textContent = data.likes;
-    } catch (error) {
-        console.error("いいね数の取得に失敗しました:", error);
-    }
+  try {
+      const requestParams = {
+          method: "GET",
+          headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/x-www-form-urlencoded",
+          },
+      };
+
+      // fetch の結果を待つ
+      const response = await fetch(sheetUrl + "?id=" + pageId, requestParams);
+
+      // レスポンスが正常でない場合はエラーをスロー
+      if (!response.ok) {
+          throw new Error(`HTTPエラー: ${response.status}`);
+      }
+
+      // レスポンスの JSON データを取得
+      const data = await response.json();
+
+      // 取得したいいね数を表示
+      document.getElementById("like-count").textContent = data.likes;
+  } catch (error) {
+      console.error("いいね数の取得に失敗しました:", error);
+  }
 }
 
 // いいねを記録
@@ -36,12 +54,6 @@ async function likePage() {
       console.error("いいねの更新に失敗しました:", error);
   }
 }
-
-// ページが読み込まれたら、いいね数を取得
-document.addEventListener("DOMContentLoaded", function() {
-    fetchLikes();
-    document.getElementById("likeButton").addEventListener("click", likePage);
-});
 
 // カード用JSONデータを取得
 async function loadCards() {
@@ -181,5 +193,11 @@ document.querySelectorAll('input[name="searchType"]').forEach(radio => {
   radio.addEventListener("change", applyFilters);
 });
 
-// ページロード時にJSONを取得
-document.addEventListener("DOMContentLoaded", loadCards);
+document.addEventListener("DOMContentLoaded", function() {
+    // ページロード時にJSONを取得
+    loadCards();
+    // ページが読み込まれたら、いいね数を取得
+    fetchLikes();
+});
+  
+  

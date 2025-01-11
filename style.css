@@ -39,8 +39,35 @@ h3 {
 }
 
 .text-data {
-  text-align: center;
+  text-align: left;
   margin: 20px;
+  color: #777;
+  font-size: 0.6rem;
+}
+
+#likeButton {
+  background-color: #f0f0f0; /* ボタン背景色を薄いグレーに */
+  color: #777; /* テキストカラーを淡いグレーに */
+  border: 1px solid #ccc; /* 枠線は薄いグレー */
+  padding: 2px; /* パディングを調整 */
+  border-radius: 4px; /* 角を丸くする */
+  font-size: 0.6rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: inline-flex; /* アイコンとテキストを横並びに */
+  align-items: center; /* 中央揃え */
+}
+
+#likeButton span {
+  margin-left: 8px; /* アイコンとテキストの間隔 */
+}
+
+#likeButton:hover {
+  background-color: #e0e0e0; /* ホバー時に背景色を少し濃く */
+}
+
+#likeButton:active {
+  background-color: #d0d0d0; /* クリック時に背景色をさらに濃く */
 }
 
 .filter-container {
