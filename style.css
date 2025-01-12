@@ -42,7 +42,7 @@ h3 {
   text-align: left;
   margin: 20px;
   color: #777;
-  font-size: 0.6rem;
+  font-size: 0.8rem;
 }
 
 #likeButton {
@@ -77,11 +77,11 @@ h3 {
 
 /* ボタンのスタイル調整 */
 .filter-container button {
-  background-color: #e6e6e6; /* ボタン背景色：ライトグレー */
+  background-color: #eff0ff; /* ボタン背景色：ライトグレー */
   color: #2f4f60; /* ボタンテキストカラー：くすんだ青色 */
   border: 2px solid #b0c4de; /* くすんだ青色の枠線 */
   padding: 4px; /* パディングを小さく */
-  margin: 1px; /* マージンを調整 */
+  margin: 4px 2px; /* マージンを調整 */
   border-radius: 15px; /* ボーダーの角を丸く */
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
@@ -120,20 +120,6 @@ table {
   width: 80%; /* テーブルの幅を80%に設定 */
 }
 
-/* レスポンシブ対応 */
-@media (max-width: 768px) {
-  .filter-container button {
-    padding: 3px 6px; /* モバイル向けにさらに小さく */
-    font-size: 0.7rem; /* フォントサイズを小さく */
-  }
-  .filter-container {
-    max-width: 95%; /* モバイル向けに最大幅を95%に設定 */
-  }
-  table {
-    width: 95%; /* モバイル向けにテーブルの幅を95%に設定 */
-  }
-}
-
 /* ラジオボタンのスタイル */
 .filter-container label {
   font-size: 1rem;
@@ -149,18 +135,6 @@ table {
 
 .filter-container input[type="radio"]:checked + label {
   color: #2f4f60; /* チェックされたラベルを強調 */
-}
-
-/* メディアクエリ（モバイル対応） */
-@media (max-width: 768px) {
-  .filter-container button {
-    padding: 6px 12px; /* モバイル向けにさらに小さく */
-    font-size: 0.8rem;
-  }
-
-  .filter-container label {
-    font-size: 0.9rem;
-  }
 }
 
 /* テーブル */
@@ -202,13 +176,6 @@ tbody tr:hover {
 
 tbody tr:last-child td {
   border-bottom: none;
-}
-
-@media (max-width: 768px) {
-  table {
-    width: 95%;
-    font-size: 0.7rem;
-  }
 }
 
 /* モーダル画面の表示 */
@@ -253,3 +220,37 @@ tbody tr:last-child td {
   color: red;
   font-weight: bold;
 }
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .text-data {
+    font-size: 0.5rem;
+  }
+  
+  #likeButton {
+    font-size: 0.5rem;
+  }
+  
+
+  .filter-container button {
+    padding: 3px 4px; /* モバイル向けにさらに小さく */
+    border-radius: 10px; /* ボーダーの角を丸く */
+    font-size: 0.8rem; /* フォントサイズを小さく */
+
+    margin: 2px; /* マージンを調整 */
+  }
+
+  .filter-container label {
+    font-size: 0.9rem;
+  }
+
+  .filter-container {
+    max-width: 95%; /* モバイル向けに最大幅を95%に設定 */
+  }
+
+  table {
+    width: 95%; /* モバイル向けにテーブルの幅を95%に設定 */
+    font-size: 0.7rem;
+  }
+}
+
