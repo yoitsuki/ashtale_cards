@@ -214,5 +214,3 @@ document.addEventListener("DOMContentLoaded", function() {
     // ページが読み込まれたら、いいね数を取得
     fetchLikes();
 });
-  
-  
