@@ -3,7 +3,7 @@
     "id": "1111501",
     "name": "レイラR",
     "category": "武器",
-    "icon": "img/1111501_icon.jpg",
+    "icon": "img/1111501_icon.-",
     "image": "img/1111501.jpg",
     "status": ["武器"],
     "full_status": ["レイラR+7"]
@@ -40,7 +40,7 @@
     "name": "ニックス",
     "category": "頭",
     "icon": "img/1811501_icon.jpg",
-    "image": "img/1811501.JPG",
+    "image": "img/1811501.jpg",
     "status": ["状態異常与ダメ増", "ダメージ倍率", "対高HP与ダメ増", "対高低HPダメ耐性", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増"],
     "full_status": ["状態異常与ダメ増+38%", "ダメージ倍率+34%", "対高HP与ダメ増+14%", "対高低HPダメ耐性+17%", "対〇〇与ダメ増+17%"]
   },
@@ -49,7 +49,7 @@
     "name": "ラゴラドンマ",
     "category": "防具",
     "icon": "img/1311404_icon.jpg",
-    "image": "img/1311404.JPG",
+    "image": "img/1311404.jpg",
     "status": ["会心率耐性", "対高低HPダメ耐性", "HP"],
     "full_status": ["会心率耐性+33%", "対高低HPダメ耐性+13%", "HP+8%"]
   },
@@ -58,7 +58,7 @@
     "name": "アイスキノコ",
     "category": "防具",
     "icon": "img/1311403_icon.jpg",
-    "image": "img/1311403.JPG",
+    "image": "img/1311403.jpg",
     "status": ["会心率", "状態異常与ダメ増", "防御"],
     "full_status": ["会心率+34%", "状態異常与ダメ増+18%", "防御+11%"]
   },
@@ -67,7 +67,7 @@
     "name": "リンク・蔦",
     "category": "防具",
     "icon": "img/1311402_icon.jpg",
-    "image": "img/1311402.JPG",
+    "image": "img/1311402.jpg",
     "status": ["会心ダメ耐性", "状態異常ダメ耐性", "HP"],
     "full_status": ["会心ダメ耐性+27%", "状態異常ダメ耐性+19%", "HP+14%"]
   },
@@ -76,7 +76,7 @@
     "name": "リンク・氷",
     "category": "防具",
     "icon": "img/1311401_icon.jpg",
-    "image": "img/1311401.JPG",
+    "image": "img/1311401.jpg",
     "status": ["会心ダメージ", "防御無視", "対高低HPダメ耐性"],
     "full_status": ["会心ダメージ+30%", "防御無視+15%", "対高低HPダメ耐性+9%"]
   },
@@ -220,7 +220,7 @@
     "name": "サンドラ",
     "category": "武器",
     "icon": "img/1110402_icon.jpg",
-    "image": "img/1110402.PNG",
+    "image": "img/1110402.png",
     "status": ["武器"],
     "full_status": ["※NO DATA"]
   },
@@ -256,7 +256,7 @@
     "name": "エルゲヌビ",
     "category": "防具",
     "icon": "img/1310406_icon.jpg",
-    "image": "img/1310406.JPG",
+    "image": "img/1310406.jpg",
     "status": ["会心ダメ耐性", "状態異常ダメ耐性", "HP", "状態異常与ダメ増"],
     "full_status": ["会心ダメ耐性+24%", "状態異常ダメ耐性+13%", "HP+12%", "状態異常与ダメ増+10%"]
   },
@@ -274,7 +274,7 @@
     "name": "イポメア",
     "category": "防具",
     "icon": "img/1310404_icon.jpg",
-    "image": "img/1310404.JPG",
+    "image": "img/1310404.jpg",
     "status": ["防御", "HP", "会心率耐性"],
     "full_status": ["防御+21%", "HP+15%", "会心率耐性+11%"]
   },
@@ -283,7 +283,7 @@
     "name": "ロゼリエ",
     "category": "防具",
     "icon": "img/1310403_icon.jpg",
-    "image": "img/1310403.JPG",
+    "image": "img/1310403.jpg",
     "status": ["会心ダメージ", "ダメージ倍率", "対低HP与ダメ増", "防御"],
     "full_status": ["会心ダメージ+20%", "ダメージ倍率+13%", "対低HP与ダメ増+15%", "防御+2%"]
   },
@@ -292,7 +292,7 @@
     "name": "ビルネ",
     "category": "防具",
     "icon": "img/1310402_icon.jpg",
-    "image": "img/1310402.JPG",
+    "image": "img/1310402.jpg",
     "status": ["回避率", "会心率耐性", "HP"],
     "full_status": ["回避率+26%", "会心率耐性+19%", "HP+4%"]
   },
@@ -301,7 +301,7 @@
     "name": "アピオン",
     "category": "防具",
     "icon": "img/1310401_icon.jpg",
-    "image": "img/1310401.JPG",
+    "image": "img/1310401.jpg",
     "status": ["命中率", "会心率", "HP"],
     "full_status": ["命中率+26%", "会心率+19%", "HP+8%"]
   },
@@ -534,7 +534,7 @@
     "id": "118503",
     "name": "ルナ",
     "category": "武器",
-    "icon": "img/118503_icon.jpeg",
+    "icon": "img/118503_icon.jpg",
     "image": "img/118503.png",
     "status": ["武器"],
     "full_status": ["ルナ+7"]
@@ -543,7 +543,7 @@
     "id": "118501",
     "name": "ヤマト",
     "category": "武器",
-    "icon": "img/118501_icon.jpeg",
+    "icon": "img/118501_icon.jpg",
     "image": "img/118501.png",
     "status": ["武器"],
     "full_status": ["ヤマト+7"]
@@ -561,7 +561,7 @@
     "id": "128501",
     "name": "フェアネス",
     "category": "腕",
-    "icon": "img/128501_icon.jpeg",
+    "icon": "img/128501_icon.jpg",
     "image": "img/128501.png",
     "status": ["腕"],
     "full_status": ["フェアネス+7"]
@@ -570,7 +570,7 @@
     "id": "138506",
     "name": "クーロン",
     "category": "防具",
-    "icon": "img/138506_icon.jpeg",
+    "icon": "img/138506_icon.jpg",
     "image": "img/138506.png",
     "status": ["防御", "HP", "状態異常ダメ耐性", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減"],
     "full_status": ["防御+29%", "HP+16%", "状態異常ダメ耐性+6%", "対〇〇被ダメ減+13%"]
@@ -579,7 +579,7 @@
     "id": "138505",
     "name": "ルドベキア",
     "category": "防具",
-    "icon": "img/138505_icon.jpeg",
+    "icon": "img/138505_icon.jpg",
     "image": "img/138505.jpg",
     "status": ["防御無視", "状態異常命中率", "HP", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増"],
     "full_status": ["防御無視+27%", "状態異常命中率+15%", "HP+7%", "対〇〇与ダメ増+11%"]
@@ -588,7 +588,7 @@
       "id": "138502",
       "name": "シエルE",
       "category": "防具",
-      "icon": "img/138502_icon.jpeg",
+      "icon": "img/138502_icon.jpg",
       "image": "img/138502.png",
       "status": ["会心率","対高HP与ダメ増","HP","ダメージ倍率","対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増"],
       "full_status": ["会心率+21%","対高HP与ダメ増+18%","HP+6%","ダメージ倍率+10%","対〇〇与ダメ増+11%"]
@@ -597,7 +597,7 @@
     "id": "138501",
     "name": "アンナE",
     "category": "防具",
-    "icon": "img/138501_icon.jpeg",
+    "icon": "img/138501_icon.jpg",
     "image": "img/138501.jpg",
     "status": ["会心率耐性", "会心ダメ耐性", "HP", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減"],
     "full_status": ["会心率耐性+27%", "会心ダメ耐性+10%", "HP+11%", "対〇〇被ダメ減-13%"]
@@ -606,8 +606,8 @@
       "id": "178503",
       "name": "ソフィア",
       "category": "装飾",
-      "icon": "img/178503_icon.jpeg",
-      "image": "img/178503.JPG",
+      "icon": "img/178503_icon.jpg",
+      "image": "img/178503.jpg",
       "status": ["会心ダメージ","状態異常ダメ耐性","HP","対ボス被ダメ減","対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増"],
       "full_status": ["会心ダメージ+29%","状態異常ダメ耐性+6%","HP+3%","対ボス被ダメ減+4%","対〇〇与ダメ増+11%"]
   },
@@ -616,7 +616,7 @@
     "name": "アイネス",
     "category": "装飾",
     "icon": "img/178502_icon.jpg",
-    "image": "img/178502.JPG",
+    "image": "img/178502.jpg",
     "status": ["状態異常与ダメ増", "対低HP与ダメ増", "会心率耐性", "ダメージ倍率", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増"],
     "full_status": ["状態異常与ダメ増+26%", "対低HP与ダメ増+27%", "会心率耐性+4%", "ダメージ倍率+6%", "対〇〇与ダメ増+11%"]
   },
@@ -624,7 +624,7 @@
     "id": "178501",
     "name": "パンドラR",
     "category": "装飾",
-    "icon": "img/178501_icon.jpeg",
+    "icon": "img/178501_icon.jpg",
     "image": "img/178501.png",
     "status": ["会心ダメージ", "会心率", "HP", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増"],
     "full_status": ["会心ダメージ+24%", "会心率+12%", "HP+1%", "対〇〇与ダメ増+11%"]
@@ -633,7 +633,7 @@
     "id": "188503",
     "name": "ディズワットE",
     "category": "装飾",
-    "icon": "img/188503_icon.jpeg",
+    "icon": "img/188503_icon.jpg",
     "image": "img/188503.png",
     "status": ["対ボス与ダメ増", "ダメージ倍率", "対高低HPダメ耐性", "対低HP与ダメ増", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減"],
     "full_status": ["対ボス与ダメ増+22%", "ダメージ倍率+6%", "対高低HPダメ耐性+7%", "対低HP与ダメ増+10%", "対〇〇被ダメ減-13%"]
@@ -642,8 +642,8 @@
     "id": "188501",
     "name": "リュミエール",
     "category": "頭",
-    "icon": "img/188501_icon.jpeg",
-    "image": "img/188501.JPG",
+    "icon": "img/188501_icon.jpg",
+    "image": "img/188501.jpg",
     "status": ["状態異常耐性", "対高低HPダメ耐性", "状態異常命中率", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減"],
     "full_status": ["状態異常耐性+14%", "対高低HPダメ耐性+14%", "状態異常命中率+7%", "対〇〇被ダメ減-13%"]
   },
@@ -697,7 +697,7 @@
     "name": "征服王ラクーム",
     "category": "防具",
     "icon": "img/138404_icon.jpg",
-    "image": "img/138404.JPG",
+    "image": "img/138404.jpg",
     "status": ["ガード率", "会心率耐性", "回避率"],
     "full_status": ["ガード率+21%", "会心率耐性+6%", "回避率+10%"]
   },
@@ -706,7 +706,7 @@
     "name": "リンクE",
     "category": "防具",
     "icon": "img/138403_icon.jpg",
-    "image": "img/138403.JPG",
+    "image": "img/138403.jpg",
     "status": ["命中率", "会心率", "HP"],
     "full_status": ["命中率+21%", "会心率+9%", "HP+6%"]
   },
@@ -715,7 +715,7 @@
     "name": "シエルE",
     "category": "防具",
     "icon": "img/138402_icon.jpg",
-    "image": "img/138402.JPG",
+    "image": "img/138402.jpg",
     "status": ["会心率", "対高HP与ダメ増", "HP"],
     "full_status": ["会心率+18%", "対高HP与ダメ増+13%", "HP+6%"]
   },
@@ -724,7 +724,7 @@
     "name": "アンナE",
     "category": "防具",
     "icon": "img/138401_icon.jpg",
-    "image": "img/138401.JPG",
+    "image": "img/138401.jpg",
     "status": ["会心率耐性", "会心ダメ耐性", "HP"],
     "full_status": ["会心率耐性+17%", "会心ダメ耐性+5%", "HP+8%"]
   },
@@ -733,7 +733,7 @@
     "name": "チャイルズR",
     "category": "装飾",
     "icon": "img/178402_icon.jpg",
-    "image": "img/178402.JPG",
+    "image": "img/178402.jpg",
     "status": ["対高HP与ダメ増", "HP", "被治療効果"],
     "full_status": ["対高HP与ダメ増+25%", "HP+10%", "被治療効果+14%"]
   },
@@ -742,7 +742,7 @@
     "name": "ジールR",
     "category": "頭",
     "icon": "img/188401_icon.jpg",
-    "image": "img/188401.JPG",
+    "image": "img/188401.jpg",
     "status": ["会心ダメ耐性", "与治療効果", "HP"],
     "full_status": ["会心ダメ耐性+23%", "与治療効果+4%", "HP+1%"]
   }
