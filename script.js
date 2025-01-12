@@ -131,15 +131,24 @@ function toggleFilter(type, value) {
 // フィルター適用（AND/OR切り替え）
 function applyFilters() {
   const rows = document.querySelectorAll("tbody tr");
-  const searchType = document.querySelector('input[name="searchType"]:checked').value; // AND / OR 取得
-  const hasFilters = activeFilters.status.length > 0; // フィルターが1つでもあるか
+  const searchType = document.querySelector('input[name="searchType"]:checked').value;
+  const hasFilters = activeFilters.status.length > 0;
+
+  // 特別処理が必要なフィルタ
+  const specialFilters = {
+    "武器": "武器",
+    "腕": "腕",
+    "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増": "対〇〇与ダメ増",
+    "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減": "対〇〇被ダメ減"
+  };
 
   rows.forEach(row => {
     const status = row.getAttribute("data-status").split(",");
+    const category = row.children[1].textContent.trim();
     let match = false;
 
     if (!hasFilters) {
-      match = true; // フィルターがない場合はすべて表示
+      match = true;
     } else if (searchType === "AND") {
       match = activeFilters.status.every(filter => status.includes(filter));
     } else if (searchType === "OR") {
@@ -148,7 +157,6 @@ function applyFilters() {
 
     row.style.display = match ? "" : "none";
 
-    // ステータスのセルを取得
     const statusCell = row.querySelector("td:nth-child(3)");
     if (statusCell) {
       let html = statusCell.innerHTML;
@@ -156,11 +164,18 @@ function applyFilters() {
       // 既存のハイライトをリセット
       html = html.replace(/<span class="highlight-text">([^<]+)<\/span>/g, "$1");
 
-      // フィルタと一致する単語＋続くテキストを赤くする
       if (hasFilters) {
         activeFilters.status.forEach(filter => {
-          const regex = new RegExp(`${filter}[^<]*`, "g"); // フィルタ文字列から始まる単語全体をキャッチ
-          html = html.replace(regex, match => `<span class="highlight-text">${match}</span>`);
+          if (specialFilters[filter]) {
+            // 特別処理対象のフィルタ（例: 「武器」「腕」「対ファイ/ウィ/スカ/...被ダメ減」）
+            const keyword = specialFilters[filter];
+            const regex = new RegExp(`${keyword}[^<]*`, "g");
+            html = html.replace(regex, match => `<span class="highlight-text">${match}</span>`);
+          } else {
+            // 通常のフィルタ処理
+            const regex = new RegExp(`${filter}[^<]*`, "g");
+            html = html.replace(regex, match => `<span class="highlight-text">${match}</span>`);
+          }
         });
       }
 
