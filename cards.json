@@ -86,7 +86,7 @@
     "category": "武器",
     "icon": "img/1110502_icon.jpg",
     "image": "img/1110502.jpg",
-    "status": ["マリポッサ"],
+    "status": ["武器"],
     "full_status": ["マリポッサ+7"]
   },
   {
@@ -95,7 +95,7 @@
     "category": "武器",
     "icon": "img/1110501_icon.jpg",
     "image": "img/1110501.jpg",
-    "status": ["アナ"],
+    "status": ["武器"],
     "full_status": ["アナ+7"]
   },
   {
@@ -104,7 +104,7 @@
     "category": "腕",
     "icon": "img/1210502_icon.jpg",
     "image": "img/1210502.jpg",
-    "status": ["一文字斬"],
+    "status": ["腕"],
     "full_status": ["一文字斬+7"]
   },
   {
@@ -113,7 +113,7 @@
     "category": "腕",
     "icon": "img/1210501_icon.jpg",
     "image": "img/1210501.jpg",
-    "status": ["夜明の霊眼"],
+    "status": ["腕"],
     "full_status": ["夜明の霊眼+7"]
   },
   {
@@ -230,7 +230,7 @@
     "category": "武器",
     "icon": "img/1110401_icon.jpg",
     "image": "img/1110401.jpg",
-    "status": ["チュチュ"],
+    "status": ["武器"],
     "full_status": ["チュチュ+5"]
   },
   {
@@ -239,7 +239,7 @@
     "category": "腕",
     "icon": "img/1210402_icon.jpg",
     "image": "img/1210402.jpg",
-    "status": ["サンダーフィールド"],
+    "status": ["腕"],
     "full_status": ["サンダーフィールド+5"]
   },
   {
@@ -248,7 +248,7 @@
     "category": "腕",
     "icon": "img/1210401_icon.jpg",
     "image": "img/1210401.jpg",
-    "status": ["ガラ・デ・ソンブラ"],
+    "status": ["腕"],
     "full_status": ["ガラ・デ・ソンブラ+5"]
   },
   {
@@ -555,7 +555,7 @@
     "icon": "img/128502_icon.jpg",
     "image": "img/128502.png",
     "status": ["腕"],
-    "full_status": ["ミーティア+7"]
+    "full_status": ["進撃ノ銀河+7"]
   },
   {
     "id": "128501",
@@ -564,7 +564,7 @@
     "icon": "img/128501_icon.jpg",
     "image": "img/128501.png",
     "status": ["腕"],
-    "full_status": ["フェアネス+7"]
+    "full_status": ["ハーロック+7"]
   },
   {
     "id": "138506",
@@ -745,6 +745,213 @@
     "image": "img/188401.jpg",
     "status": ["会心ダメ耐性", "与治療効果", "HP"],
     "full_status": ["会心ダメ耐性+23%", "与治療効果+4%", "HP+1%"]
-  }
+  },
+  {
+    "id": "117502",
+    "name": "アカネR",
+    "category": "武器",
+    "icon": "img/117502_icon.jpg",
+    "image": "img/117502.jpg",
+    "status": ["武器"],
+    "full_status": ["アカネR+7"]
+  },
+  {
+    "id": "117501",
+    "name": "マリナ",
+    "category": "武器",
+    "icon": "img/117501_icon.jpg",
+    "image": "img/117501.jpg",
+    "status": ["武器"],
+    "full_status": ["マリナ+7"]
+  },
+  {
+    "id": "127502",
+    "name": "ナナミ",
+    "category": "腕",
+    "icon": "img/127502_icon.jpg",
+    "image": "img/127502.jpg",
+    "status": ["腕"],
+    "full_status": ["深海の領域+7"]
+  },
+  {
+    "id": "127501",
+    "name": "ルル",
+    "category": "腕",
+    "icon": "img/127501_icon.jpg",
+    "image": "img/127501.jpg",
+    "status": ["腕"],
+    "full_status": ["暴風の眼+7"]
+  },
+  {
+    "id": "137508",
+    "name": "リンクR",
+    "category": "防具",
+    "icon": "img/137508_icon.jpg",
+    "image": "img/137508.jpg",
+    "status": ["対高HP与ダメ増", "命中率", "対低HP与ダメ増", "HP", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増"],
+    "full_status": ["対高HP与ダメ増+22%", "命中率+15%", "対低HP与ダメ増+11%", "HP+4%", "対〇〇与ダメ増+9%"]
+  },
+  {
+    "id": "137507",
+    "name": "ヒノエR",
+    "category": "防具",
+    "icon": "img/137507_icon.jpg",
+    "image": "img/137507.jpg",
+    "status": ["ガード率", "HP", "回避率", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減"],
+    "full_status": ["ガード率+18%", "HP+17%", "回避率+5%", "対〇〇被ダメ減-11%"]
+  },
+  {
+    "id": "137502",
+    "name": "リーチェR",
+    "category": "防具",
+    "icon": "img/137502_icon.jpg",
+    "image": "img/137502.jpg",
+    "status": ["会心ダメ耐性", "会心率耐性", "HP", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減"],
+    "full_status": ["会心ダメ耐性+14%", "会心率耐性+10%", "HP+12%", "対〇〇被ダメ減+-11%"]
+  },
+  {
+    "id": "137501",
+    "name": "クイン",
+    "category": "防具",
+    "icon": "img/137501_icon.jpg",
+    "image": "img/137501.jpg",
+    "status": ["会心ダメージ", "会心率", "ダメージ倍率", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増"],
+    "full_status": ["会心ダメージ+14%", "会心率+10%", "ダメージ倍率+12%", "対〇〇与ダメ増+9%"]
+  },
+  {
+    "id": "177503",
+    "name": "ディズWアビス",
+    "category": "装飾",
+    "icon": "img/177503_icon.jpg",
+    "image": "img/177503.jpg",
+    "status": ["対高HP与ダメ増", "命中率", "状態異常耐性", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増"],
+    "full_status": ["対高HP与ダメ増+19%", "命中率+13%", "状態異常耐性+7%", "対〇〇与ダメ増+9%"]
+  },
+  {
+    "id": "177502",
+    "name": "ユユミ",
+    "category": "装飾",
+    "icon": "img/177502_icon.jpg",
+    "image": "img/177502.jpg",
+    "status": ["対低HP与ダメ増", "対ボス与ダメ増", "HP", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増"],
+    "full_status": ["対低HP与ダメ増+22%", "対ボス与ダメ増+10%", "HP+7%", "対〇〇与ダメ増+9%"]
+  },
+  {
+    "id": "177501",
+    "name": "アズリアアビス",
+    "category": "装飾",
+    "icon": "img/177501_icon.jpg",
+    "image": "img/177501.jpg",
+    "status": ["防御無視", "ダメージ倍率", "HP", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増"],
+    "full_status": ["防御無視+15%", "ダメージ倍率+7%", "HP+5%", "対〇〇与ダメ増+9%"]
+  },
+  {
+    "id": "187502",
+    "name": "アイビーR",
+    "category": "頭",
+    "icon": "img/187502_icon.jpg",
+    "image": "img/187502.jpg",
+    "status": ["状態異常与ダメ増", "会心率", "HP", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減"],
+    "full_status": ["状態異常与ダメ増+18%", "会心率+8%", "HP+7%", "対〇〇被ダメ減-11%"]
+  },
+  {
+    "id": "187501",
+    "name": "クレスタ",
+    "category": "頭",
+    "icon": "img/187501_icon.jpg",
+    "image": "img/187501.jpg",
+    "status": ["対低HP与ダメ増", "会心率耐性", "HP", "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減"],
+    "full_status": ["対低HP与ダメ増+22%", "会心率耐性+8%", "HP+5%", "対〇〇被ダメ減-11%"]
+  },
+  {
+    "id": "117402",
+    "name": "凛",
+    "category": "武器",
+    "icon": "img/117402_icon.jpg",
+    "image": "img/117402.jpg",
+    "status": ["武器"],
+    "full_status": ["凛+5%"]
+  },
+  {
+    "id": "117401",
+    "name": "ナタリア",
+    "category": "武器",
+    "icon": "img/117401_icon.jpg",
+    "image": "img/117401.jpg",
+    "status": ["武器"],
+    "full_status": ["ナタリア+5%"]
+  },
+  {
+    "id": "127401",
+    "name": "グラシア",
+    "category": "腕",
+    "icon": "img/127401_icon.jpg",
+    "image": "img/127401.jpg",
+    "status": ["腕"],
+    "full_status": ["氷河の怒り+5%"]
+  },
+  {
+    "id": "137408",
+    "name": "リンクR",
+    "category": "防具",
+    "icon": "img/137408_icon.jpg",
+    "image": "img/137408.jpg",
+    "status": ["対高HP与ダメ増", "命中率", "対低HP与ダメ増", "HP"],
+    "full_status": ["対高HP与ダメ増+15%", "命中率+14%", "対低HP与ダメ増+4%", "HP+4%"]
+  },
+  {
+    "id": "137407",
+    "name": "ヒノエR",
+    "category": "防具",
+    "icon": "img/137407_icon.jpg",
+    "image": "img/137407.jpg",
+    "status": ["ガード率", "HP", "回避率"],
+    "full_status": ["ガード率+11%", "HP+9%", "回避率+5%"]
+  },
+  {
+    "id": "137404",
+    "name": "リーチェR",
+    "category": "防具",
+    "icon": "img/137404_icon.jpg",
+    "image": "img/137404.jpg",
+    "status": ["会心ダメ耐性", "会心率耐性", "HP"],
+    "full_status": ["会心ダメ耐性+9%", "会心率耐性+7%", "HP+7%"]
+  },
+  {
+    "id": "137403",
+    "name": "クイン",
+    "category": "防具",
+    "icon": "img/137403_icon.jpg",
+    "image": "img/137403.jpg",
+    "status": ["会心ダメージ", "会心率", "ダメージ倍率"],
+    "full_status": ["会心ダメージ+9%", "会心率+7%", "ダメージ倍率+7%"]
+  },
+  {
+    "id": "137402",
+    "name": "グリモアイルー",
+    "category": "防具",
+    "icon": "img/137402_icon.jpg",
+    "image": "img/137402.jpg",
+    "status": ["会心率耐性", "HP"],
+    "full_status": ["会心率耐性+13%", "HP+9%"]
+  },
+  {
+    "id": "137401",
+    "name": "フリージッド",
+    "category": "防具",
+    "icon": "img/137401_icon.jpg",
+    "image": "img/137401.jpg",
+    "status": ["状態異常命中率", "会心率"],
+    "full_status": ["状態異常命中率+13%", "会心率+9%"]
+  },
+  {
+    "id": "177401",
+    "name": "サンクメルット",
+    "category": "装飾",
+    "icon": "img/177401_icon.jpg",
+    "image": "img/177401.jpg",
+    "status": ["HP吸収率", "ガード率", "HP"],
+    "full_status": ["HP吸収率+10%", "ガード率+8%", "HP+7%"]
+  }    
 ]
   
