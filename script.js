@@ -1,5 +1,6 @@
 const activeFilters = { status: [] };
 let cardData = [];
+let isInitialLoad = true; // 初期表示フラグ
 
 // いいね数取得用
 const sheetUrl = "https://script.google.com/macros/s/AKfycbyiXFK1JQuhpEWhZcqqjKRPlaTH9_way70o0ydYDT2ow4mWLST_6wJmHJtUb3BSgsoWxg/exec"; // Google Apps ScriptのデプロイURL
@@ -132,19 +133,20 @@ function toggleFilter(type, value) {
 function applyFilters() {
   const rows = document.querySelectorAll("tbody tr");
   const searchType = document.querySelector('input[name="searchType"]:checked').value;
-  const hasFilters = activeFilters.status.length > 0;
+  const hasFilters = activeFilters.status.length > 0; // フィルタが適用されているか
 
   // 特別処理が必要なフィルタ
   const specialFilters = {
-    "武器": "武器",
-    "腕": "腕",
-    "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増": "対〇〇与ダメ増",
-    "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減": "対〇〇被ダメ減"
+    "攻撃%": "攻撃",
+    "防御%": "防御",
+    "HP%": "HP",
+    "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増": "対○○与ダメ増",
+    "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減": "対○○被ダメ減"
   };
 
   rows.forEach(row => {
     const status = row.getAttribute("data-status").split(",");
-    const category = row.children[1].textContent.trim();
+    const category = row.children[1].textContent.trim(); // カテゴリ取得
     let match = false;
 
     if (!hasFilters) {
@@ -157,31 +159,40 @@ function applyFilters() {
 
     row.style.display = match ? "" : "none";
 
+    // ステータスセルの強調処理（初回ロード時はスキップ）
     const statusCell = row.querySelector("td:nth-child(3)");
     if (statusCell) {
       let html = statusCell.innerHTML;
+      html = html.replace(/<span class="highlight-text">([^<]+)<\/span>/g, "$1"); // 既存ハイライトをリセット
 
-      // 既存のハイライトをリセット
-      html = html.replace(/<span class="highlight-text">([^<]+)<\/span>/g, "$1");
-
-      if (hasFilters) {
-        activeFilters.status.forEach(filter => {
-          if (specialFilters[filter]) {
-            // 特別処理対象のフィルタ（例: 「武器」「腕」「対ファイ/ウィ/スカ/...被ダメ減」）
-            const keyword = specialFilters[filter];
-            const regex = new RegExp(`${keyword}[^<]*`, "g");
-            html = html.replace(regex, match => `<span class="highlight-text">${match}</span>`);
-          } else {
-            // 通常のフィルタ処理
-            const regex = new RegExp(`${filter}[^<]*`, "g");
-            html = html.replace(regex, match => `<span class="highlight-text">${match}</span>`);
-          }
-        });
+      // **初回ロード時には赤字を表示しない**
+      if (!isInitialLoad) {
+        // フィルタまたはカテゴリに応じて強調表示
+        if (category === "武器" || category === "腕") {
+          // **武器・腕カテゴリなら全体を赤字**
+          html = `<span class="highlight-text">${html}</span>`;
+        } else {
+          activeFilters.status.forEach(filter => {
+            if (specialFilters[filter]) {
+              const keyword = specialFilters[filter];
+              const regex = new RegExp(`(^|<br>)(${keyword}[+\\d%]*)`, "gi");
+              html = html.replace(regex, '$1<span class="highlight-text">$2</span>');
+            } else {
+              const regex = new RegExp(`(^|<br>)(${filter}[+\\d%]*)`, "gi");
+              html = html.replace(regex, '$1<span class="highlight-text">$2</span>');
+            }
+          });
+        }
       }
 
       statusCell.innerHTML = html;
     }
   });
+
+  // **初回ロード終了後にフラグをオフ**
+  if (isInitialLoad) {
+    isInitialLoad = false;
+  }
 }
 
 // フィルターリセット
@@ -209,8 +220,11 @@ document.querySelectorAll('input[name="searchType"]').forEach(radio => {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-    // ページロード時にJSONを取得
-    loadCards();
-    // ページが読み込まれたら、いいね数を取得
-    fetchLikes();
+  loadCards().then(() => {
+    // 初回ロード時にはフィルタを適用しない
+    isInitialLoad = true; // 初期表示フラグをONに設定
+    applyFilters();
+  });
+  fetchLikes();
 });
+
