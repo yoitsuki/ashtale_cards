@@ -71,6 +71,7 @@ async function loadCards() {
 function renderTable() {
   const tbody = document.querySelector("tbody");
   tbody.innerHTML = ""; // 既存のデータをクリア
+  let hasResults = false; // 表示するデータがあるかどうか
 
   cardData.forEach(card => {
     const row = document.createElement("tr");
@@ -87,9 +88,16 @@ function renderTable() {
     });
 
     tbody.appendChild(row);
+    hasResults = true; // データがあることを記録
   });
 
   applyFilters(); // フィルターを適用
+  // 検索後に表示されるデータがゼロならばメッセージを追加
+  if (!hasResults) {
+    const noDataRow = document.createElement("tr");
+    noDataRow.innerHTML = `<td colspan="3" style="text-align: center;">該当するデータがありませんでした。</td>`;
+    tbody.appendChild(noDataRow);
+  }
 }
 
 // モーダルの開閉（大画像）
@@ -134,6 +142,7 @@ function applyFilters() {
   const rows = document.querySelectorAll("tbody tr");
   const searchType = document.querySelector('input[name="searchType"]:checked').value;
   const hasFilters = activeFilters.status.length > 0; // フィルタが適用されているか
+  let visibleRowCount = 0; // 表示される行の数をカウント
 
   // 特別処理が必要なフィルタ
   const specialFilters = {
@@ -158,6 +167,7 @@ function applyFilters() {
     }
 
     row.style.display = match ? "" : "none";
+    if (match) visibleRowCount++; // 表示される行が増えたらカウント
 
     // ステータスセルの強調処理（初回ロード時はスキップ）
     const statusCell = row.querySelector("td:nth-child(3)");
@@ -188,6 +198,14 @@ function applyFilters() {
       statusCell.innerHTML = html;
     }
   });
+
+  // **検索結果がゼロならメッセージ行を追加**
+  const tbody = document.querySelector("tbody");
+  if (visibleRowCount === 0) {
+    const noDataRow = document.createElement("tr");
+    noDataRow.innerHTML = `<td colspan="3" class="no-data">該当するデータがありませんでした。</td>`;
+    tbody.appendChild(noDataRow);
+  }
 
   // **初回ロード終了後にフラグをオフ**
   if (isInitialLoad) {

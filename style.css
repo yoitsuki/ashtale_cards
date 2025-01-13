@@ -221,6 +221,12 @@ tbody tr:last-child td {
   font-weight: bold;
 }
 
+/* データがない場合にテキストを太くする */
+.no-data {
+  text-align: center;
+  font-weight: bold;
+}
+
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
   .text-data {
