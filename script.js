@@ -154,8 +154,9 @@ function applyFilters() {
   };
 
   rows.forEach(row => {
-    const status = row.getAttribute("data-status").split(",");
-    const category = row.children[1].textContent.trim(); // カテゴリ取得
+    const statusAttr = row.getAttribute("data-status");
+    const status = statusAttr ? statusAttr.split(",") : []; // 属性がnullなら空配列にする
+    const category = row.children[1]?.textContent.trim() || ""; // 安全にカテゴリ取得
     let match = false;
 
     if (!hasFilters) {
@@ -177,21 +178,24 @@ function applyFilters() {
 
       // **初回ロード時には赤字を表示しない**
       if (!isInitialLoad) {
-        // フィルタまたはカテゴリに応じて強調表示
-        if (category === "武器" || category === "腕") {
-          // **武器・腕カテゴリなら全体を赤字**
-          html = `<span class="highlight-text">${html}</span>`;
-        } else {
-          activeFilters.status.forEach(filter => {
-            if (specialFilters[filter]) {
-              const keyword = specialFilters[filter];
-              const regex = new RegExp(`(^|<br>)(${keyword}[-+]?\\d+%?)`, "gi");
-              html = html.replace(regex, '$1<span class="highlight-text">$2</span>');
-            } else {
-              const regex = new RegExp(`(^|<br>)(${filter}[-+]?\\d+%?)`, "gi");
-              html = html.replace(regex, '$1<span class="highlight-text">$2</span>');
-            }
-          });
+        // フィルタ適用時のみ強調表示する
+        if (activeFilters.status.length > 0) {
+          // フィルタまたはカテゴリに応じて強調表示
+          if (category === "武器" || category === "腕") {
+            // **武器・腕カテゴリなら全体を赤字**
+            html = `<span class="highlight-text">${html}</span>`;
+          } else {
+            activeFilters.status.forEach(filter => {
+              if (specialFilters[filter]) {
+                const keyword = specialFilters[filter];
+                const regex = new RegExp(`(^|<br>)(${keyword}[-+]?\\d+%?)`, "gi");
+                html = html.replace(regex, '$1<span class="highlight-text">$2</span>');
+              } else {
+                const regex = new RegExp(`(^|<br>)(${filter}[-+]?\\d+%?)`, "gi");
+                html = html.replace(regex, '$1<span class="highlight-text">$2</span>');
+              }
+            });
+          }
         }
       }
 
