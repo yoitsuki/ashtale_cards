@@ -175,10 +175,10 @@ function applyFilters() {
           activeFilters.status.forEach(filter => {
             if (specialFilters[filter]) {
               const keyword = specialFilters[filter];
-              const regex = new RegExp(`(^|<br>)(${keyword}[+\\d%]*)`, "gi");
+              const regex = new RegExp(`(^|<br>)(${keyword}[-+]?\\d+%?)`, "gi");
               html = html.replace(regex, '$1<span class="highlight-text">$2</span>');
             } else {
-              const regex = new RegExp(`(^|<br>)(${filter}[+\\d%]*)`, "gi");
+              const regex = new RegExp(`(^|<br>)(${filter}[-+]?\\d+%?)`, "gi");
               html = html.replace(regex, '$1<span class="highlight-text">$2</span>');
             }
           });
