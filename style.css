@@ -238,7 +238,7 @@ tbody tr:last-child td {
   }
 
   .filter-container button {
-    padding: 3px 8px; /* モバイル向けにさらに小さく */
+    padding: 6px 8px; /* モバイル向けにさらに小さく */
     border-radius: 10px; /* ボーダーの角を丸く */
     font-size: 0.8rem; /* フォントサイズを小さく */
 
