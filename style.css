@@ -10,7 +10,7 @@ body {
 h1 {
   position: relative;
   padding: 1rem 1rem calc(1rem + 10px);
-  background: #bbefff;
+  background: #bbdfff;
   margin:10px;
 }
 
@@ -21,7 +21,7 @@ h1:before {
   width: 100%;
   height: 100%;
   content: '';
-  border: 4px solid #000;
+  border: 4px solid #2a2e70;
 }
 /* h3のスタイル（小見出し部分） */
 h3 {
@@ -103,7 +103,7 @@ h3 {
 
 /* ボタンが選択されたときのスタイル */
 .filter-container button.active {
-  background-color: #2f4f60; /* アクティブ時：くすんだ青色 */
+  background-color: #2a2e70; /* アクティブ時：くすんだ青色 */
   color: #ffffff; /* テキストを白に */
 }
 
