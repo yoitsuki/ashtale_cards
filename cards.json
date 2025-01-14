@@ -952,6 +952,185 @@
     "image": "img/177401.jpg",
     "status": ["HP吸収率", "ガード率", "HP%"],
     "full_status": ["HP吸収率+10%", "ガード率+8%", "HP+7%"]
+  },
+  {
+    "id": "116502",
+    "name": "ユイ",
+    "category": "武器",
+    "icon": "img/116502_icon.jpg",
+    "image": "img/116502.jpg",
+    "status": ["ユイ"],
+    "full_status": ["ユイ+5%"]
+  },
+  {
+    "id": "116402",
+    "name": "ハク",
+    "category": "武器",
+    "icon": "img/116402_icon.jpg",
+    "image": "img/116402.jpg",
+    "status": ["ハク"],
+    "full_status": ["ハク+5%"]
+  },
+  {
+    "id": "116401",
+    "name": "ラムダ",
+    "category": "武器",
+    "icon": "img/116401_icon.jpg",
+    "image": "img/116401.jpg",
+    "status": ["ラムダ"],
+    "full_status": ["ラムダ+5%"]
+  },
+  {
+    "id": "126502",
+    "name": "アルクトス",
+    "category": "腕",
+    "icon": "img/126502_icon.jpg",
+    "image": "img/126502.jpg",
+    "status": ["アルクトスの守護"],
+    "full_status": ["アルクトスの守護+5%"]
+  },
+  {
+    "id": "126501",
+    "name": "ヴェロニカR",
+    "category": "腕",
+    "icon": "img/126501_icon.jpg",
+    "image": "img/126501.jpg",
+    "status": ["魅惑の影"],
+    "full_status": ["魅惑の影+5%"]
+  },
+  {
+    "id": "126402",
+    "name": "フォマルハウト",
+    "category": "腕",
+    "icon": "img/126402_icon.jpg",
+    "image": "img/126402.jpg",
+    "status": ["フォマルジャンプ"],
+    "full_status": ["フォマルジャンプ+5%"]
+  },
+  {
+    "id": "126401",
+    "name": "ミチマ",
+    "category": "腕",
+    "icon": "img/126401_icon.jpg",
+    "image": "img/126401.jpg",
+    "status": ["念願の呪い"],
+    "full_status": ["念願の呪い+5%"]
+  },
+  {
+    "id": "136501",
+    "name": "トレーシアR",
+    "category": "防具",
+    "icon": "img/136501_icon.jpg",
+    "image": "img/136501.jpg",
+    "status": ["防御無視", "状態異常命中率", "ダメージ倍率", "HP"],
+    "full_status": ["防御無視+11%", "状態異常命中率+5%", "ダメージ倍率+8%", "HP+2%"]
+  },
+  {
+    "id": "136406",
+    "name": "ルーチェ",
+    "category": "防具",
+    "icon": "img/136406_icon.jpg",
+    "image": "img/136406.jpg",
+    "status": ["会心ダメ耐性", "HP", "ガード率"],
+    "full_status": ["会心ダメ耐性+11%", "HP+11%", "ガード率+6%"]
+  },
+  {
+    "id": "136405",
+    "name": "ペルシーク",
+    "category": "防具",
+    "icon": "img/136405_icon.jpg",
+    "image": "img/136405.jpg",
+    "status": ["会心ダメージ", "命中率", "HP"],
+    "full_status": ["会心ダメージ+11%", "命中率+8%", "HP+9%"]
+  },
+  {
+    "id": "136404",
+    "name": "マーメイド",
+    "category": "防具",
+    "icon": "img/136404_icon.jpg",
+    "image": "img/136404.jpg",
+    "status": ["回避率", "防御", "状態異常耐性"],
+    "full_status": ["回避率+11%", "防御+7%", "状態異常耐性+5%"]
+  },
+  {
+    "id": "136403",
+    "name": "リュネット",
+    "category": "防具",
+    "icon": "img/136403_icon.jpg",
+    "image": "img/136403.jpg",
+    "status": ["対低HP与ダメ増", "状態異常耐性", "HP"],
+    "full_status": ["対低HP与ダメ増+15%", "状態異常耐性+5%", "HP+6%"]
+  },
+  {
+    "id": "136402",
+    "name": "ヴァルエナ",
+    "category": "防具",
+    "icon": "img/136402_icon.jpg",
+    "image": "img/136402.jpg",
+    "status": ["与治療効果", "被治療効果", "HP"],
+    "full_status": ["与治療効果+10%", "被治療効果+7%", "HP+7%"]
+  },
+  {
+    "id": "136401",
+    "name": "ウィット",
+    "category": "防具",
+    "icon": "img/136401_icon.jpg",
+    "image": "img/136401.jpg",
+    "status": ["ダメージ倍率", "状態異常命中率", "HP"],
+    "full_status": ["ダメージ倍率+10%", "状態異常命中率+5%", "HP+6%"]
+  },
+  {
+    "id": "176404",
+    "name": "シンティアR",
+    "category": "装飾",
+    "icon": "img/176404_icon.jpg",
+    "image": "img/176404.jpg",
+    "status": ["状態異常命中率", "会心率", "HP"],
+    "full_status": ["状態異常命中率+4%", "会心率+7%", "HP+5%"]
+  },
+  {
+    "id": "176402",
+    "name": "アール",
+    "category": "装飾",
+    "icon": "img/176402_icon.jpg",
+    "image": "img/176402.jpg",
+    "status": ["命中率", "対高HP与ダメ増", "HP"],
+    "full_status": ["命中率+8%", "対高HP与ダメ増+5%", "HP+2%"]
+  },
+  {
+    "id": "176401",
+    "name": "アスフィア",
+    "category": "装飾",
+    "icon": "img/176401_icon.jpg",
+    "image": "img/176401.jpg",
+    "status": ["回避率", "ダメージ倍率", "HP"],
+    "full_status": ["回避率+7%", "ダメージ倍率+3%", "HP+1%"]
+  },
+  {
+    "id": "186403",
+    "name": "フィーネ",
+    "category": "頭",
+    "icon": "img/186403_icon.jpg",
+    "image": "img/186403.jpg",
+    "status": ["対高HP与ダメ増", "回避率", "防御"],
+    "full_status": ["対高HP与ダメ増+9%", "回避率+8%", "防御+4%"]
+  },
+  {
+    "id": "186402",
+    "name": "シエルR",
+    "category": "頭",
+    "icon": "img/186402_icon.jpg",
+    "image": "img/186402.jpg",
+    "status": ["対高HP与ダメ増", "回避率", "防御"],
+    "full_status": ["対高HP与ダメ増+9%", "回避率+8%", "防御+4%"]
+  },
+  {
+    "id": "186401",
+    "name": "ティラリー",
+    "category": "頭",
+    "icon": "img/186401_icon.jpg",
+    "image": "img/186401.jpg",
+    "status": ["ガード率", "ダメージ倍率", "HP"],
+    "full_status": ["ガード率+7%", "ダメージ倍率+3%", "HP+1%"]
   }    
 ]
-  
