@@ -103,7 +103,7 @@ h3 {
 
 /* ボタンが選択されたときのスタイル */
 .filter-container button.active {
-  background-color: #2a2e70; /* アクティブ時：くすんだ青色 */
+  background-color: #2f4f60; /* アクティブ時：くすんだ青色 */
   color: #ffffff; /* テキストを白に */
 }
 
