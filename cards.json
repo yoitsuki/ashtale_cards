@@ -959,8 +959,8 @@
     "category": "武器",
     "icon": "img/116502_icon.jpg",
     "image": "img/116502.jpg",
-    "status": ["ユイ"],
-    "full_status": ["ユイ+5%"]
+    "status": ["武器"],
+    "full_status": ["ユイ+5"]
   },
   {
     "id": "116402",
@@ -968,8 +968,8 @@
     "category": "武器",
     "icon": "img/116402_icon.jpg",
     "image": "img/116402.jpg",
-    "status": ["ハク"],
-    "full_status": ["ハク+5%"]
+    "status": ["武器"],
+    "full_status": ["ハク+5"]
   },
   {
     "id": "116401",
@@ -977,8 +977,8 @@
     "category": "武器",
     "icon": "img/116401_icon.jpg",
     "image": "img/116401.jpg",
-    "status": ["ラムダ"],
-    "full_status": ["ラムダ+5%"]
+    "status": ["武器"],
+    "full_status": ["ラムダ+5"]
   },
   {
     "id": "126502",
@@ -986,8 +986,8 @@
     "category": "腕",
     "icon": "img/126502_icon.jpg",
     "image": "img/126502.jpg",
-    "status": ["アルクトスの守護"],
-    "full_status": ["アルクトスの守護+5%"]
+    "status": ["腕"],
+    "full_status": ["アルクトスの守護+5"]
   },
   {
     "id": "126501",
@@ -995,8 +995,8 @@
     "category": "腕",
     "icon": "img/126501_icon.jpg",
     "image": "img/126501.jpg",
-    "status": ["魅惑の影"],
-    "full_status": ["魅惑の影+5%"]
+    "status": ["腕"],
+    "full_status": ["魅惑の影+5"]
   },
   {
     "id": "126402",
@@ -1004,8 +1004,8 @@
     "category": "腕",
     "icon": "img/126402_icon.jpg",
     "image": "img/126402.jpg",
-    "status": ["フォマルジャンプ"],
-    "full_status": ["フォマルジャンプ+5%"]
+    "status": ["腕"],
+    "full_status": ["フォマルジャンプ+5"]
   },
   {
     "id": "126401",
@@ -1013,8 +1013,8 @@
     "category": "腕",
     "icon": "img/126401_icon.jpg",
     "image": "img/126401.jpg",
-    "status": ["念願の呪い"],
-    "full_status": ["念願の呪い+5%"]
+    "status": ["腕"],
+    "full_status": ["念願の呪い+5"]
   },
   {
     "id": "136501",
