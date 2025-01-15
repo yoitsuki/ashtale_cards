@@ -2,60 +2,6 @@ const activeFilters = { status: [] };
 let cardData = [];
 let isInitialLoad = true; // 初期表示フラグ
 
-// いいね数取得用
-const sheetUrl = "https://script.google.com/macros/s/AKfycbyiXFK1JQuhpEWhZcqqjKRPlaTH9_way70o0ydYDT2ow4mWLST_6wJmHJtUb3BSgsoWxg/exec"; // Google Apps ScriptのデプロイURL
-const pageId = "ash_tale_card"; // ページ固有のID（スプレッドシートのA列に設定）
-
-// いいね数を取得
-async function fetchLikes() {
-  try {
-      const requestParams = {
-          method: "GET",
-          headers: {
-              "Accept": "application/json",
-              "Content-Type": "application/x-www-form-urlencoded",
-          },
-      };
-
-      // fetch の結果を待つ
-      const response = await fetch(sheetUrl + "?id=" + pageId, requestParams);
-
-      // レスポンスが正常でない場合はエラーをスロー
-      if (!response.ok) {
-          throw new Error(`HTTPエラー: ${response.status}`);
-      }
-
-      // レスポンスの JSON データを取得
-      const data = await response.json();
-
-      // 取得したいいね数を表示
-      document.getElementById("like-count").textContent = data.likes;
-  } catch (error) {
-      console.error("いいね数の取得に失敗しました:", error);
-  }
-}
-
-// いいねを記録
-async function likePage() {
-  try {
-      const formData = new URLSearchParams();
-      formData.append("id", pageId);
-
-      const response = await fetch(sheetUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: formData
-      });
-
-      if (!response.ok) throw new Error("サーバーエラー");
-
-      const data = await response.json();
-      document.getElementById("like-count").textContent = data.likes;
-  } catch (error) {
-      console.error("いいねの更新に失敗しました:", error);
-  }
-}
-
 // カード用JSONデータを取得
 async function loadCards() {
   try {
@@ -143,6 +89,9 @@ function applyFilters() {
   const searchType = document.querySelector('input[name="searchType"]:checked').value;
   const hasFilters = activeFilters.status.length > 0; // フィルタが適用されているか
   let visibleRowCount = 0; // 表示される行の数をカウント
+
+  // すでにある「該当するデータがありませんでした。」の行を削除
+  document.querySelectorAll("tbody .no-data").forEach(row => row.remove());
 
   // 特別処理が必要なフィルタ
   const specialFilters = {
@@ -247,6 +196,5 @@ document.addEventListener("DOMContentLoaded", function() {
     isInitialLoad = true; // 初期表示フラグをONに設定
     applyFilters();
   });
-  fetchLikes();
 });
 

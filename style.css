@@ -91,16 +91,6 @@ h3 {
   text-decoration: none; /* テキストの装飾を削除 */
 }
 
-/* ボタンのホバー時のスタイル */
-.filter-container button:hover {
-  background-color: #dcdcdc; /* ホバー時の背景色を変更 */
-}
-
-/* ボタンのアクティブ時のスタイル */
-.filter-container button:active {
-  background-color: #c0c0c0; /* クリック時の背景色を変更 */
-}
-
 /* ボタンが選択されたときのスタイル */
 .filter-container button.active {
   background-color: #2f4f60; /* アクティブ時：くすんだ青色 */
