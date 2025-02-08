@@ -2393,5 +2393,24 @@
             "ダメージ倍率+3%",
             "HP+1%"
         ]
-    }
+    },
+	{
+		"id": 183302,
+		"name": "アースドラゴン",
+		"rank": 3,
+		"rare": "金",
+		"category": "頭",
+		"icon": "img/183302_icon.jpg",
+		"image": "img/183302.jpg",
+		"status_0": "対ボス与ダメ増",
+		"status_1": "",
+		"status_2": "",
+		"status_3": "",
+		"status_4": "",
+		"full_status_0": "対ボス与ダメ増+5%",
+		"full_status_1": "",
+		"full_status_2": "",
+		"full_status_3": "",
+		"full_status_4": ""
+	}
 ]
