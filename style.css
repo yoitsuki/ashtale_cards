@@ -253,7 +253,7 @@ tbody tr:last-child td {
 
 /* アクティブなフィルターボタン（選択時） */
 .filter-group button.active {
-  background-color: #0056b3; /* 濃い青 */
+  background-color: #58a3ee; /* 濃い青 */
   color: white;
 }
 
