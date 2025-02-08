@@ -2402,15 +2402,11 @@
 		"category": "頭",
 		"icon": "img/183302_icon.jpg",
 		"image": "img/183302.jpg",
-		"status_0": "対ボス与ダメ増",
-		"status_1": "",
-		"status_2": "",
-		"status_3": "",
-		"status_4": "",
-		"full_status_0": "対ボス与ダメ増+5%",
-		"full_status_1": "",
-		"full_status_2": "",
-		"full_status_3": "",
-		"full_status_4": ""
+        "status": [
+            "対ボス与ダメ増"
+        ],
+        "full_status": [
+            "対ボス与ダメ増+5%"
+        ]
 	}
 ]
