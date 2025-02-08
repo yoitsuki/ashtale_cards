@@ -1,7 +1,14 @@
 let activeFilters = { status: [], rare: [], rank: [], category: [] };
 let cardData = [];
 let isInitialLoad = true; // 初期表示フラグ
-
+// 特殊フィルタ変換マップ（ボタン名 → 実際の検索キー）
+const specialFilters = {
+  "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増": "対○○与ダメ増",
+  "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減": "対○○被ダメ減",
+  "攻撃%": "攻撃",
+  "防御%": "防御",
+  "HP%": "HP"
+};
 // カード用JSONデータを取得
 async function loadCards() {
   try {
@@ -24,6 +31,7 @@ function renderTable() {
     row.setAttribute("data-status", card.status.join(","));
     row.setAttribute("data-rare", card.rare || "");
     row.setAttribute("data-rank", card.rank || "");
+    
     
     row.innerHTML = `
       <td><img src="${card.icon}" alt="${card.name}" class="icon-img"><br>${card.name}</td>
@@ -67,21 +75,23 @@ window.addEventListener("click", function(event) {
 // フィルター機能
 function toggleFilter(type, value) {
   if (!activeFilters[type]) activeFilters[type] = []; // 未定義の場合は空配列として初期化
-  const index = activeFilters[type].indexOf(value);
+  const convertedValue = specialFilters[value] || value;
+  const index = activeFilters[type].indexOf(convertedValue);
 
   document.querySelectorAll('button').forEach(button => {
     // textContent を正規化して比較
-    const buttonText = button.textContent.normalize('NFKC').trim();
+    const buttonText = button.textContent.trim();
     if (buttonText === value) {
       button.classList.toggle("active", index === -1);
     }
   });
 
   if (index === -1) {
-    activeFilters[type].push(value);
+    activeFilters[type].push(convertedValue);
   } else {
-    activeFilters[type].splice(index, 1);
+    activeFilters[type] = activeFilters[type].filter(item => item !== convertedValue);
   }
+
   applyFilters();
 }
 
@@ -90,37 +100,28 @@ function applyFilters() {
   const rows = document.querySelectorAll("tbody tr");
   const searchType = document.querySelector('input[name="searchType"]:checked').value;
   const hasStatusFilters = activeFilters.status.length > 0; 
-  const hasRareFilters = Array.isArray(activeFilters.rare) && activeFilters.rare.length > 0;
-  const hasRankFilters = Array.isArray(activeFilters.rank) && activeFilters.rank.length > 0;
-  const hasCategoryFilters = Array.isArray(activeFilters.category) && activeFilters.category.length > 0; // カテゴリフィルタの判定
+  const hasRareFilters = activeFilters.rare.length > 0;
+  const hasRankFilters = activeFilters.rank.length > 0;
+  const hasCategoryFilters = activeFilters.category.length > 0;
   let visibleRowCount = 0; // 表示される行の数をカウント
 
   // すでにある「該当するデータがありませんでした。」の行を削除
   document.querySelectorAll("tbody .no-data").forEach(row => row.remove());
-
-  // 特別処理が必要なフィルタ
-  const specialFilters = {
-    "攻撃%": "攻撃",
-    "防御%": "防御",
-    "HP%": "HP",
-    "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増": "対○○与ダメ増",
-    "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減": "対○○被ダメ減"
-  };
 
   rows.forEach(row => {
     const statusAttr = row.getAttribute("data-status");
     const status = statusAttr ? statusAttr.split(",") : []; // 属性がnullなら空配列にする
     const rare = row.getAttribute("data-rare");
     const rank = row.getAttribute("data-rank");
-    const categoryCell = row.querySelector("td:nth-child(2)"); // カテゴリセル取得
     const category = row.children[1]?.textContent.trim() || ""; // カテゴリ取得
+    const statusCell = row.querySelector("td:nth-child(3)"); // ステータス列取得
 
-    // カテゴリセルが取得できなければスキップ
-    if (!categoryCell) return;
+    // **特殊フィルタを適用**
+    let transformedStatus = status.map(s => specialFilters[s] || s);
 
     let matchStatus = !hasStatusFilters || (searchType === "AND" 
-      ? activeFilters.status.every(filter => status.includes(filter)) 
-      : activeFilters.status.some(filter => status.includes(filter)));
+      ? activeFilters.status.every(filter => transformedStatus.includes(filter)) 
+      : activeFilters.status.some(filter => transformedStatus.includes(filter)));
 
     let matchRare = !hasRareFilters || activeFilters.rare.includes(rare);
     let matchRank = !hasRankFilters || activeFilters.rank.includes(rank);
@@ -130,75 +131,26 @@ function applyFilters() {
     row.style.display = match ? "" : "none";
     if (match) visibleRowCount++;
 
-//    if (!hasFilters) {
-//      match = true;
-//    } else if (searchType === "AND") {
-//      match = activeFilters.status.every(filter => status.includes(filter));
-//    } else if (searchType === "OR") {
-//      match = activeFilters.status.some(filter => status.includes(filter));
-//    }
+        // **ステータスの強調（赤字）**
+        if (statusCell) {
+          let html = statusCell.innerHTML;
+          html = html.replace(/<span class="highlight-text">([^<]+)<\/span>/g, "$1"); // 既存ハイライトをリセット
 
-//    row.style.display = match ? "" : "none";
-//    if (match) visibleRowCount++; // 表示される行が増えたらカウント
-
-    // ステータスセルの強調処理（初回ロード時はスキップ）
-    const statusCell = row.querySelector("td:nth-child(3)");
-    if (statusCell) {
-      let html = statusCell.innerHTML;
-      html = html.replace(/<span class="highlight-text">([^<]+)<\/span>/g, "$1"); // 既存ハイライトをリセット
-
-      // **初回ロード時には赤字を表示しない**
-      if (!isInitialLoad) {
-        // フィルタ適用時のみ強調表示する
-        if (activeFilters.status.length > 0) {
-          // フィルタまたはカテゴリに応じて強調表示
-          if (category === "武器" || category === "腕") {
-            // **武器・腕カテゴリなら全体を赤字**
-            html = `<span class="highlight-text">${html}</span>`;
-          } else {
-            activeFilters.status.forEach(filter => {
-              if (specialFilters[filter]) {
-                const keyword = specialFilters[filter];
-                const regex = new RegExp(`(^|<br>)(${keyword}[-+]?\\d+%?)`, "gi");
-                html = html.replace(regex, '$1<span class="highlight-text">$2</span>');
-              } else {
-                const regex = new RegExp(`(^|<br>)(${filter}[-+]?\\d+%?)`, "gi");
-                html = html.replace(regex, '$1<span class="highlight-text">$2</span>');
-              }
-            });
+          if (activeFilters.status.length > 0) {
+              activeFilters.status.forEach(filter => {
+                  let convertedFilter = specialFilters[filter] || filter;
+                  const regex = new RegExp(`(^|<br>)(${convertedFilter}[-+]?\\d+%?)`, "gi");
+                  html = html.replace(regex, '$1<span class="highlight-text">$2</span>');
+              });
           }
-        }
-      }
 
-      // カテゴリのハイライト処理
-      if (categoryCell) {
-        // **初回ロード時には赤字を表示しない**
-        if (!isInitialLoad) {
-          // フィルタが適用されていれば赤字にする
-          if (hasCategoryFilters && activeFilters.category.includes(category)) {
-              categoryCell.classList.add("highlight-text"); // 赤字にする
-          } else {
-              categoryCell.classList.remove("highlight-text"); // フィルタが解除されたら元に戻す
-          }
-          // フィルタ適用時のみ強調表示する
-          //if (activeFilters.category.length > 0) {
-          //  if (hasCategoryFilters && activeFilters.category.includes(category)) {
-          //    categoryCell.classList.add("highlight-text"); // 赤字にする
-          //  } else {
-          //    categoryCell.classList.remove("highlight-text"); // 元に戻す
-          //  }
-          //}
-        }
+          statusCell.innerHTML = html;
       }
-
-      statusCell.innerHTML = html;
-    }
   });
 
   // **検索結果がゼロならメッセージ行を追加**
   const tbody = document.querySelector("tbody");
   if (visibleRowCount === 0) {
-    const tbody = document.querySelector("tbody");
     const noDataRow = document.createElement("tr");
     noDataRow.innerHTML = `<td colspan="3" class="no-data">該当するデータがありませんでした。</td>`;
     tbody.appendChild(noDataRow);
@@ -213,13 +165,17 @@ function applyFilters() {
 
 // フィルターリセット
 function resetFilters() {
+  activeFilters = { status: [], rare: [], rank: [], category: [] };
+/* 
   activeFilters.category.length = 0;
   activeFilters.rare.length = 0;
   activeFilters.rank.length = 0;
   activeFilters.status.length = 0;
-
+ */
   // 全ボタンのactive状態を解除
-  document.querySelectorAll("button").forEach(button => button.classList.remove("active"));
+  document.querySelectorAll(".filter-group button").forEach(button => {
+    button.classList.remove("active");
+  });
 
   // 全ての行を表示 & ハイライト解除
   document.querySelectorAll("tbody tr").forEach(row => {
@@ -237,6 +193,8 @@ function resetFilters() {
       statusCell.innerHTML = statusCell.innerHTML.replace(/<span class="highlight-text">([^<]+)<\/span>/g, "$1");
     }
   });
+
+  applyFilters();
 }
 
 // 検索モード変更時にフィルター適用
@@ -272,5 +230,8 @@ document.addEventListener("DOMContentLoaded", function() {
   filters.forEach(filter => {
     filter.addEventListener('change', applyExtraFilters);
     filter.style.display = "block";
+  });
+  document.querySelectorAll('input[name="searchType"]').forEach(radio => {
+    radio.addEventListener("change", applyFilters);
   });
 });
