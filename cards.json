@@ -9,6 +9,15 @@
     "full_status": ["レイラR+7"]
   },
   {
+    "id": "1211501",
+    "name": "サーシアムR",
+    "category": "腕",
+    "icon": "img/1211501_icon.jpg",
+    "image": "img/1211501.PNG",
+    "status": ["サーシアムR", "", "", "", ""],
+    "full_status": ["サーシアムR+7%"]
+  },
+  {
     "id": "1311502",
     "name": "リンク・蔦",
     "category": "防具",
@@ -222,7 +231,7 @@
     "icon": "img/1110402_icon.jpg",
     "image": "img/1110402.png",
     "status": ["武器"],
-    "full_status": ["※NO DATA"]
+    "full_status": ["サンドラ+5"]
   },
   {
     "id": "1110401",
