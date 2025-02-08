@@ -13,7 +13,7 @@
     "name": "サーシアムR",
     "category": "腕",
     "icon": "img/1211501_icon.jpg",
-    "image": "img/1211501.PNG",
+    "image": "img/1211501.jpg",
     "status": ["サーシアムR", "", "", "", ""],
     "full_status": ["サーシアムR+7%"]
   },
@@ -229,7 +229,7 @@
     "name": "サンドラ",
     "category": "武器",
     "icon": "img/1110402_icon.jpg",
-    "image": "img/1110402.png",
+    "image": "img/1110402.jpg",
     "status": ["武器"],
     "full_status": ["サンドラ+5"]
   },
