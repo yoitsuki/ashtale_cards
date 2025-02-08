@@ -1,4 +1,4 @@
-const activeFilters = { status: [] };
+let activeFilters = { status: [], rare: [], rank: [], category: [] };
 let cardData = [];
 let isInitialLoad = true; // 初期表示フラグ
 
@@ -22,7 +22,9 @@ function renderTable() {
   cardData.forEach(card => {
     const row = document.createElement("tr");
     row.setAttribute("data-status", card.status.join(","));
-
+    row.setAttribute("data-rare", card.rare || "");
+    row.setAttribute("data-rank", card.rank || "");
+    
     row.innerHTML = `
       <td><img src="${card.icon}" alt="${card.name}" class="icon-img"><br>${card.name}</td>
       <td>${card.category}</td>
@@ -64,6 +66,7 @@ window.addEventListener("click", function(event) {
 
 // フィルター機能
 function toggleFilter(type, value) {
+  if (!activeFilters[type]) activeFilters[type] = []; // 未定義の場合は空配列として初期化
   const index = activeFilters[type].indexOf(value);
 
   document.querySelectorAll('button').forEach(button => {
@@ -79,7 +82,6 @@ function toggleFilter(type, value) {
   } else {
     activeFilters[type].splice(index, 1);
   }
-
   applyFilters();
 }
 
@@ -87,7 +89,10 @@ function toggleFilter(type, value) {
 function applyFilters() {
   const rows = document.querySelectorAll("tbody tr");
   const searchType = document.querySelector('input[name="searchType"]:checked').value;
-  const hasFilters = activeFilters.status.length > 0; // フィルタが適用されているか
+  const hasStatusFilters = activeFilters.status.length > 0; 
+  const hasRareFilters = Array.isArray(activeFilters.rare) && activeFilters.rare.length > 0;
+  const hasRankFilters = Array.isArray(activeFilters.rank) && activeFilters.rank.length > 0;
+  const hasCategoryFilters = Array.isArray(activeFilters.category) && activeFilters.category.length > 0; // カテゴリフィルタの判定
   let visibleRowCount = 0; // 表示される行の数をカウント
 
   // すでにある「該当するデータがありませんでした。」の行を削除
@@ -105,19 +110,36 @@ function applyFilters() {
   rows.forEach(row => {
     const statusAttr = row.getAttribute("data-status");
     const status = statusAttr ? statusAttr.split(",") : []; // 属性がnullなら空配列にする
-    const category = row.children[1]?.textContent.trim() || ""; // 安全にカテゴリ取得
-    let match = false;
+    const rare = row.getAttribute("data-rare");
+    const rank = row.getAttribute("data-rank");
+    const categoryCell = row.querySelector("td:nth-child(2)"); // カテゴリセル取得
+    const category = row.children[1]?.textContent.trim() || ""; // カテゴリ取得
 
-    if (!hasFilters) {
-      match = true;
-    } else if (searchType === "AND") {
-      match = activeFilters.status.every(filter => status.includes(filter));
-    } else if (searchType === "OR") {
-      match = activeFilters.status.some(filter => status.includes(filter));
-    }
+    // カテゴリセルが取得できなければスキップ
+    if (!categoryCell) return;
 
+    let matchStatus = !hasStatusFilters || (searchType === "AND" 
+      ? activeFilters.status.every(filter => status.includes(filter)) 
+      : activeFilters.status.some(filter => status.includes(filter)));
+
+    let matchRare = !hasRareFilters || activeFilters.rare.includes(rare);
+    let matchRank = !hasRankFilters || activeFilters.rank.includes(rank);
+    let matchCategory = !hasCategoryFilters || activeFilters.category.includes(category); // カテゴリ判定
+
+    let match = matchStatus && matchRare && matchRank && matchCategory;
     row.style.display = match ? "" : "none";
-    if (match) visibleRowCount++; // 表示される行が増えたらカウント
+    if (match) visibleRowCount++;
+
+//    if (!hasFilters) {
+//      match = true;
+//    } else if (searchType === "AND") {
+//      match = activeFilters.status.every(filter => status.includes(filter));
+//    } else if (searchType === "OR") {
+//      match = activeFilters.status.some(filter => status.includes(filter));
+//    }
+
+//    row.style.display = match ? "" : "none";
+//    if (match) visibleRowCount++; // 表示される行が増えたらカウント
 
     // ステータスセルの強調処理（初回ロード時はスキップ）
     const statusCell = row.querySelector("td:nth-child(3)");
@@ -148,6 +170,27 @@ function applyFilters() {
         }
       }
 
+      // カテゴリのハイライト処理
+      if (categoryCell) {
+        // **初回ロード時には赤字を表示しない**
+        if (!isInitialLoad) {
+          // フィルタが適用されていれば赤字にする
+          if (hasCategoryFilters && activeFilters.category.includes(category)) {
+              categoryCell.classList.add("highlight-text"); // 赤字にする
+          } else {
+              categoryCell.classList.remove("highlight-text"); // フィルタが解除されたら元に戻す
+          }
+          // フィルタ適用時のみ強調表示する
+          //if (activeFilters.category.length > 0) {
+          //  if (hasCategoryFilters && activeFilters.category.includes(category)) {
+          //    categoryCell.classList.add("highlight-text"); // 赤字にする
+          //  } else {
+          //    categoryCell.classList.remove("highlight-text"); // 元に戻す
+          //  }
+          //}
+        }
+      }
+
       statusCell.innerHTML = html;
     }
   });
@@ -155,6 +198,7 @@ function applyFilters() {
   // **検索結果がゼロならメッセージ行を追加**
   const tbody = document.querySelector("tbody");
   if (visibleRowCount === 0) {
+    const tbody = document.querySelector("tbody");
     const noDataRow = document.createElement("tr");
     noDataRow.innerHTML = `<td colspan="3" class="no-data">該当するデータがありませんでした。</td>`;
     tbody.appendChild(noDataRow);
@@ -166,9 +210,13 @@ function applyFilters() {
   }
 }
 
+
 // フィルターリセット
 function resetFilters() {
-  activeFilters.status = [];
+  activeFilters.category.length = 0;
+  activeFilters.rare.length = 0;
+  activeFilters.rank.length = 0;
+  activeFilters.status.length = 0;
 
   // 全ボタンのactive状態を解除
   document.querySelectorAll("button").forEach(button => button.classList.remove("active"));
@@ -176,7 +224,13 @@ function resetFilters() {
   // 全ての行を表示 & ハイライト解除
   document.querySelectorAll("tbody tr").forEach(row => {
     row.style.display = "";
-    
+
+    // カテゴリ内の赤色をリセット
+    const categoryCell = row.querySelector("td:nth-child(2)");
+    if (categoryCell) {
+      categoryCell.classList.remove("highlight-text"); // クラスを削除
+    }
+
     // ステータス内の赤色をリセット
     const statusCell = row.querySelector("td:nth-child(3)");
     if (statusCell) {
@@ -190,11 +244,33 @@ document.querySelectorAll('input[name="searchType"]').forEach(radio => {
   radio.addEventListener("change", applyFilters);
 });
 
+//画面の折りたたみ
+// フィルターを開閉する関数
+// フィルターのトグル機能（開閉表示を更新）
+function toggleCollapsible(id) {
+  const content = document.getElementById(id);
+  const header = content.previousElementSibling; // フィルターヘッダー
+  const toggleLabel = header.querySelector(".toggle-label"); // [開く] / [閉じる] のラベル
+
+  // `getComputedStyle` を使って現在の `display` を取得
+  const isVisible = window.getComputedStyle(content).display !== "none";
+
+  // トグルの開閉
+  content.style.display = isVisible ? "none" : "block";
+
+  // ラベルの更新
+  toggleLabel.textContent = isVisible ? "[開く]" : "[閉じる]";
+}
+
 document.addEventListener("DOMContentLoaded", function() {
   loadCards().then(() => {
     // 初回ロード時にはフィルタを適用しない
     isInitialLoad = true; // 初期表示フラグをONに設定
     applyFilters();
   });
+  const filters = document.querySelectorAll("input[type='checkbox']");
+  filters.forEach(filter => {
+    filter.addEventListener('change', applyExtraFilters);
+    filter.style.display = "block";
+  });
 });
-
