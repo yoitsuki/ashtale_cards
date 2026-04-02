@@ -56,8 +56,11 @@
         <div class="filter-header" onclick="toggleCollapsible('rare-filter')">レア度<span class="toggle-label">[閉じる]</span></div>
         <div id="rare-filter" class="filter-content">
             <div class="filter-group">
+              <button data-type="rare" data-value="幻" onclick="toggleFilter('rare', '幻', this)">幻</button>
+              <button data-type="rare" data-value="鋼" onclick="toggleFilter('rare', '鋼', this)">鋼</button>
               <button data-type="rare" data-value="天" onclick="toggleFilter('rare', '天', this)">天</button>
-              <button data-type="rare" data-value="赤" onclick="toggleFilter('rare', '赤', this)">赤</button>    
+              <button data-type="rare" data-value="赤" onclick="toggleFilter('rare', '赤', this)">赤</button>
+              <button data-type="rare" data-value="金" onclick="toggleFilter('rare', '金', this)">金</button>
             </div>
         </div>
     </div>
@@ -73,6 +76,8 @@
               <button data-type="rank" data-value="8" onclick="toggleFilter('rank', '8', this)">8</button>
               <button data-type="rank" data-value="7" onclick="toggleFilter('rank', '7', this)">7</button>
               <button data-type="rank" data-value="6" onclick="toggleFilter('rank', '6', this)">6</button>
+              <button data-type="rank" data-value="3" onclick="toggleFilter('rank', '3', this)">3</button>
+              <button data-type="rank" data-value="1" onclick="toggleFilter('rank', '1', this)">1</button>
             </div>
         </div>
     </div>
@@ -107,6 +112,9 @@
             <button data-type="status" data-value="HP吸収率" onclick="toggleFilter('status', 'HP吸収率', this)">HP吸収率</button>
             <button data-type="status" data-value="対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増" onclick="toggleFilter('status', '対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増', this)">対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増</button>
             <button data-type="status" data-value="対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減" onclick="toggleFilter('status', '対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減', this)">対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減</button>
+            <button data-type="status" data-value="対高HPダメ倍率" onclick="toggleFilter('status', '対高HPダメ倍率', this)">対高HPダメ倍率</button>
+            <button data-type="status" data-value="対低HPダメ倍率" onclick="toggleFilter('status', '対低HPダメ倍率', this)">対低HPダメ倍率</button>
+            <button data-type="status" data-value="状態異常ダメ倍率" onclick="toggleFilter('status', '状態異常ダメ倍率', this)">状態異常ダメ倍率</button>
           </div>
       </div>
     </div>
