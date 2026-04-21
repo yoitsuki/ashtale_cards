@@ -54,30 +54,17 @@ h3 {
 .update-history {
   display: inline-block;
   position: relative;
-  margin-top: 4px;
 }
 
 .latest-update {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  background: #eef5fc;
-  border: 1px solid #d1e0f0;
-  border-radius: 4px;
-  color: #2f4f60;
-  font-weight: bold;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.2s ease;
-}
-
-.latest-update:hover {
-  background-color: #dceaf5;
+  color: inherit;
 }
 
 .history-toggle-icon {
   font-size: 0.7rem;
+  margin-left: 2px;
   transition: transform 0.2s ease;
 }
 
@@ -87,12 +74,7 @@ h3 {
 
 .history-list {
   display: none;
-  margin-top: 6px;
-  padding: 8px 12px;
-  background: #ffffff;
-  border: 1px solid #d1e0f0;
-  border-radius: 4px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  margin-top: 2px;
 }
 
 .update-history.open .history-list {
@@ -100,14 +82,7 @@ h3 {
 }
 
 .history-item {
-  padding: 3px 0;
-  color: #555;
-  font-size: 0.85rem;
-  line-height: 1.5;
-}
-
-.history-item + .history-item {
-  border-top: 1px dashed #e0e8f0;
+  line-height: 1.6;
 }
 
 /* フィルタエリア全体 */
