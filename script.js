@@ -17,6 +17,7 @@ const specialFilters = {
 // 1. 初期ロード処理
 document.addEventListener("DOMContentLoaded", async function() {
   setupEventListeners();
+  loadUpdateHistory(); // 更新履歴の読み込み
   await loadCards(); // データの非同期読み込みと初回描画
   loadFiltersFromURL(); // URLから状態を復元
   applyFilters(); // フィルタ適用（ここで初めて表示が整う）
@@ -48,6 +49,53 @@ function setupEventListeners() {
       document.getElementById("imageModal").style.display = "none";
     }
   });
+
+  // 更新履歴外のクリックで閉じる
+  document.addEventListener("click", (event) => {
+    const history = document.getElementById("updateHistory");
+    if (history && history.classList.contains("open") && !history.contains(event.target)) {
+      history.classList.remove("open");
+    }
+  });
+}
+
+// 更新履歴を読み込んで表示
+async function loadUpdateHistory() {
+  const latestEl = document.getElementById("latestUpdateText");
+  const listEl = document.getElementById("historyList");
+  if (!latestEl || !listEl) return;
+
+  try {
+    const response = await fetch("update_history.json", { cache: "no-cache" });
+    if (!response.ok) throw new Error("Network response was not ok");
+    const history = await response.json();
+
+    // 日付の降順でソート（文字列比較でYYYY/MM/DD形式を想定）
+    const sorted = [...history].sort((a, b) => (a.date < b.date ? 1 : -1));
+
+    if (sorted.length === 0) {
+      latestEl.textContent = "--";
+      return;
+    }
+
+    latestEl.textContent = sorted[0].date;
+
+    // 最新以外を最大3件表示
+    const others = sorted.slice(1, 4);
+    listEl.innerHTML = others.map(item =>
+      `<div class="history-item">${item.date}　${item.content}</div>`
+    ).join("");
+  } catch (error) {
+    console.error("更新履歴の取得に失敗しました:", error);
+    latestEl.textContent = "--";
+  }
+}
+
+// 更新履歴の展開/折りたたみ
+function toggleHistory(event) {
+  event.stopPropagation();
+  const history = document.getElementById("updateHistory");
+  if (history) history.classList.toggle("open");
 }
 
 // 2. カード用JSONデータを取得＆テーブル描画（DocumentFragment使用）
