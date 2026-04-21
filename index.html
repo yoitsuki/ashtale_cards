@@ -21,9 +21,13 @@
     なにかありましたら<a href="https://marshmallow-qa.com/re3ig61uxuunbsn">マシュマロ</a>まで。
     <br>
     <br>
-    更新履歴<br>
-    2026/03/03　ⅩⅡまでのカードを追加<br>
-    2025/01/11　現時点でのⅥ〜Ⅺまでを公開
+    <div class="update-history" id="updateHistory">
+      <div class="latest-update" onclick="toggleHistory(event)">
+        <span>最終更新日：<span id="latestUpdateText">--</span></span>
+        <span class="history-toggle-icon">▼</span>
+      </div>
+      <div id="historyList" class="history-list"></div>
+    </div>
   </div>
 
   <div class="filter-container">
