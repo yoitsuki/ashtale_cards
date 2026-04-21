@@ -80,9 +80,9 @@ async function loadUpdateHistory() {
 
     latestEl.textContent = sorted[0].date;
 
-    // 最新と合わせて3件になるように、最新以外を最大2件表示
-    const others = sorted.slice(1, 3);
-    listEl.innerHTML = others.map(item =>
+    // 展開時は最新＋過去2件の合計3件を表示（表面は日付のみで、内容は展開時に見える）
+    const items = sorted.slice(0, 3);
+    listEl.innerHTML = items.map(item =>
       `<div class="history-item">${item.date}　${item.content}</div>`
     ).join("");
   } catch (error) {
