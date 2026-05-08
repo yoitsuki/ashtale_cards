@@ -169,46 +169,46 @@ a:hover { border-color: var(--accent); }
 
 /* ====== NOTICE (folded disclaimer) ====== */
 .notice {
-  margin: 0 0 22px;
-  padding: 10px 14px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-card);
-  background: var(--surface-2);
+  margin: 0 0 12px;
 }
 .notice > summary {
   cursor: pointer;
   user-select: none;
   list-style: none;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--ink-1);
+  color: var(--ink-2);
   letter-spacing: 0.02em;
+  padding: 2px 0;
 }
 .notice > summary::-webkit-details-marker { display: none; }
 .notice > summary::before {
   content: "▼";
   display: inline-block;
-  margin-right: 6px;
+  margin-right: 4px;
   font-size: 0.65rem;
   color: var(--ink-3);
   transform: rotate(-90deg);
   transition: transform 0.2s ease;
 }
 .notice[open] > summary::before { transform: rotate(0); }
-.notice[open] > summary { margin-bottom: 8px; }
+.notice[open] > summary { margin-bottom: 6px; }
 .notice .notice-body p {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   line-height: 1.7;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   color: var(--ink-2);
 }
 .notice .notice-body p:last-child { margin-bottom: 0; }
 .notice .notice-fine {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: var(--ink-3);
   letter-spacing: 0.01em;
+}
+
+.text-data > p {
+  margin: 0 0 12px;
 }
 
 /* ====== SEARCH ====== */
