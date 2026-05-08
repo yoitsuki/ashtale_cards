@@ -682,6 +682,14 @@ function openModal(imageSrc) {
   const modal = document.getElementById("imageModal");
   const modalImg = document.getElementById("modalImage");
   if (!modal || !modalImg) return;
+  // 画像が読み込まれた時点で縦横比を判定し、横長（2枚分）なら幅100%に拡張する
+  modal.classList.remove("landscape");
+  modalImg.onload = () => {
+    if (modalImg.naturalWidth && modalImg.naturalHeight) {
+      const ratio = modalImg.naturalWidth / modalImg.naturalHeight;
+      modal.classList.toggle("landscape", ratio > 1.2);
+    }
+  };
   modalImg.src = imageSrc;
   modal.classList.add("is-open");
 }

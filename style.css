@@ -684,7 +684,7 @@ a:hover { border-color: var(--accent); }
   z-index: 1000;
   background: rgba(15, 24, 48, 0.55);
   backdrop-filter: blur(6px);
-  padding: 12px;
+  padding: 20px;
 }
 .modal.is-open {
   display: grid;
@@ -692,11 +692,14 @@ a:hover { border-color: var(--accent); }
 }
 .modal-content {
   display: block;
-  max-width: 100%;
+  max-width: 90%;
   max-height: 90%;
   border-radius: var(--r-card);
   box-shadow: 0 20px 60px -20px rgba(15, 24, 48, 0.55);
 }
+/* 横長カード（2枚分）の画像のみ横幅いっぱいに広げる */
+.modal.landscape { padding: 8px; }
+.modal.landscape .modal-content { max-width: 100%; }
 .modal-close,
 .modal .close {
   position: absolute;
