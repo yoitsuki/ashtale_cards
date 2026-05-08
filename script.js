@@ -113,7 +113,7 @@ function setupEventListeners() {
   if (filterToggle && filterArea) {
     filterToggle.addEventListener("click", () => {
       const willOpen = !filterArea.classList.contains("open");
-      filterArea.classList.toggle("open", willOpen);
+      animateFilterArea(filterArea, willOpen);
       filterToggle.classList.toggle("on", willOpen);
       filterToggle.setAttribute("aria-expanded", willOpen ? "true" : "false");
       if (filterToggleLabel) filterToggleLabel.textContent = willOpen ? "検索条件を隠す" : "検索条件を表示";
@@ -145,6 +145,50 @@ function setupEventListeners() {
 function closeModal() {
   const modal = document.getElementById("imageModal");
   if (modal) modal.classList.remove("is-open");
+}
+
+// 検索条件エリアの開閉アニメーション。scrollHeight を測ることで実コンテンツ高さに合わせて遷移する。
+function animateFilterArea(el, willOpen) {
+  // 進行中のtransitionendハンドラがあれば外す
+  if (el._faOnEnd) {
+    el.removeEventListener("transitionend", el._faOnEnd);
+    el._faOnEnd = null;
+  }
+
+  if (willOpen) {
+    el.classList.add("open");
+    // 一度 max-height を 0 に戻してからtarget値へ遷移させる
+    el.style.maxHeight = "0px";
+    // reflow を強制
+    void el.offsetHeight;
+    const target = el.scrollHeight;
+    el.style.maxHeight = target + "px";
+
+    const onEnd = (e) => {
+      if (e.target !== el || e.propertyName !== "max-height") return;
+      // 開きアニメ完了後は max-height を解除して、タグ選択等での内容変動に追従できるようにする
+      el.style.maxHeight = "none";
+      el.removeEventListener("transitionend", onEnd);
+      el._faOnEnd = null;
+    };
+    el._faOnEnd = onEnd;
+    el.addEventListener("transitionend", onEnd);
+  } else {
+    // 閉じる: 現在の高さを明示してから 0 に遷移
+    const current = el.scrollHeight;
+    el.style.maxHeight = current + "px";
+    void el.offsetHeight;
+    el.classList.remove("open");
+    el.style.maxHeight = "0px";
+
+    const onEnd = (e) => {
+      if (e.target !== el || e.propertyName !== "max-height") return;
+      el.removeEventListener("transitionend", onEnd);
+      el._faOnEnd = null;
+    };
+    el._faOnEnd = onEnd;
+    el.addEventListener("transitionend", onEnd);
+  }
 }
 
 // 更新履歴を読み込んで表示
@@ -431,7 +475,11 @@ function loadFiltersFromURL() {
     const filterArea = document.getElementById("filterArea");
     const filterToggle = document.getElementById("filterToggle");
     const filterToggleLabel = document.getElementById("filterToggleLabel");
-    if (filterArea) filterArea.classList.add("open");
+    if (filterArea) {
+      // 初期復元時はアニメーションせずに開いた状態で表示する
+      filterArea.classList.add("open");
+      filterArea.style.maxHeight = "none";
+    }
     if (filterToggle) {
       filterToggle.classList.add("on");
       filterToggle.setAttribute("aria-expanded", "true");
