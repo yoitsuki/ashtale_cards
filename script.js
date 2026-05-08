@@ -24,6 +24,19 @@ function numOf(val) {
   return m ? parseFloat(m[0]) : 0;
 }
 
+// 指定した alias（"攻撃" / "状態異常耐性" 等）のステータス値を card から取得。
+// 該当ステータスが無ければ null。
+function cardStatValue(card, alias) {
+  for (let i = 0; i < card.status.length; i++) {
+    if (aliasOf(card.status[i]) === alias) {
+      const full = card.full_status[i] || "";
+      const display = valFromFull(full, card.status[i]);
+      return numOf(display || full);
+    }
+  }
+  return null;
+}
+
 // "攻撃+19%" のような full_status 文字列から表示用の値部分（"+19%"）を抜く。
 // CSV では "攻撃%" 列の表示値は先頭の % を取った "攻撃" + 値で組み立てられているため、
 // name 末尾の % を落とした文字列を前置で剥がす。
@@ -533,7 +546,7 @@ function applyFilters() {
   });
 
   // ソート
-  visibleEntries.sort((a, b) => {
+  const sortByMode = (a, b) => {
     const ra = a.card, rb = b.card;
     switch (sortMode) {
       case "rank-desc": return (rb.rank - ra.rank) || (a.origIndex - b.origIndex);
@@ -543,6 +556,21 @@ function applyFilters() {
       case "default":
       default:          return a.origIndex - b.origIndex;
     }
+  };
+
+  visibleEntries.sort((a, b) => {
+    if (hasStatusFilters) {
+      // 選択順に各ステータスの値で降順比較。値を持たない側は後ろへ。
+      for (const target of transformedActiveStatus) {
+        const av = cardStatValue(a.card, target);
+        const bv = cardStatValue(b.card, target);
+        if (av === null && bv === null) continue;
+        if (av === null) return 1;
+        if (bv === null) return -1;
+        if (av !== bv) return bv - av;
+      }
+    }
+    return sortByMode(a, b);
   });
 
   // 並び順を DOM に反映＋ stat-bar 更新
