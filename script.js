@@ -2,9 +2,11 @@ let activeFilters = { name: "", status: [], rare: [], rank: [], category: [] };
 let cardData = [];
 let rowDataCache = []; // パフォーマンス最適化のためDOM要素とデータをキャッシュ
 let searchType = "AND";
-
+let sortMode = "rank-desc";
+let maxByStat = {};
 
 const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEG6xUCvYOj4r4u3x0aaI-aSFupJvC1eaQQzlcjPWoO8DLDtur28zGqOpHeTiNc-TR81s7nFZWSadA/pub?output=csv";
+
 // 特殊フィルタ変換マップ
 const specialFilters = {
   "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増": "対○○与ダメ増",
@@ -13,25 +15,55 @@ const specialFilters = {
   "防御%": "防御",
   "HP%": "HP"
 };
+const aliasOf = (s) => specialFilters[s] || s;
+
+// ステータス値の数値抽出（"+19%" -> 19, "-12" -> -12）
+function numOf(val) {
+  if (val == null) return 0;
+  const m = String(val).match(/[-+]?\d+(\.\d+)?/);
+  return m ? parseFloat(m[0]) : 0;
+}
+
+// "攻撃+19%" のような full_status 文字列から表示用の値部分（"+19%"）を抜く
+function valFromFull(full, name) {
+  if (!full) return "";
+  const trimmed = full.startsWith(name) ? full.slice(name.length) : full;
+  return trimmed || full;
+}
+
+// レア度の表示順
+const RARE_ORDER = { "幻": 0, "鋼": 1, "天": 2, "赤": 3, "金": 4 };
+const SORT_LABELS = {
+  "rank-desc": "ランク高い順",
+  "rank-asc":  "ランク低い順",
+  "rare":      "レア度順",
+  "name":      "名前順"
+};
+const SORT_CYCLE = ["rank-desc", "rank-asc", "rare", "name"];
 
 // 1. 初期ロード処理
-document.addEventListener("DOMContentLoaded", async function() {
+document.addEventListener("DOMContentLoaded", async function () {
   setupEventListeners();
-  loadUpdateHistory(); // 更新履歴の読み込み
-  await loadCards(); // データの非同期読み込みと初回描画
-  loadFiltersFromURL(); // URLから状態を復元
-  applyFilters(); // フィルタ適用（ここで初めて表示が整う）
+  loadUpdateHistory();
+  await loadCards();
+  loadFiltersFromURL();
+  applyFilters();
 });
 
 // イベントリスナーのセットアップ
 function setupEventListeners() {
-  document.querySelectorAll('input[name="searchType"]').forEach(radio => {
-    radio.addEventListener("change", (e) => {
-      searchType = e.target.value;
+  // AND/OR セグメント
+  document.querySelectorAll(".seg button").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const mode = btn.getAttribute("data-mode");
+      if (!mode || mode === searchType) return;
+      searchType = mode;
+      document.querySelectorAll(".seg button").forEach((b) => b.classList.toggle("on", b === btn));
       applyFilters();
     });
   });
 
+  // 名前検索
   const nameInput = document.getElementById("nameSearchInput");
   if (nameInput) {
     nameInput.addEventListener("input", (e) => {
@@ -40,14 +72,38 @@ function setupEventListeners() {
     });
   }
 
-  // モーダル閉じる処理
-  document.querySelector(".close").addEventListener("click", () => {
-    document.getElementById("imageModal").style.display = "none";
-  });
-  window.addEventListener("click", (event) => {
-    if (event.target === document.getElementById("imageModal")) {
-      document.getElementById("imageModal").style.display = "none";
-    }
+  // ソート切替
+  const sortBtn = document.getElementById("sortBtn");
+  if (sortBtn) {
+    sortBtn.addEventListener("click", () => {
+      const idx = SORT_CYCLE.indexOf(sortMode);
+      sortMode = SORT_CYCLE[(idx + 1) % SORT_CYCLE.length];
+      sortBtn.textContent = "↕ " + SORT_LABELS[sortMode];
+      applyFilters();
+    });
+  }
+
+  // ステータス「もっと見る」
+  const statusMoreBtn = document.getElementById("statusMoreBtn");
+  const statusTags = document.getElementById("status-tags");
+  if (statusMoreBtn && statusTags) {
+    statusMoreBtn.addEventListener("click", () => {
+      const open = statusTags.classList.toggle("open");
+      statusMoreBtn.textContent = open ? "− 折りたたむ" : "+ もっと見る";
+    });
+  }
+
+  // モーダル閉じる
+  const modal = document.getElementById("imageModal");
+  const closeBtn = modal ? modal.querySelector(".close") : null;
+  if (closeBtn) closeBtn.addEventListener("click", () => closeModal());
+  if (modal) {
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) closeModal();
+    });
+  }
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
   });
 
   // 更新履歴外のクリックで閉じる
@@ -57,6 +113,11 @@ function setupEventListeners() {
       history.classList.remove("open");
     }
   });
+}
+
+function closeModal() {
+  const modal = document.getElementById("imageModal");
+  if (modal) modal.classList.remove("is-open");
 }
 
 // 更新履歴を読み込んで表示
@@ -70,7 +131,6 @@ async function loadUpdateHistory() {
     if (!response.ok) throw new Error("Network response was not ok");
     const history = await response.json();
 
-    // 日付の降順でソート（文字列比較でYYYY/MM/DD形式を想定）
     const sorted = [...history].sort((a, b) => (a.date < b.date ? 1 : -1));
 
     if (sorted.length === 0) {
@@ -79,12 +139,10 @@ async function loadUpdateHistory() {
     }
 
     latestEl.textContent = sorted[0].date;
-
-    // 展開時は最新＋過去2件の合計3件を表示（表面は日付のみで、内容は展開時に見える）
     const items = sorted.slice(0, 3);
-    listEl.innerHTML = items.map(item =>
-      `<div class="history-item">${item.date}　${item.content}</div>`
-    ).join("");
+    listEl.innerHTML = items
+      .map((item) => `<div class="history-item">${item.date}　${item.content}</div>`)
+      .join("");
   } catch (error) {
     console.error("更新履歴の取得に失敗しました:", error);
     latestEl.textContent = "--";
@@ -98,51 +156,37 @@ function toggleHistory(event) {
   if (history) history.classList.toggle("open");
 }
 
-// 2. カード用JSONデータを取得＆テーブル描画（DocumentFragment使用）
+// 2. カード用データを取得＆カード一覧描画
 async function loadCards() {
   try {
     const response = await fetch(SHEET_CSV_URL);
     if (!response.ok) throw new Error("Network response was not ok");
-    
+
     const csvText = await response.text();
 
     Papa.parse(csvText, {
       header: true,
       skipEmptyLines: true,
-      complete: function(results) {
-        // 固定の基本情報列（これ以外の列をステータス列として自動処理する）
+      complete: function (results) {
         const baseColumns = ["id", "name", "rank", "rare", "category", "icon", "image", "special_status", "special_full_status"];
 
-        cardData = results.data.map(row => {
+        cardData = results.data.map((row) => {
           let status = [];
           let full_status = [];
 
-          // 1. 武器や腕などの固有ステータス（「武器」「レイラR+7」など）がある場合の処理
           if (row.special_status) {
-            status = row.special_status.split(/[、,]/).map(s => s.trim()).filter(s => s);
+            status = row.special_status.split(/[、,]/).map((s) => s.trim()).filter((s) => s);
           }
           if (row.special_full_status) {
-            full_status = row.special_full_status.split(/[、,]/).map(s => s.trim()).filter(s => s);
+            full_status = row.special_full_status.split(/[、,]/).map((s) => s.trim()).filter((s) => s);
           }
 
-          // 2. スプレッドシートの列をループし、数字が入っているステータスを自動抽出
-          Object.keys(row).forEach(colName => {
-            // 基本列ではなく、かつセルに何らかの文字（数字）が入っている場合
+          Object.keys(row).forEach((colName) => {
             if (!baseColumns.includes(colName) && row[colName] !== undefined && row[colName].trim() !== "") {
               let val = row[colName].trim();
-              
-              // 入力された数値の先頭に「+」も「-」も無ければ、自動で「+」を補完
-              if (!val.startsWith('+') && !val.startsWith('-')) {
-                val = '+' + val;
-              }
-              // 入力された数値の末尾に「%」が無ければ自動補完
-              if (!val.endsWith('%')) {
-                val = val + '%';
-              }
-
-              // 表示用のステータス名整形（例: "攻撃%" という列名なら出力時に "攻撃+19%" となるように % を削る）
-              let displayName = colName.replace('%', '');
-
+              if (!val.startsWith("+") && !val.startsWith("-")) val = "+" + val;
+              if (!val.endsWith("%")) val = val + "%";
+              const displayName = colName.replace("%", "");
               status.push(colName);
               full_status.push(`${displayName}${val}`);
             }
@@ -160,64 +204,145 @@ async function loadCards() {
             full_status: full_status
           };
         });
-        
-        renderTable();
+
+        // ステータスごとの最大値（alias 後）を算出
+        maxByStat = {};
+        cardData.forEach((card) => {
+          card.status.forEach((s, i) => {
+            const a = aliasOf(s);
+            const num = Math.abs(numOf(card.full_status[i]));
+            if (!maxByStat[a] || num > maxByStat[a]) maxByStat[a] = num;
+          });
+        });
+
+        const totalEl = document.getElementById("totalCount");
+        if (totalEl) totalEl.textContent = String(cardData.length);
+
+        renderCards();
       }
     });
   } catch (error) {
     console.error("カードデータの取得に失敗しました:", error);
-    const tbody = document.getElementById("table-body") || document.querySelector("tbody");
-    if (tbody) {
-      tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: red;">データの読み込みに失敗しました。</td></tr>`;
+    const container = document.getElementById("cards-container");
+    if (container) {
+      container.innerHTML = `<div class="empty"><div class="face">ERROR</div>データの読み込みに失敗しました。</div>`;
     }
   }
 }
 
-// テーブルを動的に生成（初回1回のみ実行）
-function renderTable() {
-  const tbody = document.getElementById("table-body");
+// カード一覧を生成（初回のみ DOM 作成、以降は表示制御）
+function renderCards() {
+  const container = document.getElementById("cards-container");
+  if (!container) return;
+
   const fragment = document.createDocumentFragment();
   rowDataCache = [];
 
-  cardData.forEach(card => {
-    const row = document.createElement("tr");
-    
+  cardData.forEach((card) => {
+    const row = document.createElement("div");
+    row.className = `cardrow r-${card.rare}`;
+
+    const thumbInner = card.icon
+      ? `<img src="${card.icon}" alt="${card.name}">`
+      : "";
+
     row.innerHTML = `
-      <td><img src="${card.icon}" alt="${card.name}" class="icon-img"><br>${card.name}</td>
-      <td>${card.category}</td>
-      <td class="status-cell">${card.full_status.join("<br>")}</td>
+      <div class="thumb">
+        ${thumbInner}
+        <div class="badge r-${card.rare}">${card.rare}</div>
+      </div>
+      <div class="body">
+        <div class="row1">
+          <div class="nm">${escapeHtml(card.name)}</div>
+          <div class="rk">R${card.rank}</div>
+        </div>
+        <div class="row2">
+          <span class="rare-mark"></span>
+          <span>${escapeHtml(card.rare)}</span>
+          <span class="sep">·</span>
+          <span>${escapeHtml(card.category)}</span>
+        </div>
+        <div class="stats"></div>
+      </div>
     `;
 
     row.addEventListener("click", () => openModal(card.image));
 
-    // 検索・フィルタリング用にデータをキャッシュ（DOMアクセスを減らす）
     rowDataCache.push({
       element: row,
+      card: card,
       name: card.name,
       category: card.category,
       rare: card.rare || "",
       rank: String(card.rank || ""),
-      statusList: card.status || [], // 生のステータス配列
-      fullStatusHtml: card.full_status.join("<br>"), // 元のテキスト
-      statusCell: row.querySelector(".status-cell")
+      statusList: card.status || [],
+      statsEl: row.querySelector(".stats")
     });
 
     fragment.appendChild(row);
   });
 
-  tbody.appendChild(fragment);
+  container.appendChild(fragment);
+}
+
+// stat-bar の HTML を生成
+function buildStatBars(card, transformedActiveStatus) {
+  const targets = transformedActiveStatus;
+  const stats = card.status.map((name, i) => {
+    const fullVal = card.full_status[i] || "";
+    const display = valFromFull(fullVal, name);
+    return {
+      name: name,
+      alias: aliasOf(name),
+      display: display,
+      n: numOf(display || fullVal)
+    };
+  });
+
+  // 一致を優先 → 絶対値で降順
+  stats.sort((a, b) => {
+    const aH = targets.includes(a.alias) ? 1 : 0;
+    const bH = targets.includes(b.alias) ? 1 : 0;
+    if (aH !== bH) return bH - aH;
+    return Math.abs(b.n) - Math.abs(a.n);
+  });
+
+  const shown = stats.slice(0, 3);
+  return shown
+    .map((s) => {
+      const max = maxByStat[s.alias] || 50;
+      const pct = Math.min(100, Math.max(6, (Math.abs(s.n) / max) * 100));
+      const hi = targets.includes(s.alias);
+      return `
+        <div class="stat-bar ${hi ? "hi" : ""}">
+          <div class="row">
+            <div class="lbl">${escapeHtml(s.name)}</div>
+            <div class="val">${escapeHtml(s.display)}</div>
+          </div>
+          <div class="track"><div class="fill" style="width:${pct}%"></div></div>
+        </div>`;
+    })
+    .join("");
+}
+
+function escapeHtml(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 // 3. フィルターの切り替えとURL同期
 function toggleFilter(type, value, buttonElement) {
   const index = activeFilters[type].indexOf(value);
-
   if (index === -1) {
     activeFilters[type].push(value);
-    buttonElement.classList.add("active");
+    buttonElement.classList.add("on");
   } else {
     activeFilters[type].splice(index, 1);
-    buttonElement.classList.remove("active");
+    buttonElement.classList.remove("on");
   }
   applyFilters();
 }
@@ -225,36 +350,45 @@ function toggleFilter(type, value, buttonElement) {
 function updateURL() {
   const params = new URLSearchParams();
   if (searchType !== "AND") params.set("type", searchType);
+  if (sortMode !== "rank-desc") params.set("sort", sortMode);
   if (activeFilters.name) params.set("name", activeFilters.name);
   if (activeFilters.category.length) params.set("category", activeFilters.category.join(","));
   if (activeFilters.rare.length) params.set("rare", activeFilters.rare.join(","));
   if (activeFilters.rank.length) params.set("rank", activeFilters.rank.join(","));
   if (activeFilters.status.length) params.set("status", activeFilters.status.join(","));
 
-  const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
-  window.history.replaceState(null, '', newUrl);
+  const newUrl = window.location.pathname + (params.toString() ? "?" + params.toString() : "");
+  window.history.replaceState(null, "", newUrl);
 }
 
 function loadFiltersFromURL() {
   const params = new URLSearchParams(window.location.search);
-  
+
   if (params.get("type")) {
     searchType = params.get("type");
-    document.querySelector(`input[name="searchType"][value="${searchType}"]`).checked = true;
+    document.querySelectorAll(".seg button").forEach((b) => {
+      b.classList.toggle("on", b.getAttribute("data-mode") === searchType);
+    });
   }
-  
+
+  if (params.get("sort") && SORT_LABELS[params.get("sort")]) {
+    sortMode = params.get("sort");
+    const sortBtn = document.getElementById("sortBtn");
+    if (sortBtn) sortBtn.textContent = "↕ " + SORT_LABELS[sortMode];
+  }
+
   if (params.get("name")) {
     activeFilters.name = params.get("name");
-    document.getElementById("nameSearchInput").value = activeFilters.name;
+    const nameInput = document.getElementById("nameSearchInput");
+    if (nameInput) nameInput.value = activeFilters.name;
   }
 
   const loadArrayParam = (key) => {
     if (params.get(key)) {
       activeFilters[key] = params.get(key).split(",");
-      // ボタンの見た目を同期
-      activeFilters[key].forEach(val => {
-        const btn = document.querySelector(`button[data-type="${key}"][data-value="${val}"]`);
-        if (btn) btn.classList.add("active");
+      activeFilters[key].forEach((val) => {
+        const btn = document.querySelector(`button[data-type="${key}"][data-value="${CSS.escape(val)}"]`);
+        if (btn) btn.classList.add("on");
       });
     }
   };
@@ -273,90 +407,118 @@ function applyFilters() {
   const hasCategoryFilters = activeFilters.category.length > 0;
   const searchName = activeFilters.name.toLowerCase();
 
-  // URLパラメータを更新
   updateURL();
+  updateGroupCounts();
 
-  let visibleRowCount = 0;
+  const transformedActiveStatus = activeFilters.status.map((s) => aliasOf(s));
 
-  // statusの変換（例: "攻撃%" -> "攻撃"）
-  const transformedActiveStatus = activeFilters.status.map(s => specialFilters[s] || s);
+  // フィルタリング
+  const visibleEntries = [];
+  rowDataCache.forEach((row) => {
+    const transformedCardStatus = row.statusList.map((s) => aliasOf(s));
 
-  rowDataCache.forEach(row => {
-    // ステータスの変換
-    let transformedCardStatus = row.statusList.map(s => specialFilters[s] || s);
+    const matchName = !searchName || row.name.toLowerCase().includes(searchName);
+    const matchStatus =
+      !hasStatusFilters ||
+      (searchType === "AND"
+        ? transformedActiveStatus.every((f) => transformedCardStatus.includes(f))
+        : transformedActiveStatus.some((f) => transformedCardStatus.includes(f)));
+    const matchRare = !hasRareFilters || activeFilters.rare.includes(row.rare);
+    const matchRank = !hasRankFilters || activeFilters.rank.includes(row.rank);
+    const matchCategory = !hasCategoryFilters || activeFilters.category.includes(row.category);
 
-    // テキスト検索判定
-    let matchName = !searchName || row.name.toLowerCase().includes(searchName);
-    
-    // ステータス判定
-    let matchStatus = !hasStatusFilters || (searchType === "AND" 
-      ? transformedActiveStatus.every(filter => transformedCardStatus.includes(filter)) 
-      : transformedActiveStatus.some(filter => transformedCardStatus.includes(filter)));
-
-    let matchRare = !hasRareFilters || activeFilters.rare.includes(row.rare);
-    let matchRank = !hasRankFilters || activeFilters.rank.includes(row.rank);
-    let matchCategory = !hasCategoryFilters || activeFilters.category.includes(row.category);
-
-    let isMatch = matchName && matchStatus && matchRare && matchRank && matchCategory;
-
+    const isMatch = matchName && matchStatus && matchRare && matchRank && matchCategory;
     if (isMatch) {
-      row.element.style.display = ""; // 表示
-      visibleRowCount++;
-
-      // ステータス強調（赤文字）処理
-      if (hasStatusFilters) {
-        let html = row.fullStatusHtml;
-        transformedActiveStatus.forEach(filter => {
-          const regex = new RegExp(`(^|<br>)(${filter}[-+]?\\d+%?)`, "gi");
-          html = html.replace(regex, '$1<span class="highlight-text">$2</span>');
-        });
-        row.statusCell.innerHTML = html;
-      } else {
-        // フィルタがない場合は元のHTMLに戻す
-        if (row.statusCell.innerHTML !== row.fullStatusHtml) {
-          row.statusCell.innerHTML = row.fullStatusHtml;
-        }
-      }
+      visibleEntries.push(row);
     } else {
-      row.element.style.display = "none"; // 非表示
+      row.element.style.display = "none";
     }
   });
 
-  // 検索結果ゼロのメッセージ制御
-  document.getElementById("no-data-msg").style.display = visibleRowCount === 0 ? "block" : "none";
+  // ソート
+  visibleEntries.sort((a, b) => {
+    const ra = a.card, rb = b.card;
+    switch (sortMode) {
+      case "rank-asc":  return (ra.rank - rb.rank) || ra.name.localeCompare(rb.name, "ja");
+      case "rare":      return ((RARE_ORDER[ra.rare] ?? 99) - (RARE_ORDER[rb.rare] ?? 99)) || (rb.rank - ra.rank) || ra.name.localeCompare(rb.name, "ja");
+      case "name":      return ra.name.localeCompare(rb.name, "ja");
+      case "rank-desc":
+      default:          return (rb.rank - ra.rank) || ra.name.localeCompare(rb.name, "ja");
+    }
+  });
+
+  // 並び順を DOM に反映＋ stat-bar 更新
+  const container = document.getElementById("cards-container");
+  if (container) {
+    visibleEntries.forEach((row) => {
+      row.element.style.display = "";
+      row.statsEl.innerHTML = buildStatBars(row.card, transformedActiveStatus);
+      container.appendChild(row.element); // 末尾追加で順序を整える
+    });
+  }
+
+  // 件数 / empty 表示
+  const hitEl = document.getElementById("hitCount");
+  if (hitEl) hitEl.textContent = String(visibleEntries.length);
+  const emptyEl = document.getElementById("no-data-msg");
+  if (emptyEl) emptyEl.style.display = visibleEntries.length === 0 ? "block" : "none";
+
+  renderActiveChips();
+}
+
+function updateGroupCounts() {
+  const map = {
+    "category": "gcount-category",
+    "rare":     "gcount-rare",
+    "rank":     "gcount-rank",
+    "status":   "gcount-status"
+  };
+  Object.keys(map).forEach((key) => {
+    const el = document.getElementById(map[key]);
+    if (!el) return;
+    const total = document.querySelectorAll(`button[data-type="${key}"]`).length;
+    const active = activeFilters[key].length;
+    el.textContent = `${active} / ${total}`;
+  });
+}
+
+function renderActiveChips() {
+  const container = document.getElementById("activeTags");
+  if (!container) return;
+  const chips = [
+    ...activeFilters.category.map((v) => ({ k: "カテゴリ", v })),
+    ...activeFilters.rare.map((v) => ({ k: "レア度", v })),
+    ...activeFilters.rank.map((v) => ({ k: "ランク", v: "R" + v })),
+    ...activeFilters.status.map((v) => ({ k: "ステータス", v }))
+  ];
+  container.innerHTML = chips
+    .map((c) => `<span class="active-tag">${escapeHtml(c.k)}: ${escapeHtml(c.v)}</span>`)
+    .join("");
 }
 
 // 5. フィルターリセット
 function resetFilters() {
   activeFilters = { name: "", status: [], rare: [], rank: [], category: [] };
-  
-  // UIリセット
-  document.getElementById("nameSearchInput").value = "";
-  document.querySelectorAll(".filter-group button.active").forEach(button => {
-    button.classList.remove("active");
-  });
-  
-  // デフォルトはAND検索に戻す
+
+  const nameInput = document.getElementById("nameSearchInput");
+  if (nameInput) nameInput.value = "";
+
+  document.querySelectorAll(".tag.on").forEach((b) => b.classList.remove("on"));
+
   searchType = "AND";
-  document.querySelector('input[name="searchType"][value="AND"]').checked = true;
+  document.querySelectorAll(".seg button").forEach((b) => {
+    b.classList.toggle("on", b.getAttribute("data-mode") === "AND");
+  });
 
   applyFilters();
 }
 
 // モーダル開閉
 function openModal(imageSrc) {
+  if (!imageSrc) return;
   const modal = document.getElementById("imageModal");
   const modalImg = document.getElementById("modalImage");
-  modal.style.display = "block";
+  if (!modal || !modalImg) return;
   modalImg.src = imageSrc;
-}
-
-function toggleCollapsible(id) {
-  const content = document.getElementById(id);
-  const header = content.previousElementSibling;
-  const toggleLabel = header.querySelector(".toggle-label");
-  const isVisible = window.getComputedStyle(content).display !== "none";
-
-  content.style.display = isVisible ? "none" : "block";
-  toggleLabel.textContent = isVisible ? "[開く]" : "[閉じる]";
+  modal.classList.add("is-open");
 }
