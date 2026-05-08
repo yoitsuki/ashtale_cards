@@ -93,6 +93,19 @@ function setupEventListeners() {
     });
   }
 
+  // 絞込みトグル
+  const filterToggle = document.getElementById("filterToggle");
+  const filterArea = document.getElementById("filterArea");
+  if (filterToggle && filterArea) {
+    filterToggle.addEventListener("click", () => {
+      const willOpen = filterArea.hasAttribute("hidden");
+      if (willOpen) filterArea.removeAttribute("hidden");
+      else filterArea.setAttribute("hidden", "");
+      filterToggle.classList.toggle("on", willOpen);
+      filterToggle.setAttribute("aria-expanded", willOpen ? "true" : "false");
+    });
+  }
+
   // モーダル閉じる
   const modal = document.getElementById("imageModal");
   const closeBtn = modal ? modal.querySelector(".close") : null;
@@ -397,6 +410,22 @@ function loadFiltersFromURL() {
   loadArrayParam("rare");
   loadArrayParam("rank");
   loadArrayParam("status");
+
+  // URLでフィルタが復元されているなら絞込みエリアを開いておく
+  const totalActive =
+    activeFilters.category.length +
+    activeFilters.rare.length +
+    activeFilters.rank.length +
+    activeFilters.status.length;
+  if (totalActive > 0) {
+    const filterArea = document.getElementById("filterArea");
+    const filterToggle = document.getElementById("filterToggle");
+    if (filterArea) filterArea.removeAttribute("hidden");
+    if (filterToggle) {
+      filterToggle.classList.add("on");
+      filterToggle.setAttribute("aria-expanded", "true");
+    }
+  }
 }
 
 // 4. フィルター適用ロジック
@@ -464,6 +493,23 @@ function applyFilters() {
   if (emptyEl) emptyEl.style.display = visibleEntries.length === 0 ? "block" : "none";
 
   renderActiveChips();
+  updateFilterToggleBadge();
+}
+
+function updateFilterToggleBadge() {
+  const total =
+    activeFilters.category.length +
+    activeFilters.rare.length +
+    activeFilters.rank.length +
+    activeFilters.status.length;
+  const badge = document.getElementById("filterCount");
+  if (!badge) return;
+  if (total > 0) {
+    badge.textContent = String(total);
+    badge.hidden = false;
+  } else {
+    badge.hidden = true;
+  }
 }
 
 function updateGroupCounts() {

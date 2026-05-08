@@ -30,11 +30,9 @@
     <header class="app-head">
       <div class="app-mark">
         <span class="mark-glyph" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
-            <path d="M3 5.5a1.5 1.5 0 0 1 1.5-1.5H10c.83 0 1.5.67 1.5 1.5v13"/>
-            <path d="M21 5.5A1.5 1.5 0 0 0 19.5 4H14c-.83 0-1.5.67-1.5 1.5v13"/>
-            <path d="M3 18.5h8.5"/>
-            <path d="M12.5 18.5H21"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <path d="M12 7v14"/>
+            <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>
           </svg>
         </span>
         <h1 class="mark-text">AshTale カード図鑑</h1>
@@ -42,32 +40,39 @@
       <a class="legacy-link" href="legacy.html">前のデザインに戻す</a>
     </header>
 
-    <h2 class="title">カードを<em>絞り込む</em>。</h2>
-    <p class="subtitle">
-      <span class="subtitle-count">全 <span id="totalCount">--</span> 種から条件で検索</span>
-      <span class="upd update-history" id="updateHistory">
-        <span class="latest-update" onclick="toggleHistory(event)">
-          <span>UPD <span id="latestUpdateText">--</span></span>
-          <span class="history-toggle-icon">▼</span>
-        </span>
-        <span id="historyList" class="history-list"></span>
-      </span>
-    </p>
-
     <div class="text-data">
       アッシュテイルの各カード(コラボカード、宝くじカード除く)を一覧にしております。絞り込み機能もついておりますので、どのようなステータスを持つカードかを調べたいときにご活用ください。各カードは、タップすると実際のカードデータを閲覧できます。<br>
       <br>
       なにかありましたら<a href="https://marshmallow-qa.com/re3ig61uxuunbsn">マシュマロ</a>まで。
+      <br>
+      <br>
+      <div class="update-history" id="updateHistory">
+        <div class="latest-update" onclick="toggleHistory(event)">
+          <span>最終更新日：<span id="latestUpdateText">--</span></span>
+          <span class="history-toggle-icon">▼</span>
+        </div>
+        <div id="historyList" class="history-list"></div>
+      </div>
     </div>
 
     <h3 class="visually-hidden">検索条件</h3>
 
     <div class="filter-container">
-      <div class="search">
-        <span class="icon" aria-hidden="true">⌕</span>
-        <input type="text" id="nameSearchInput" placeholder="カード名で検索" />
+      <div class="search-row">
+        <div class="search">
+          <span class="icon" aria-hidden="true">⌕</span>
+          <input type="text" id="nameSearchInput" placeholder="カード名で検索" />
+        </div>
+        <button type="button" class="filter-toggle" id="filterToggle" aria-expanded="false" aria-controls="filterArea">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+          </svg>
+          <span class="filter-toggle-label">絞込み</span>
+          <span class="filter-count" id="filterCount" hidden>0</span>
+        </button>
       </div>
 
+      <div class="filter-area" id="filterArea" hidden>
       <div class="toolbar">
         <div class="seg" role="group" aria-label="検索モード">
           <button type="button" id="modeAnd" class="on" data-mode="AND">AND</button>
@@ -161,6 +166,7 @@
         </div>
         <button type="button" class="btn-more" id="statusMoreBtn">+ もっと見る</button>
       </div>
+      </div><!-- /.filter-area -->
     </div>
 
     <noscript>
