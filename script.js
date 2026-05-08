@@ -352,23 +352,46 @@ function renderCards() {
   container.appendChild(fragment);
 }
 
-// stat-bar の HTML を生成（全ステータスを CSV の元の並びで表示）
+// stat-bar の HTML を生成。
+// ステータスフィルタが当たっている時のみ、一致したものを先頭に並び替える（その後ろは元の並び）。
 function buildStatBars(card, transformedActiveStatus) {
   const targets = transformedActiveStatus;
-  return card.status
-    .map((name, i) => {
-      const fullVal = card.full_status[i] || "";
-      const display = valFromFull(fullVal, name);
-      const alias = aliasOf(name);
-      const n = numOf(display || fullVal);
-      const max = maxByStat[alias] || 50;
-      const pct = Math.min(100, Math.max(6, (Math.abs(n) / max) * 100));
-      const hi = targets.includes(alias);
-      const valHtml = display ? `<div class="val">${escapeHtml(display)}</div>` : "";
+  const items = card.status.map((name, i) => {
+    const fullVal = card.full_status[i] || "";
+    const display = valFromFull(fullVal, name);
+    const alias = aliasOf(name);
+    return {
+      name,
+      alias,
+      display,
+      n: numOf(display || fullVal),
+      origIndex: i,
+      hi: targets.includes(alias)
+    };
+  });
+
+  if (targets.length > 0) {
+    // 一致したものを「選択順」で先頭に。残りは元の並びを保つ。
+    items.sort((a, b) => {
+      if (a.hi !== b.hi) return a.hi ? -1 : 1;
+      if (a.hi && b.hi) {
+        const ai = targets.indexOf(a.alias);
+        const bi = targets.indexOf(b.alias);
+        if (ai !== bi) return ai - bi;
+      }
+      return a.origIndex - b.origIndex;
+    });
+  }
+
+  return items
+    .map((s) => {
+      const max = maxByStat[s.alias] || 50;
+      const pct = Math.min(100, Math.max(6, (Math.abs(s.n) / max) * 100));
+      const valHtml = s.display ? `<div class="val">${escapeHtml(s.display)}</div>` : "";
       return `
-        <div class="stat-bar ${hi ? "hi" : ""}">
+        <div class="stat-bar ${s.hi ? "hi" : ""}">
           <div class="row">
-            <div class="lbl">${escapeHtml(name)}</div>
+            <div class="lbl">${escapeHtml(s.name)}</div>
             ${valHtml}
           </div>
           <div class="track"><div class="fill" style="width:${pct}%"></div></div>
