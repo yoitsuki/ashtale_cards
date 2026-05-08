@@ -104,7 +104,6 @@ function setupEventListeners() {
     sortBtn.addEventListener("click", () => {
       const idx = SORT_CYCLE.indexOf(sortMode);
       sortMode = SORT_CYCLE[(idx + 1) % SORT_CYCLE.length];
-      sortBtn.textContent = "↕ " + SORT_LABELS[sortMode];
       applyFilters();
     });
   }
@@ -591,6 +590,23 @@ function applyFilters() {
 
   renderActiveChips();
   updateFilterToggleBadge();
+  updateSortButtonLabel();
+}
+
+// ステータスフィルタ中は並べ替えラベルを「○○順」に差し替え、ピンクで強調する
+function updateSortButtonLabel() {
+  const sortBtn = document.getElementById("sortBtn");
+  if (!sortBtn) return;
+  if (activeFilters.status.length > 0) {
+    const primary = activeFilters.status[0];
+    const extra = activeFilters.status.length - 1;
+    const suffix = extra > 0 ? ` +${extra}` : "";
+    sortBtn.textContent = `↕ ${primary}順${suffix}`;
+    sortBtn.classList.add("status-sort");
+  } else {
+    sortBtn.textContent = "↕ " + SORT_LABELS[sortMode];
+    sortBtn.classList.remove("status-sort");
+  }
 }
 
 function updateFilterToggleBadge() {

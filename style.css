@@ -449,6 +449,15 @@ a:hover { border-color: var(--accent); }
   transition: border-color 0.15s, color 0.15s;
 }
 .sort-mini:hover { border-color: var(--accent); color: var(--accent); }
+.sort-mini.status-sort {
+  color: var(--r-ten);
+  border-color: var(--r-ten-soft);
+  font-weight: 600;
+}
+.sort-mini.status-sort:hover {
+  color: var(--r-ten);
+  border-color: var(--r-ten);
+}
 
 .active-tags {
   display: flex;
