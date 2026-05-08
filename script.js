@@ -682,14 +682,19 @@ function openModal(imageSrc) {
   const modal = document.getElementById("imageModal");
   const modalImg = document.getElementById("modalImage");
   if (!modal || !modalImg) return;
-  // 画像が読み込まれた時点で縦横比を判定し、横長（2枚分）なら幅100%に拡張する
-  modal.classList.remove("landscape");
-  modalImg.onload = () => {
+
+  // 画像が読み込まれた時点で縦横比を判定し、横長（2枚分など）なら横幅いっぱいに広げる
+  const applyRatio = () => {
     if (modalImg.naturalWidth && modalImg.naturalHeight) {
       const ratio = modalImg.naturalWidth / modalImg.naturalHeight;
-      modal.classList.toggle("landscape", ratio > 1.2);
+      modal.classList.toggle("landscape", ratio > 1.0);
     }
   };
+
+  modal.classList.remove("landscape");
+  modalImg.onload = applyRatio;
   modalImg.src = imageSrc;
+  // ブラウザがキャッシュ済みで onload が発火しないケースに対応
+  if (modalImg.complete && modalImg.naturalWidth) applyRatio();
   modal.classList.add("is-open");
 }

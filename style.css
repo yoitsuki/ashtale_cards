@@ -699,7 +699,10 @@ a:hover { border-color: var(--accent); }
 }
 /* 横長カード（2枚分）の画像のみ横幅いっぱいに広げる */
 .modal.landscape { padding: 8px; }
-.modal.landscape .modal-content { max-width: 100%; }
+.modal.landscape .modal-content {
+  width: calc(100vw - 16px);
+  max-width: none;
+}
 .modal-close,
 .modal .close {
   position: absolute;
