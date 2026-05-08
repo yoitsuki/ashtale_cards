@@ -24,15 +24,27 @@ function numOf(val) {
   return m ? parseFloat(m[0]) : 0;
 }
 
-// "攻撃+19%" のような full_status 文字列から表示用の値部分（"+19%"）を抜く
+// "攻撃+19%" のような full_status 文字列から表示用の値部分（"+19%"）を抜く。
+// CSV では "攻撃%" 列の表示値は先頭の % を取った "攻撃" + 値で組み立てられているため、
+// name 末尾の % を落とした文字列を前置で剥がす。
 function valFromFull(full, name) {
   if (!full) return "";
-  const trimmed = full.startsWith(name) ? full.slice(name.length) : full;
-  return trimmed || full;
+  const stripName =
+    name && name.endsWith("%") ? name.slice(0, -1) : name || "";
+  if (stripName && full.startsWith(stripName)) {
+    return full.slice(stripName.length);
+  }
+  return full;
 }
 
 // レア度の表示順
 const RARE_ORDER = { "幻": 0, "鋼": 1, "天": 2, "赤": 3, "金": 4 };
+
+// ローマ数字（Ⅰ〜Ⅻ）。範囲外はそのまま数字で表示。
+const ROMAN_NUMERALS = ["", "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ"];
+function toRoman(n) {
+  return ROMAN_NUMERALS[n] || String(n);
+}
 const SORT_LABELS = {
   "default":   "手帳順",
   "rank-desc": "ランク高い順",
@@ -100,9 +112,8 @@ function setupEventListeners() {
   const filterToggleLabel = document.getElementById("filterToggleLabel");
   if (filterToggle && filterArea) {
     filterToggle.addEventListener("click", () => {
-      const willOpen = filterArea.hasAttribute("hidden");
-      if (willOpen) filterArea.removeAttribute("hidden");
-      else filterArea.setAttribute("hidden", "");
+      const willOpen = !filterArea.classList.contains("open");
+      filterArea.classList.toggle("open", willOpen);
       filterToggle.classList.toggle("on", willOpen);
       filterToggle.setAttribute("aria-expanded", willOpen ? "true" : "false");
       if (filterToggleLabel) filterToggleLabel.textContent = willOpen ? "検索条件を隠す" : "検索条件を表示";
@@ -262,20 +273,18 @@ function renderCards() {
       ? `<img src="${card.icon}" alt="${card.name}">`
       : "";
 
+    const rankLabel = card.rank ? toRoman(card.rank) : "";
     row.innerHTML = `
-      <div class="thumb">
-        ${thumbInner}
-      </div>
-      <div class="body">
-        <div class="row1">
-          <div class="nm">${escapeHtml(card.name)}</div>
-          <div class="rk">R${card.rank}</div>
-        </div>
-        <div class="stats"></div>
-        <div class="cardfoot">
-          <span class="rare-chip r-${escapeHtml(card.rare)}">${escapeHtml(card.rare)}</span>
+      <div class="thumb-col">
+        <div class="thumb">${thumbInner}</div>
+        <div class="thumb-info">
+          <span class="rare-chip r-${escapeHtml(card.rare)}">${escapeHtml(card.rare)}<span class="rank-rom">${escapeHtml(rankLabel)}</span></span>
           <span class="cat-name">${escapeHtml(card.category)}</span>
         </div>
+      </div>
+      <div class="body">
+        <div class="nm">${escapeHtml(card.name)}</div>
+        <div class="stats"></div>
       </div>
     `;
 
@@ -422,7 +431,7 @@ function loadFiltersFromURL() {
     const filterArea = document.getElementById("filterArea");
     const filterToggle = document.getElementById("filterToggle");
     const filterToggleLabel = document.getElementById("filterToggleLabel");
-    if (filterArea) filterArea.removeAttribute("hidden");
+    if (filterArea) filterArea.classList.add("open");
     if (filterToggle) {
       filterToggle.classList.add("on");
       filterToggle.setAttribute("aria-expanded", "true");

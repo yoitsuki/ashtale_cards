@@ -220,9 +220,22 @@ a:hover { border-color: var(--accent); }
 }
 .filter-toggle .filter-count[hidden] { display: none; }
 
-.filter-area[hidden] { display: none; }
 .filter-area {
+  max-height: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition:
+    max-height 0.32s cubic-bezier(0.2, 0.7, 0.3, 1),
+    opacity 0.2s ease,
+    margin 0.32s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.filter-area.open {
+  max-height: 2400px;
+  margin-top: 4px;
   margin-bottom: 8px;
+  opacity: 1;
 }
 
 .search {
@@ -463,7 +476,8 @@ a:hover { border-color: var(--accent); }
 }
 .cardrow {
   display: grid;
-  grid-template-columns: 56px 1fr;
+  grid-template-columns: auto 1fr;
+  align-items: start;
   gap: 12px;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -478,11 +492,16 @@ a:hover { border-color: var(--accent); }
   transform: translateY(-1px);
   box-shadow: 0 6px 20px -10px rgba(30, 58, 130, 0.25);
 }
+.thumb-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
 .cardrow .thumb {
   width: 56px; height: 56px;
   border-radius: var(--r-thumb);
   background: repeating-linear-gradient(135deg, #e2e6ee 0 6px, #ecf0f6 6px 12px);
-  position: relative;
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -491,14 +510,13 @@ a:hover { border-color: var(--accent); }
   object-fit: cover;
   display: block;
 }
-.cardrow .body { min-width: 0; }
-.cardrow .row1 {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 8px;
+.thumb-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
 }
+.cardrow .body { min-width: 0; padding-top: 2px; }
 .cardrow .nm {
   font-weight: 700;
   font-size: 0.95rem;
@@ -507,35 +525,30 @@ a:hover { border-color: var(--accent); }
   overflow: hidden;
   text-overflow: ellipsis;
   letter-spacing: -0.01em;
-}
-.cardrow .rk {
-  font-family: var(--ff-mono);
-  font-size: 0.74rem;
-  color: var(--ink-3);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.04em;
-  font-weight: 600;
-  flex-shrink: 0;
-}
-.cardfoot {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 10px;
-  padding-top: 8px;
-  border-top: 1px dashed var(--line-soft);
+  margin-bottom: 8px;
 }
 .rare-chip {
-  display: inline-grid;
-  place-items: center;
-  width: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
   height: 22px;
+  min-width: 22px;
+  padding: 0 6px;
   border-radius: var(--r-badge);
   font-size: 0.74rem;
   font-weight: 700;
   color: #ffffff;
   letter-spacing: 0;
   flex-shrink: 0;
+  line-height: 1;
+}
+.rare-chip .rank-rom {
+  font-family: var(--ff-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin-left: 2px;
 }
 .rare-chip.r-幻 { background: var(--r-gen); }
 .rare-chip.r-鋼 { background: var(--r-hagane); }
