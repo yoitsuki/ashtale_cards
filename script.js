@@ -683,11 +683,12 @@ function openModal(imageSrc) {
   const modalImg = document.getElementById("modalImage");
   if (!modal || !modalImg) return;
 
-  // 画像が読み込まれた時点で縦横比を判定し、横長（2枚分など）なら横幅いっぱいに広げる
+  // 画像が読み込まれた時点で縦横比を判定し、横幅が「単カード比」より広い（=2枚分系）画像なら横幅いっぱいに広げる。
+  // 単カード ≒ 0.38 前後、2カード ≒ 0.55〜0.7 前後なので 0.5 を境界に。
   const applyRatio = () => {
     if (modalImg.naturalWidth && modalImg.naturalHeight) {
       const ratio = modalImg.naturalWidth / modalImg.naturalHeight;
-      modal.classList.toggle("landscape", ratio > 1.0);
+      modal.classList.toggle("landscape", ratio > 0.5);
     }
   };
 
