@@ -684,7 +684,7 @@ a:hover { border-color: var(--accent); }
   z-index: 1000;
   background: rgba(15, 24, 48, 0.55);
   backdrop-filter: blur(6px);
-  padding: 20px;
+  padding: 12px;
 }
 .modal.is-open {
   display: grid;
@@ -692,8 +692,8 @@ a:hover { border-color: var(--accent); }
 }
 .modal-content {
   display: block;
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 100%;
+  max-height: 100%;
   border-radius: var(--r-card);
   box-shadow: 0 20px 60px -20px rgba(15, 24, 48, 0.55);
 }
