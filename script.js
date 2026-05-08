@@ -352,39 +352,24 @@ function renderCards() {
   container.appendChild(fragment);
 }
 
-// stat-bar の HTML を生成
+// stat-bar の HTML を生成（全ステータスを CSV の元の並びで表示）
 function buildStatBars(card, transformedActiveStatus) {
   const targets = transformedActiveStatus;
-  const stats = card.status.map((name, i) => {
-    const fullVal = card.full_status[i] || "";
-    const display = valFromFull(fullVal, name);
-    return {
-      name: name,
-      alias: aliasOf(name),
-      display: display,
-      n: numOf(display || fullVal)
-    };
-  });
-
-  // 一致を優先 → 絶対値で降順
-  stats.sort((a, b) => {
-    const aH = targets.includes(a.alias) ? 1 : 0;
-    const bH = targets.includes(b.alias) ? 1 : 0;
-    if (aH !== bH) return bH - aH;
-    return Math.abs(b.n) - Math.abs(a.n);
-  });
-
-  const shown = stats.slice(0, 3);
-  return shown
-    .map((s) => {
-      const max = maxByStat[s.alias] || 50;
-      const pct = Math.min(100, Math.max(6, (Math.abs(s.n) / max) * 100));
-      const hi = targets.includes(s.alias);
+  return card.status
+    .map((name, i) => {
+      const fullVal = card.full_status[i] || "";
+      const display = valFromFull(fullVal, name);
+      const alias = aliasOf(name);
+      const n = numOf(display || fullVal);
+      const max = maxByStat[alias] || 50;
+      const pct = Math.min(100, Math.max(6, (Math.abs(n) / max) * 100));
+      const hi = targets.includes(alias);
+      const valHtml = display ? `<div class="val">${escapeHtml(display)}</div>` : "";
       return `
         <div class="stat-bar ${hi ? "hi" : ""}">
           <div class="row">
-            <div class="lbl">${escapeHtml(s.name)}</div>
-            <div class="val">${escapeHtml(s.display)}</div>
+            <div class="lbl">${escapeHtml(name)}</div>
+            ${valHtml}
           </div>
           <div class="track"><div class="fill" style="width:${pct}%"></div></div>
         </div>`;
