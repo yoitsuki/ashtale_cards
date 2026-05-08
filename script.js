@@ -2,7 +2,7 @@ let activeFilters = { name: "", status: [], rare: [], rank: [], category: [] };
 let cardData = [];
 let rowDataCache = []; // パフォーマンス最適化のためDOM要素とデータをキャッシュ
 let searchType = "AND";
-let sortMode = "rank-desc";
+let sortMode = "default";
 let maxByStat = {};
 
 const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEG6xUCvYOj4r4u3x0aaI-aSFupJvC1eaQQzlcjPWoO8DLDtur28zGqOpHeTiNc-TR81s7nFZWSadA/pub?output=csv";
@@ -34,12 +34,13 @@ function valFromFull(full, name) {
 // レア度の表示順
 const RARE_ORDER = { "幻": 0, "鋼": 1, "天": 2, "赤": 3, "金": 4 };
 const SORT_LABELS = {
+  "default":   "手帳順",
   "rank-desc": "ランク高い順",
   "rank-asc":  "ランク低い順",
   "rare":      "レア度順",
   "name":      "名前順"
 };
-const SORT_CYCLE = ["rank-desc", "rank-asc", "rare", "name"];
+const SORT_CYCLE = ["default", "rank-desc", "rank-asc", "rare", "name"];
 
 // 1. 初期ロード処理
 document.addEventListener("DOMContentLoaded", async function () {
@@ -93,9 +94,10 @@ function setupEventListeners() {
     });
   }
 
-  // 絞込みトグル
+  // 検索条件トグル
   const filterToggle = document.getElementById("filterToggle");
   const filterArea = document.getElementById("filterArea");
+  const filterToggleLabel = document.getElementById("filterToggleLabel");
   if (filterToggle && filterArea) {
     filterToggle.addEventListener("click", () => {
       const willOpen = filterArea.hasAttribute("hidden");
@@ -103,6 +105,7 @@ function setupEventListeners() {
       else filterArea.setAttribute("hidden", "");
       filterToggle.classList.toggle("on", willOpen);
       filterToggle.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      if (filterToggleLabel) filterToggleLabel.textContent = willOpen ? "検索条件を隠す" : "検索条件を表示";
     });
   }
 
@@ -251,7 +254,7 @@ function renderCards() {
   const fragment = document.createDocumentFragment();
   rowDataCache = [];
 
-  cardData.forEach((card) => {
+  cardData.forEach((card, idx) => {
     const row = document.createElement("div");
     row.className = `cardrow r-${card.rare}`;
 
@@ -262,20 +265,17 @@ function renderCards() {
     row.innerHTML = `
       <div class="thumb">
         ${thumbInner}
-        <div class="badge r-${card.rare}">${card.rare}</div>
       </div>
       <div class="body">
         <div class="row1">
           <div class="nm">${escapeHtml(card.name)}</div>
           <div class="rk">R${card.rank}</div>
         </div>
-        <div class="row2">
-          <span class="rare-mark"></span>
-          <span>${escapeHtml(card.rare)}</span>
-          <span class="sep">·</span>
-          <span>${escapeHtml(card.category)}</span>
-        </div>
         <div class="stats"></div>
+        <div class="cardfoot">
+          <span class="rare-chip r-${escapeHtml(card.rare)}">${escapeHtml(card.rare)}</span>
+          <span class="cat-name">${escapeHtml(card.category)}</span>
+        </div>
       </div>
     `;
 
@@ -284,6 +284,7 @@ function renderCards() {
     rowDataCache.push({
       element: row,
       card: card,
+      origIndex: idx,
       name: card.name,
       category: card.category,
       rare: card.rare || "",
@@ -363,7 +364,7 @@ function toggleFilter(type, value, buttonElement) {
 function updateURL() {
   const params = new URLSearchParams();
   if (searchType !== "AND") params.set("type", searchType);
-  if (sortMode !== "rank-desc") params.set("sort", sortMode);
+  if (sortMode !== "default") params.set("sort", sortMode);
   if (activeFilters.name) params.set("name", activeFilters.name);
   if (activeFilters.category.length) params.set("category", activeFilters.category.join(","));
   if (activeFilters.rare.length) params.set("rare", activeFilters.rare.join(","));
@@ -420,11 +421,13 @@ function loadFiltersFromURL() {
   if (totalActive > 0) {
     const filterArea = document.getElementById("filterArea");
     const filterToggle = document.getElementById("filterToggle");
+    const filterToggleLabel = document.getElementById("filterToggleLabel");
     if (filterArea) filterArea.removeAttribute("hidden");
     if (filterToggle) {
       filterToggle.classList.add("on");
       filterToggle.setAttribute("aria-expanded", "true");
     }
+    if (filterToggleLabel) filterToggleLabel.textContent = "検索条件を隠す";
   }
 }
 
@@ -468,11 +471,12 @@ function applyFilters() {
   visibleEntries.sort((a, b) => {
     const ra = a.card, rb = b.card;
     switch (sortMode) {
-      case "rank-asc":  return (ra.rank - rb.rank) || ra.name.localeCompare(rb.name, "ja");
-      case "rare":      return ((RARE_ORDER[ra.rare] ?? 99) - (RARE_ORDER[rb.rare] ?? 99)) || (rb.rank - ra.rank) || ra.name.localeCompare(rb.name, "ja");
+      case "rank-desc": return (rb.rank - ra.rank) || (a.origIndex - b.origIndex);
+      case "rank-asc":  return (ra.rank - rb.rank) || (a.origIndex - b.origIndex);
+      case "rare":      return ((RARE_ORDER[ra.rare] ?? 99) - (RARE_ORDER[rb.rare] ?? 99)) || (rb.rank - ra.rank) || (a.origIndex - b.origIndex);
       case "name":      return ra.name.localeCompare(rb.name, "ja");
-      case "rank-desc":
-      default:          return (rb.rank - ra.rank) || ra.name.localeCompare(rb.name, "ja");
+      case "default":
+      default:          return a.origIndex - b.origIndex;
     }
   });
 
@@ -555,6 +559,10 @@ function resetFilters() {
   document.querySelectorAll(".seg button").forEach((b) => {
     b.classList.toggle("on", b.getAttribute("data-mode") === "AND");
   });
+
+  sortMode = "default";
+  const sortBtn = document.getElementById("sortBtn");
+  if (sortBtn) sortBtn.textContent = "↕ " + SORT_LABELS[sortMode];
 
   applyFilters();
 }

@@ -218,6 +218,7 @@ a:hover { border-color: var(--accent); }
   background: rgba(255, 255, 255, 0.22);
   color: #fff;
 }
+.filter-toggle .filter-count[hidden] { display: none; }
 
 .filter-area[hidden] { display: none; }
 .filter-area {
@@ -490,29 +491,13 @@ a:hover { border-color: var(--accent); }
   object-fit: cover;
   display: block;
 }
-.cardrow .thumb .badge {
-  position: absolute;
-  bottom: 3px; left: 3px;
-  width: 18px; height: 18px;
-  border-radius: var(--r-badge);
-  display: grid; place-items: center;
-  font-size: 0.6rem;
-  font-weight: 700;
-  color: #fff;
-  background: var(--rare-dot);
-}
-.cardrow .thumb .badge.r-幻 { background: var(--r-gen); }
-.cardrow .thumb .badge.r-鋼 { background: var(--r-hagane); }
-.cardrow .thumb .badge.r-天 { background: var(--r-ten); color: #ffffff; }
-.cardrow .thumb .badge.r-赤 { background: var(--r-aka); }
-.cardrow .thumb .badge.r-金 { background: var(--r-kin); color: #2c2410; }
 .cardrow .body { min-width: 0; }
 .cardrow .row1 {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 3px;
+  margin-bottom: 8px;
 }
 .cardrow .nm {
   font-weight: 700;
@@ -532,28 +517,37 @@ a:hover { border-color: var(--accent); }
   font-weight: 600;
   flex-shrink: 0;
 }
-.cardrow .row2 {
-  font-size: 0.74rem;
-  color: var(--ink-2);
-  letter-spacing: 0.02em;
-  margin-bottom: 9px;
+.cardfoot {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line-soft);
 }
-.cardrow .row2 .sep { opacity: 0.4; }
-.cardrow .row2 .rare-mark {
-  display: inline-block;
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--rare-dot);
+.rare-chip {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-badge);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0;
   flex-shrink: 0;
 }
-.cardrow.r-幻 { --rare-dot: var(--r-gen); }
-.cardrow.r-鋼 { --rare-dot: var(--r-hagane); }
-.cardrow.r-天 { --rare-dot: var(--r-ten); }
-.cardrow.r-赤 { --rare-dot: var(--r-aka); }
-.cardrow.r-金 { --rare-dot: var(--r-kin); }
+.rare-chip.r-幻 { background: var(--r-gen); }
+.rare-chip.r-鋼 { background: var(--r-hagane); }
+.rare-chip.r-天 { background: var(--r-ten); }
+.rare-chip.r-赤 { background: var(--r-aka); }
+.rare-chip.r-金 { background: var(--r-kin); color: #2c2410; }
+.cat-name {
+  font-size: 0.78rem;
+  color: var(--ink-2);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
 
 /* stat bars */
 .stats { display: flex; flex-direction: column; gap: 6px; }

@@ -67,7 +67,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true">
             <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
           </svg>
-          <span class="filter-toggle-label">絞込み</span>
+          <span class="filter-toggle-label" id="filterToggleLabel">検索条件を表示</span>
           <span class="filter-count" id="filterCount" hidden>0</span>
         </button>
       </div>
@@ -133,7 +133,7 @@
           <span class="glabel">ステータス</span>
           <span class="gcount" id="gcount-status">0 / 29</span>
         </div>
-        <div class="tags tags-clip" id="status-tags">
+        <div class="tags" id="status-tags">
           <button type="button" class="tag" data-type="status" data-value="攻撃%" onclick="toggleFilter('status', '攻撃%', this)">攻撃%</button>
           <button type="button" class="tag" data-type="status" data-value="会心率" onclick="toggleFilter('status', '会心率', this)">会心率</button>
           <button type="button" class="tag" data-type="status" data-value="会心ダメージ" onclick="toggleFilter('status', '会心ダメージ', this)">会心ダメージ</button>
@@ -164,7 +164,6 @@
           <button type="button" class="tag" data-type="status" data-value="対低HPダメ倍率" onclick="toggleFilter('status', '対低HPダメ倍率', this)">対低HPダメ倍率</button>
           <button type="button" class="tag" data-type="status" data-value="状態異常ダメ倍率" onclick="toggleFilter('status', '状態異常ダメ倍率', this)">状態異常ダメ倍率</button>
         </div>
-        <button type="button" class="btn-more" id="statusMoreBtn">+ もっと見る</button>
       </div>
       </div><!-- /.filter-area -->
     </div>
@@ -359,7 +358,7 @@
     <div class="results-h">
       <h3 class="visually-hidden">検索結果</h3>
       <div class="left"><span class="num" id="hitCount">0</span> <span>件 ヒット</span></div>
-      <button type="button" class="sort-mini" id="sortBtn">↕ ランク高い順</button>
+      <button type="button" class="sort-mini" id="sortBtn">↕ 手帳順</button>
     </div>
 
     <div class="active-tags" id="activeTags"></div>
