@@ -683,12 +683,11 @@ function openModal(imageSrc) {
   const modalImg = document.getElementById("modalImage");
   if (!modal || !modalImg) return;
 
-  // 画像が読み込まれた時点で縦横比を判定し、横幅が「単カード比」より広い（=2枚分系）画像なら横幅いっぱいに広げる。
-  // 単カード ≒ 0.38 前後、2カード ≒ 0.55〜0.7 前後なので 0.5 を境界に。
+  // 画像の自然な横幅で判定する。AshTale のカード画像は 1枚 ≒ 1170px、2枚分 ≒ 2340px なので
+  // 中間（1500px）を境界に、それより広い画像は「2枚分」とみなして横幅いっぱいに広げる。
   const applyRatio = () => {
-    if (modalImg.naturalWidth && modalImg.naturalHeight) {
-      const ratio = modalImg.naturalWidth / modalImg.naturalHeight;
-      modal.classList.toggle("landscape", ratio > 0.5);
+    if (modalImg.naturalWidth) {
+      modal.classList.toggle("landscape", modalImg.naturalWidth > 1500);
     }
   };
 
