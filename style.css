@@ -738,6 +738,12 @@ a:hover { border-color: var(--accent); }
   gap: 6px;
   white-space: nowrap;
 }
+/* 英語モードは "Headwear" "Talisman" 等が横並びだと幅を食うので縦並びにする */
+html[lang="en"] .thumb-info {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
 .cardrow .body { min-width: 0; padding-top: 2px; }
 .cardrow .nm {
   font-weight: 700;
