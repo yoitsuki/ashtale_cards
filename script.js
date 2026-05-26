@@ -231,11 +231,14 @@ function setupFeedback() {
       // GAS Web App は 302 リダイレクトで googleusercontent.com に飛ばすため、
       // CORS モードだと cross-origin の preflight/redirect で失敗しやすい。
       // 投票はファイア・アンド・フォーゲットでよいので no-cors で送る。
+      // body は application/x-www-form-urlencoded（CORS safelisted）で送り、
+      // GAS 側では e.parameter.vote として受け取れる形にする。
+      const form = new URLSearchParams();
+      form.append("vote", vote);
       fetch(FEEDBACK_API_URL, {
         method: "POST",
         mode: "no-cors",
-        // Content-Type を指定しないと text/plain として送られ、preflight も発火しない
-        body: JSON.stringify({ vote })
+        body: form
       }).catch((err) => {
         console.error("フィードバック送信失敗:", err);
       });
