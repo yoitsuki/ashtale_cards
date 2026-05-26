@@ -1,0 +1,355 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fcfcfc; /* 真っ白より少しだけ目に優しい色に */
+  color: #333333;
+  margin: 0;
+  padding: 0;
+}
+
+/* タイトル部分 */
+h1 {
+  position: relative;
+  padding: 1rem;
+  background: #bbdfff;
+  margin: 15px;
+  border-radius: 4px;
+  color: #2a2e70;
+  font-size: 1.5rem;
+}
+
+h1:before {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 100%;
+  height: 100%;
+  content: '';
+  border: 3px solid #2a2e70;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+/* 新デザインへの切り替えリンク */
+.new-design-link-wrap {
+  margin: 2px 15px 3px;
+  text-align: right;
+  font-size: 0.85rem;
+}
+.new-design-link-wrap a {
+  color: #2a2e70;
+  text-decoration: none;
+  border-bottom: 1px dashed #6f8faf;
+  padding-bottom: 1px;
+}
+.new-design-link-wrap a:hover {
+  border-bottom-style: solid;
+}
+
+/* 小見出し部分 */
+h3 {
+  text-align: left;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2f4f60;
+  padding: 8px 12px;
+  border-left: 5px solid #6f8faf; /* 左にアクセントライン */
+  background: #eef5fc;
+  border-radius: 0 4px 4px 0;
+  margin-top: 0;
+}
+
+.text-data {
+  text-align: left;
+  margin: 15px;
+  color: #555;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* 更新履歴 */
+.update-history {
+  display: inline-block;
+  position: relative;
+}
+
+.latest-update {
+  cursor: pointer;
+  user-select: none;
+  color: inherit;
+}
+
+.history-toggle-icon {
+  font-size: 0.7rem;
+  margin-left: 2px;
+  transition: transform 0.2s ease;
+}
+
+.update-history.open .history-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.history-list {
+  display: none;
+  margin-top: 2px;
+}
+
+.update-history.open .history-list {
+  display: block;
+}
+
+.history-item {
+  line-height: 1.6;
+}
+
+/* フィルタエリア全体 */
+.filter-container {
+  margin: 20px auto;
+  max-width: 900px;
+  padding: 0 15px;
+}
+
+/* テキスト検索ボックス */
+.search-box-container {
+  margin-bottom: 15px;
+}
+
+#nameSearchInput {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 15px;
+  border: 2px solid #b0c4de;
+  border-radius: 20px;
+  font-size: 1rem;
+  color: #333;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box; /* ← この1行を追加します */
+}
+
+#nameSearchInput:focus {
+  border-color: #6f8faf;
+  box-shadow: 0 0 5px rgba(111, 143, 175, 0.4);
+}
+
+/* 検索オプション (AND/OR, リセット) */
+.search-options {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.search-options label {
+  font-size: 0.95rem;
+  color: #2f4f60;
+  cursor: pointer;
+}
+
+.search-options input[type="radio"] {
+  accent-color: #2f4f60;
+  cursor: pointer;
+}
+
+.reset-btn {
+  background-color: #fff;
+  color: #d9534f;
+  border: 1px solid #d9534f;
+  padding: 6px 12px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.reset-btn:hover {
+  background-color: #d9534f;
+  color: #fff;
+}
+
+/* フィルターの各セクション */
+.filter-section {
+  border: 1px solid #d1e0f0;
+  background: #f6faff;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.filter-header {
+  background-color: #6f8faf;
+  color: white;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-header:hover {
+  background-color: #5c7e9e;
+}
+
+.filter-content {
+  display: block;
+  padding: 12px;
+  background-color: #ffffff;
+}
+
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* フィルタボタン */
+.filter-group button {
+  background-color: #eff0ff;
+  color: #2f4f60;
+  border: 1px solid #cce0ff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.filter-group button:hover {
+  background-color: #e0e6ff;
+  transform: translateY(-1px);
+}
+
+.filter-group button.active {
+  background-color: #2f4f60;
+  color: #ffffff;
+  border-color: #2f4f60;
+  box-shadow: 0 2px 5px rgba(47, 79, 96, 0.3);
+}
+
+.toggle-label {
+  font-size: 12px;
+  font-weight: normal;
+  color: #eef5fc;
+}
+
+/* テーブル */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 30px auto;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden; /* 角丸を適用するため */
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+th {
+  background-color: #2f4f60;
+  color: #ffffff;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+tbody tr {
+  transition: background-color 0.2s ease;
+  cursor: pointer; /* クリック可能であることを明示 */
+}
+
+tbody tr:hover {
+  background-color: #f2f8fc;
+}
+
+td img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 5px;
+}
+
+table td:last-child {
+  text-align: left;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* フィルターと一致したテキストを赤くする */
+.highlight-text {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+/* モーダル画面 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(3px); /* 背景ぼかし */
+}
+
+.modal-content {
+  margin: auto;
+  display: block;
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 4px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close:hover {
+  color: #ccc;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .filter-container {
+    padding: 0 10px;
+  }
+  
+  .filter-group button {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  table {
+    width: 95%;
+  }
+  
+  th, td {
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+  
+  td img {
+    width: 45px;
+    height: 45px;
+  }
+}
