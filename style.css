@@ -211,6 +211,36 @@ a:hover { border-color: var(--accent); }
   margin: 0 0 12px;
 }
 
+/* ====== FEEDBACK BUTTONS (subtle) ====== */
+.feedback {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  margin: -4px 0 12px;
+}
+.feedback-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: var(--ink-3);
+  cursor: pointer;
+  border-radius: var(--r-input);
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.feedback-btn:hover { color: var(--accent); background: var(--accent-soft); }
+.feedback-btn.voted {
+  color: var(--accent);
+  cursor: default;
+}
+.feedback-btn.voted:hover { background: transparent; }
+.feedback-btn[disabled] { cursor: default; }
+.feedback-btn svg { display: block; }
+
 /* ====== SEARCH ====== */
 .filter-container { margin: 0; }
 .search-row {

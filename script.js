@@ -10,6 +10,11 @@ const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEG6xUCv
 // 検索条件の開閉状態を localStorage に保存するためのキー
 const STORAGE_KEY_FILTER_OPEN = "ashtale.filterOpen";
 
+// 👍 / 👎 ボタンの送信先（GAS Web App の URL を貼る。空のままだと送信は行われない）
+// GAS 側の doPost(e) で `JSON.parse(e.postData.contents).vote` を読んでシートに append する想定。
+const FEEDBACK_API_URL = "";
+const STORAGE_KEY_FEEDBACK = "ashtale.feedbackVote";
+
 // 特殊フィルタ変換マップ
 const specialFilters = {
   "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増": "対○○与ダメ増",
@@ -139,6 +144,8 @@ function setupEventListeners() {
     });
   }
 
+  setupFeedback();
+
   // モーダル閉じる
   const modal = document.getElementById("imageModal");
   const closeBtn = modal ? modal.querySelector(".close") : null;
@@ -208,6 +215,60 @@ function animateFilterArea(el, willOpen) {
     el._faOnEnd = onEnd;
     el.addEventListener("transitionend", onEnd);
   }
+}
+
+// 👍 / 👎 ボタンの初期化。FEEDBACK_API_URL が空のときはクリックを受けても何も送信しない。
+function setupFeedback() {
+  const buttons = document.querySelectorAll(".feedback-btn");
+  if (!buttons.length) return;
+
+  let already = null;
+  try { already = localStorage.getItem(STORAGE_KEY_FEEDBACK); } catch (e) {}
+  if (already) markVoted(already);
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const vote = btn.dataset.vote;
+      if (!vote) return;
+
+      let prev = null;
+      try { prev = localStorage.getItem(STORAGE_KEY_FEEDBACK); } catch (e) {}
+      if (prev) return; // 二重投票防止
+
+      if (!FEEDBACK_API_URL) {
+        // 送信先未設定のときはローカルにのみ記録（UI 確認用）
+        try { localStorage.setItem(STORAGE_KEY_FEEDBACK, vote); } catch (e) {}
+        markVoted(vote);
+        return;
+      }
+
+      // 先に投票済みフラグを立てて連打を防ぐ
+      markVoted(vote);
+      try {
+        await fetch(FEEDBACK_API_URL, {
+          method: "POST",
+          // text/plain にしておくとブラウザは preflight をスキップする
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ vote })
+        });
+        try { localStorage.setItem(STORAGE_KEY_FEEDBACK, vote); } catch (e) {}
+      } catch (err) {
+        console.error("フィードバック送信失敗:", err);
+        // 送信失敗時は投票済み状態を解除して再操作できるようにする
+        document.querySelectorAll(".feedback-btn").forEach((b) => {
+          b.classList.remove("voted");
+          b.disabled = false;
+        });
+      }
+    });
+  });
+}
+
+function markVoted(vote) {
+  document.querySelectorAll(".feedback-btn").forEach((b) => {
+    b.classList.toggle("voted", b.dataset.vote === vote);
+    b.disabled = true;
+  });
 }
 
 // 更新履歴を読み込んで表示
