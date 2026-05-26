@@ -674,8 +674,8 @@ function renderCards() {
       <div class="thumb-col">
         <div class="thumb">${thumbInner}</div>
         <div class="thumb-info">
-          <span class="rare-chip r-${escapeHtml(card.rare)}">${escapeHtml(t(card.rare))}<span class="rank-rom">${escapeHtml(rankLabel)}</span></span>
-          <span class="cat-name">${escapeHtml(t(card.category))}</span>
+          <span class="rare-chip r-${escapeHtml(card.rare)}"><span data-i18n="${escapeHtml(card.rare)}">${escapeHtml(t(card.rare))}</span><span class="rank-rom">${escapeHtml(rankLabel)}</span></span>
+          <span class="cat-name" data-i18n="${escapeHtml(card.category)}">${escapeHtml(t(card.category))}</span>
         </div>
       </div>
       <div class="body">
