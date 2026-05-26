@@ -74,14 +74,16 @@ function toRoman(n) {
 }
 // ソートのデフォルトオプション（カテゴリ・ランク・レア度・名前）。
 // arrow は表示用、dir は内部処理用。
+// 矢印は「リスト上から下へ自然に流れる向き」を ↓、逆順を ↑ で表す。
+// 手帳順は登録順（先頭→末尾）の一方向なので ↓ のみ。
 const DEFAULT_SORT_OPTIONS = [
-  { mode: "default", dir: "asc",  arrow: "↕", label: "手帳順" },
+  { mode: "default", dir: "asc",  arrow: "↓", label: "手帳順" },
   { mode: "rank",    dir: "desc", arrow: "↓", label: "ランク高い順" },
   { mode: "rank",    dir: "asc",  arrow: "↑", label: "ランク低い順" },
-  { mode: "rare",    dir: "asc",  arrow: "↑", label: "レア度（幻→金）" },
-  { mode: "rare",    dir: "desc", arrow: "↓", label: "レア度（金→幻）" },
-  { mode: "name",    dir: "asc",  arrow: "↑", label: "名前（あ→ん）" },
-  { mode: "name",    dir: "desc", arrow: "↓", label: "名前（ん→あ）" }
+  { mode: "rare",    dir: "asc",  arrow: "↓", label: "レア度（幻→金）" },
+  { mode: "rare",    dir: "desc", arrow: "↑", label: "レア度（金→幻）" },
+  { mode: "name",    dir: "asc",  arrow: "↓", label: "名前（あ→ん）" },
+  { mode: "name",    dir: "desc", arrow: "↑", label: "名前（ん→あ）" }
 ];
 
 // 現在の状態（フィルタ選択状況）に応じてソートオプションを返す。
@@ -814,7 +816,7 @@ function updateSortButtonLabel() {
   const options = getSortOptions();
   const current = options.find(isCurrentSortOption);
 
-  let arrow = "↕";
+  let arrow = "↓";
   let label = "手帳順";
   if (current) {
     arrow = current.arrow;
