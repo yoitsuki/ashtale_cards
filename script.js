@@ -12,7 +12,7 @@ const STORAGE_KEY_FILTER_OPEN = "ashtale.filterOpen";
 
 // 👍 / 👎 ボタンの送信先（GAS Web App の URL を貼る。空のままだと送信は行われない）
 // GAS 側の doPost(e) で `JSON.parse(e.postData.contents).vote` を読んでシートに append する想定。
-const FEEDBACK_API_URL = "";
+const FEEDBACK_API_URL = "https://script.google.com/macros/s/AKfycbyii-MADeEvO_42fEP6vMPXjF2z1HhyCHDAUzp1w9jdYs2_K_HRopIDJIbKjh6-R7x69w/exec";
 const STORAGE_KEY_FEEDBACK = "ashtale.feedbackVote";
 
 // 特殊フィルタ変換マップ
