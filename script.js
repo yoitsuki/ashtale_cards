@@ -217,16 +217,31 @@ function animateFilterArea(el, willOpen) {
   }
 }
 
-// 👍 / 👎 ボタンの初期化。FEEDBACK_API_URL が空のときはクリックを受けても何も送信しない。
-// ※ テスト中は localStorage による二重投票防止を一時的に外している。
+// 👍 / 👎 ボタンの初期化。FEEDBACK_API_URL が空のときは送信せずローカルにのみ記録する。
 function setupFeedback() {
   const buttons = document.querySelectorAll(".feedback-btn");
   if (!buttons.length) return;
 
+  // 既投票の状態を復元
+  let already = null;
+  try { already = localStorage.getItem(STORAGE_KEY_FEEDBACK); } catch (e) {}
+  if (already) markVoted(already);
+
   buttons.forEach((btn) => {
     btn.addEventListener("click", () => {
       const vote = btn.dataset.vote;
-      if (!vote || !FEEDBACK_API_URL) return;
+      if (!vote) return;
+
+      // 二重投票防止
+      let prev = null;
+      try { prev = localStorage.getItem(STORAGE_KEY_FEEDBACK); } catch (e) {}
+      if (prev) return;
+
+      // 楽観的に投票済みに（連打防止）。送信失敗時のみ巻き戻す。
+      markVoted(vote);
+      try { localStorage.setItem(STORAGE_KEY_FEEDBACK, vote); } catch (e) {}
+
+      if (!FEEDBACK_API_URL) return;
 
       // GAS Web App は 302 リダイレクトで googleusercontent.com に飛ばすため、
       // CORS モードだと cross-origin の preflight/redirect で失敗しやすい。
@@ -241,12 +256,13 @@ function setupFeedback() {
         body: form
       }).catch((err) => {
         console.error("フィードバック送信失敗:", err);
+        // 失敗時は投票済み状態を解除
+        try { localStorage.removeItem(STORAGE_KEY_FEEDBACK); } catch (e) {}
+        document.querySelectorAll(".feedback-btn").forEach((b) => {
+          b.classList.remove("voted");
+          b.disabled = false;
+        });
       });
-
-      // 軽い視覚的フィードバック（投票済みハイライト）。テスト中は連打可能にするため
-      // disabled にはせず、0.8 秒で戻す。
-      btn.classList.add("voted");
-      setTimeout(() => btn.classList.remove("voted"), 800);
     });
   });
 }

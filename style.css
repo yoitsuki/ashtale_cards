@@ -211,12 +211,31 @@ a:hover { border-color: var(--accent); }
   margin: 0 0 12px;
 }
 
-/* ====== FEEDBACK BUTTONS (subtle) ====== */
+/* ====== REDESIGN NOTE + FEEDBACK BUTTONS (subtle) ====== */
+.redesign-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+}
+.redesign-note-text {
+  flex: 1;
+  margin: 0;
+  font-size: 0.76rem;
+  color: var(--ink-3);
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+}
 .feedback {
   display: flex;
-  gap: 6px;
-  justify-content: flex-end;
-  margin: -4px 0 12px;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.feedback-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
 }
 .feedback-btn {
   display: inline-flex;
@@ -240,6 +259,14 @@ a:hover { border-color: var(--accent); }
 .feedback-btn.voted:hover { background: transparent; }
 .feedback-btn[disabled] { cursor: default; }
 .feedback-btn svg { display: block; }
+.feedback-label {
+  font-size: 0.6rem;
+  color: var(--ink-3);
+  letter-spacing: 0;
+  line-height: 1;
+  white-space: nowrap;
+  margin-top: -2px;
+}
 
 /* ====== SEARCH ====== */
 .filter-container { margin: 0; }
