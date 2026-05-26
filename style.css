@@ -741,6 +741,29 @@ a:hover { border-color: var(--accent); }
   gap: 6px;
   white-space: nowrap;
 }
+/* 英語モード限定の補足ブロック */
+.en-only { display: none; }
+html[lang="en"] .en-only { display: block; }
+.en-note {
+  margin: 0 0 12px;
+}
+.en-note > p {
+  margin: 0 0 4px;
+  font-size: 0.82rem;
+  color: var(--ink-1);
+  font-weight: 600;
+}
+.en-note ul {
+  margin: 0 0 0;
+  padding-left: 20px;
+}
+.en-note li {
+  font-size: 0.82rem;
+  color: var(--ink-2);
+  line-height: 1.6;
+  margin-bottom: 2px;
+}
+
 /* 英語モードは "Headwear" "Talisman" 等が横並びだと幅を食うので縦並びにする */
 html[lang="en"] .thumb-info {
   flex-direction: column;
