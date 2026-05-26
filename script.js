@@ -31,15 +31,15 @@ const UI_DICT = {
   "アッシュテイルの各カード(コラボカード、宝くじカード除く)を一覧にしております。ステータス検索等ご活用ください。各カードは、タップすると実際のカードデータを閲覧できます。":
     "A list of all AshTale cards (collab and lottery cards excluded). Use the status filters to find what you need. Tap any card to view its full data.",
   "5/25：試験的にデザインを変更しました。": "5/25: Trial redesign in progress.",
-  "もし良ければ右のボタンから教えてください。": "Let us know what you think with the buttons on the right.",
+  "もし良ければ右のボタンから教えてください。": "Let me know what you think with the buttons on the right.",
   "ｲｲﾈ!": "Good!",
   "ｲﾏｲﾁ...": "Meh...",
   // 注意書き
   "必ず最初にお読みください": "Please read this first",
   "⚠️非公式攻略サイトです。そのため個人間でのトラブルなどがあっても対応はできません。また、その件に関して一切の責任は負えませんのでご了承下さい。":
-    "⚠️ This is an unofficial fan site. We cannot mediate issues that arise between individual users, and accept no responsibility for any such matters.",
+    "⚠️ This is an unofficial fan site. I cannot mediate issues that arise between individual users, and accept no responsibility for any such matters.",
   // 連絡
-  "なにかありましたら": "If you have any feedback, please contact us via ",
+  "なにかありましたら": "If you have any feedback, please contact me via ",
   "マシュマロ": "Marshmallow",
   "まで。": ".",
   "最終更新日": "Last updated",
