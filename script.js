@@ -218,48 +218,32 @@ function animateFilterArea(el, willOpen) {
 }
 
 // 👍 / 👎 ボタンの初期化。FEEDBACK_API_URL が空のときはクリックを受けても何も送信しない。
+// ※ テスト中は localStorage による二重投票防止を一時的に外している。
 function setupFeedback() {
   const buttons = document.querySelectorAll(".feedback-btn");
   if (!buttons.length) return;
 
-  let already = null;
-  try { already = localStorage.getItem(STORAGE_KEY_FEEDBACK); } catch (e) {}
-  if (already) markVoted(already);
-
   buttons.forEach((btn) => {
-    btn.addEventListener("click", async () => {
+    btn.addEventListener("click", () => {
       const vote = btn.dataset.vote;
-      if (!vote) return;
+      if (!vote || !FEEDBACK_API_URL) return;
 
-      let prev = null;
-      try { prev = localStorage.getItem(STORAGE_KEY_FEEDBACK); } catch (e) {}
-      if (prev) return; // 二重投票防止
-
-      if (!FEEDBACK_API_URL) {
-        // 送信先未設定のときはローカルにのみ記録（UI 確認用）
-        try { localStorage.setItem(STORAGE_KEY_FEEDBACK, vote); } catch (e) {}
-        markVoted(vote);
-        return;
-      }
-
-      // 先に投票済みフラグを立てて連打を防ぐ
-      markVoted(vote);
-      try {
-        await fetch(FEEDBACK_API_URL, {
-          method: "POST",
-          // text/plain にしておくとブラウザは preflight をスキップする
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ vote })
-        });
-        try { localStorage.setItem(STORAGE_KEY_FEEDBACK, vote); } catch (e) {}
-      } catch (err) {
+      // GAS Web App は 302 リダイレクトで googleusercontent.com に飛ばすため、
+      // CORS モードだと cross-origin の preflight/redirect で失敗しやすい。
+      // 投票はファイア・アンド・フォーゲットでよいので no-cors で送る。
+      fetch(FEEDBACK_API_URL, {
+        method: "POST",
+        mode: "no-cors",
+        // Content-Type を指定しないと text/plain として送られ、preflight も発火しない
+        body: JSON.stringify({ vote })
+      }).catch((err) => {
         console.error("フィードバック送信失敗:", err);
-        // 送信失敗時は投票済み状態を解除して再操作できるようにする
-        document.querySelectorAll(".feedback-btn").forEach((b) => {
-          b.classList.remove("voted");
-          b.disabled = false;
-        });
-      }
+      });
+
+      // 軽い視覚的フィードバック（投票済みハイライト）。テスト中は連打可能にするため
+      // disabled にはせず、0.8 秒で戻す。
+      btn.classList.add("voted");
+      setTimeout(() => btn.classList.remove("voted"), 800);
     });
   });
 }
