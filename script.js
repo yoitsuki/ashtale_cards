@@ -296,17 +296,18 @@ function setupEventListeners() {
 
   setupFeedback();
 
-  // 言語トグル
-  const langBtn = document.getElementById("langToggle");
-  if (langBtn) {
-    langBtn.addEventListener("click", () => {
-      currentLang = currentLang === "en" ? "ja" : "en";
+  // 言語スイッチ（日本語 ／ EN）
+  document.querySelectorAll(".lang-opt").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const lang = btn.dataset.lang;
+      if (!lang || lang === currentLang) return;
+      currentLang = lang;
       try { localStorage.setItem(STORAGE_KEY_LANG, currentLang); } catch (e) {}
       applyTranslations();
-      // カード行の stat-bar / レアチップなどを再描画
+      // カード行の stat-bar / レアチップ等を再描画
       applyFilters();
     });
-  }
+  });
 
   // モーダル閉じる
   const modal = document.getElementById("imageModal");
@@ -375,12 +376,10 @@ function applyTranslations() {
     el.placeholder = t(key);
   });
 
-  // 言語トグルボタンの表示更新
-  const langBtn = document.getElementById("langToggle");
-  if (langBtn) {
-    langBtn.textContent = currentLang === "en" ? "日本語" : "EN";
-    langBtn.classList.toggle("on", currentLang === "en");
-  }
+  // 言語スイッチの選択状態を更新
+  document.querySelectorAll(".lang-opt").forEach((btn) => {
+    btn.classList.toggle("on", btn.dataset.lang === currentLang);
+  });
 
   // 「検索条件を表示／隠す」のラベルは状態依存なので再設定
   const filterArea = document.getElementById("filterArea");
@@ -675,8 +674,8 @@ function renderCards() {
       <div class="thumb-col">
         <div class="thumb">${thumbInner}</div>
         <div class="thumb-info">
-          <span class="rare-chip r-${escapeHtml(card.rare)}">${escapeHtml(card.rare)}<span class="rank-rom">${escapeHtml(rankLabel)}</span></span>
-          <span class="cat-name">${escapeHtml(card.category)}</span>
+          <span class="rare-chip r-${escapeHtml(card.rare)}">${escapeHtml(t(card.rare))}<span class="rank-rom">${escapeHtml(rankLabel)}</span></span>
+          <span class="cat-name">${escapeHtml(t(card.category))}</span>
         </div>
       </div>
       <div class="body">
@@ -1034,8 +1033,8 @@ function renderActiveChips() {
   const container = document.getElementById("activeTags");
   if (!container) return;
   const chips = [
-    ...activeFilters.category.map((v) => ({ k: "カテゴリ", v, translateV: false })),
-    ...activeFilters.rare.map((v) => ({ k: "レア度", v, translateV: false })),
+    ...activeFilters.category.map((v) => ({ k: "カテゴリ", v, translateV: true })),
+    ...activeFilters.rare.map((v) => ({ k: "レア度", v, translateV: true })),
     ...activeFilters.rank.map((v) => ({ k: "ランク", v: "R" + v, translateV: false })),
     ...activeFilters.status.map((v) => ({ k: "ステータス", v, translateV: true }))
   ];

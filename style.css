@@ -114,6 +114,34 @@ a:hover { border-color: var(--accent); }
   gap: 10px;
   flex-shrink: 0;
 }
+.lang-switch {
+  display: inline-flex;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-input);
+  padding: 2px;
+  flex-shrink: 0;
+}
+.lang-opt {
+  background: transparent;
+  border: 0;
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-family: var(--ff-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 0.12s ease, color 0.12s ease;
+  white-space: nowrap;
+}
+.lang-opt.on {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.lang-opt:not(.on):hover { color: var(--ink-1); }
+
 .lang-toggle {
   background: transparent;
   border: 1px solid var(--line);

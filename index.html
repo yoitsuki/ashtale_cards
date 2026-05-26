@@ -47,7 +47,10 @@
         <h1 class="mark-text" data-i18n="AshTale カード図鑑">AshTale カード図鑑</h1>
       </div>
       <div class="head-right">
-        <button type="button" class="lang-toggle" id="langToggle" aria-label="Switch language">EN</button>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" class="lang-opt" data-lang="ja">日本語</button>
+          <button type="button" class="lang-opt" data-lang="en">EN</button>
+        </div>
         <a class="legacy-link" href="legacy.html" data-i18n="前のデザインに戻す">前のデザインに戻す</a>
       </div>
     </header>
@@ -133,11 +136,11 @@
           <span class="gcount" id="gcount-category">0 / 5</span>
         </div>
         <div class="tags">
-          <button type="button" class="tag" data-type="category" data-value="武器" onclick="toggleFilter('category', '武器', this)">武器</button>
-          <button type="button" class="tag" data-type="category" data-value="腕" onclick="toggleFilter('category', '腕', this)">腕</button>
-          <button type="button" class="tag" data-type="category" data-value="防具" onclick="toggleFilter('category', '防具', this)">防具</button>
-          <button type="button" class="tag" data-type="category" data-value="装飾" onclick="toggleFilter('category', '装飾', this)">装飾</button>
-          <button type="button" class="tag" data-type="category" data-value="頭" onclick="toggleFilter('category', '頭', this)">頭</button>
+          <button type="button" class="tag" data-type="category" data-i18n="武器" data-value="武器" onclick="toggleFilter('category', '武器', this)">武器</button>
+          <button type="button" class="tag" data-type="category" data-i18n="腕" data-value="腕" onclick="toggleFilter('category', '腕', this)">腕</button>
+          <button type="button" class="tag" data-type="category" data-i18n="防具" data-value="防具" onclick="toggleFilter('category', '防具', this)">防具</button>
+          <button type="button" class="tag" data-type="category" data-i18n="装飾" data-value="装飾" onclick="toggleFilter('category', '装飾', this)">装飾</button>
+          <button type="button" class="tag" data-type="category" data-i18n="頭" data-value="頭" onclick="toggleFilter('category', '頭', this)">頭</button>
         </div>
       </div>
 
@@ -147,11 +150,11 @@
           <span class="gcount" id="gcount-rare">0 / 5</span>
         </div>
         <div class="tags">
-          <button type="button" class="tag rare rare-幻" data-type="rare" data-value="幻" onclick="toggleFilter('rare', '幻', this)">幻</button>
-          <button type="button" class="tag rare rare-鋼" data-type="rare" data-value="鋼" onclick="toggleFilter('rare', '鋼', this)">鋼</button>
-          <button type="button" class="tag rare rare-天" data-type="rare" data-value="天" onclick="toggleFilter('rare', '天', this)">天</button>
-          <button type="button" class="tag rare rare-赤" data-type="rare" data-value="赤" onclick="toggleFilter('rare', '赤', this)">赤</button>
-          <button type="button" class="tag rare rare-金" data-type="rare" data-value="金" onclick="toggleFilter('rare', '金', this)">金</button>
+          <button type="button" class="tag rare rare-幻" data-type="rare" data-i18n="幻" data-value="幻" onclick="toggleFilter('rare', '幻', this)">幻</button>
+          <button type="button" class="tag rare rare-鋼" data-type="rare" data-i18n="鋼" data-value="鋼" onclick="toggleFilter('rare', '鋼', this)">鋼</button>
+          <button type="button" class="tag rare rare-天" data-type="rare" data-i18n="天" data-value="天" onclick="toggleFilter('rare', '天', this)">天</button>
+          <button type="button" class="tag rare rare-赤" data-type="rare" data-i18n="赤" data-value="赤" onclick="toggleFilter('rare', '赤', this)">赤</button>
+          <button type="button" class="tag rare rare-金" data-type="rare" data-i18n="金" data-value="金" onclick="toggleFilter('rare', '金', this)">金</button>
         </div>
       </div>
 
