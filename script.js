@@ -38,6 +38,8 @@ const UI_DICT = {
   "必ず最初にお読みください": "Please read this first",
   "⚠️非公式攻略サイトです。そのため個人間でのトラブルなどがあっても対応はできません。また、その件に関して一切の責任は負えませんのでご了承下さい。":
     "⚠️ This is an unofficial fan site. I cannot mediate issues that arise between individual users, and accept no responsibility for any such matters.",
+  "*『AshTale』『アッシュテイル -風の大陸-』は、X-LEGEND ENTERTAINMENT INC. の商標です。『AshTale』に関わる著作権その他一切の知的財産権は X-LEGEND ENTERTAINMENT INC. に属しており、このサイトは『AshTale』及び同社とは、一切関係がありません。":
+    "*『AshTale』 and 『アッシュテイル -風の大陸-』 are trademarks of X-LEGEND ENTERTAINMENT INC. All copyrights and other intellectual property rights related to 『AshTale』 belong to X-LEGEND ENTERTAINMENT INC. This site has no affiliation with 『AshTale』 or the said company.",
   // 連絡
   "なにかありましたら": "If you have any feedback, please contact me via ",
   "マシュマロ": "Marshmallow",
