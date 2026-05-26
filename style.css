@@ -791,18 +791,18 @@ a:hover { border-color: var(--accent); }
 .stat-bar .row {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: flex-start;
   margin-bottom: 3px;
   gap: 8px;
 }
 .stat-bar .lbl {
   color: var(--ink-2);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   flex: 1 1 0;
   min-width: 0;
   font-size: 0.74rem;
+  line-height: 1.35;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 .stat-bar .val {
   font-family: var(--ff-mono);
