@@ -560,6 +560,66 @@ a:hover { border-color: var(--accent); }
   border-color: var(--r-ten);
 }
 
+/* ====== SORT MENU (dropdown) ====== */
+.sort-control {
+  position: relative;
+}
+.sort-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-input);
+  box-shadow: 0 8px 22px -8px rgba(15, 24, 48, 0.22);
+  z-index: 50;
+  min-width: 200px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.sort-menu[hidden] { display: none; }
+.sort-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  padding: 7px 10px;
+  font-size: 0.8rem;
+  color: var(--ink-1);
+  cursor: pointer;
+  border-radius: 3px;
+  font-family: inherit;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+.sort-option:hover { background: var(--accent-soft); color: var(--accent); }
+.sort-option.current {
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+.sort-option.current:hover {
+  background: var(--accent-deep);
+  color: var(--accent-ink);
+}
+.sort-option .arrow {
+  display: inline-block;
+  width: 1.1em;
+  text-align: center;
+  font-family: var(--ff-mono);
+  flex-shrink: 0;
+}
+.sort-menu.status-mode .sort-option.current {
+  background: var(--r-ten);
+}
+.sort-menu.status-mode .sort-option.current:hover {
+  background: #d05c92;
+}
+
 .active-tags {
   display: flex;
   flex-wrap: wrap;
