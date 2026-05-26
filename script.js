@@ -7,6 +7,9 @@ let maxByStat = {};
 
 const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEG6xUCvYOj4r4u3x0aaI-aSFupJvC1eaQQzlcjPWoO8DLDtur28zGqOpHeTiNc-TR81s7nFZWSadA/pub?output=csv";
 
+// 検索条件の開閉状態を localStorage に保存するためのキー
+const STORAGE_KEY_FILTER_OPEN = "ashtale.filterOpen";
+
 // 特殊フィルタ変換マップ
 const specialFilters = {
   "対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増": "対○○与ダメ増",
@@ -73,6 +76,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   loadUpdateHistory();
   await loadCards();
   loadFiltersFromURL();
+  applyInitialFilterState();
   applyFilters();
 });
 
@@ -129,6 +133,9 @@ function setupEventListeners() {
       filterToggle.classList.toggle("on", willOpen);
       filterToggle.setAttribute("aria-expanded", willOpen ? "true" : "false");
       if (filterToggleLabel) filterToggleLabel.textContent = willOpen ? "検索条件を隠す" : "検索条件を表示";
+      try {
+        localStorage.setItem(STORAGE_KEY_FILTER_OPEN, willOpen ? "open" : "closed");
+      } catch (e) { /* localStorage が使えない環境では無視 */ }
     });
   }
 
@@ -306,9 +313,10 @@ async function loadCards() {
     });
   } catch (error) {
     console.error("カードデータの取得に失敗しました:", error);
-    const container = document.getElementById("cards-container");
-    if (container) {
-      container.innerHTML = `<div class="empty"><div class="face">ERROR</div>データの読み込みに失敗しました。</div>`;
+    const loadingEl = document.getElementById("loading-msg");
+    if (loadingEl) {
+      loadingEl.innerHTML = `<div class="face">ERROR</div>データの読み込みに失敗しました。`;
+      loadingEl.style.display = "";
     }
   }
 }
@@ -362,6 +370,10 @@ function renderCards() {
   });
 
   container.appendChild(fragment);
+
+  // 読み込み完了：読み込み中表示を消す
+  const loadingEl = document.getElementById("loading-msg");
+  if (loadingEl) loadingEl.style.display = "none";
 }
 
 // stat-bar の HTML を生成。
@@ -484,26 +496,38 @@ function loadFiltersFromURL() {
   loadArrayParam("rare");
   loadArrayParam("rank");
   loadArrayParam("status");
+}
 
-  // URLでフィルタが復元されているなら絞込みエリアを開いておく
+// 検索条件エリアの初期開閉状態を決める。
+// 優先順位: URLパラメータでフィルタが入っている > localStorage の保存値 > デフォルト（開）。
+function applyInitialFilterState() {
+  const filterArea = document.getElementById("filterArea");
+  const filterToggle = document.getElementById("filterToggle");
+  const filterToggleLabel = document.getElementById("filterToggleLabel");
+  if (!filterArea || !filterToggle) return;
+
   const totalActive =
     activeFilters.category.length +
     activeFilters.rare.length +
     activeFilters.rank.length +
     activeFilters.status.length;
+
+  let shouldOpen;
   if (totalActive > 0) {
-    const filterArea = document.getElementById("filterArea");
-    const filterToggle = document.getElementById("filterToggle");
-    const filterToggleLabel = document.getElementById("filterToggleLabel");
-    if (filterArea) {
-      // 初期復元時はアニメーションせずに開いた状態で表示する
-      filterArea.classList.add("open");
-      filterArea.style.maxHeight = "none";
-    }
-    if (filterToggle) {
-      filterToggle.classList.add("on");
-      filterToggle.setAttribute("aria-expanded", "true");
-    }
+    shouldOpen = true;
+  } else {
+    let saved = null;
+    try { saved = localStorage.getItem(STORAGE_KEY_FILTER_OPEN); } catch (e) {}
+    // 未設定（初回訪問）はデフォルトで開く。"closed" だけ閉じる。
+    shouldOpen = saved !== "closed";
+  }
+
+  if (shouldOpen) {
+    // 初期表示はアニメーションさせず即時に開いた状態にする
+    filterArea.classList.add("open");
+    filterArea.style.maxHeight = "none";
+    filterToggle.classList.add("on");
+    filterToggle.setAttribute("aria-expanded", "true");
     if (filterToggleLabel) filterToggleLabel.textContent = "検索条件を隠す";
   }
 }
@@ -586,7 +610,9 @@ function applyFilters() {
   const hitEl = document.getElementById("hitCount");
   if (hitEl) hitEl.textContent = String(visibleEntries.length);
   const emptyEl = document.getElementById("no-data-msg");
-  if (emptyEl) emptyEl.style.display = visibleEntries.length === 0 ? "block" : "none";
+  // データロード前は no-data を出さない（loading-msg がメッセージを担当）
+  const dataReady = rowDataCache.length > 0;
+  if (emptyEl) emptyEl.style.display = (dataReady && visibleEntries.length === 0) ? "block" : "none";
 
   renderActiveChips();
   updateFilterToggleBadge();
