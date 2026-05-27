@@ -80,9 +80,14 @@ a:hover { border-color: var(--accent); }
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--line);
+}
+.sub-head {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 8px;
 }
 .app-mark {
   display: inline-flex;
