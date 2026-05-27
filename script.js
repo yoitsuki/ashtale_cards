@@ -1077,12 +1077,11 @@ function openModal(imageSrc) {
   const modalImg = document.getElementById("modalImage");
   if (!modal || !modalImg) return;
 
-  // 画像の自然な横幅で判定する。AshTale のカード画像は 1枚 ≒ 1170px、2枚分 ≒ 2340px なので
-  // 中間（1500px）を境界に、それより広い画像は「2枚分」とみなして横幅いっぱいに広げる。
+  // 画像が読み込まれた時点で右上ピクセルの色を見て「2枚タイプ」か判定する。
+  // 2枚画像は背景が暗ブラウン (#473939 近傍) なので HSV ±20 以内に入れば landscape 扱い。
   const applyRatio = () => {
-    if (modalImg.naturalWidth) {
-      modal.classList.toggle("landscape", modalImg.naturalWidth > 1500);
-    }
+    if (!modalImg.naturalWidth) return;
+    modal.classList.toggle("landscape", isTwoCardImage(modalImg));
   };
 
   modal.classList.remove("landscape");
@@ -1091,4 +1090,47 @@ function openModal(imageSrc) {
   // ブラウザがキャッシュ済みで onload が発火しないケースに対応
   if (modalImg.complete && modalImg.naturalWidth) applyRatio();
   modal.classList.add("is-open");
+}
+
+// 2枚タイプ判定用の目標色（HSV）と許容範囲。#473939 ≒ H=0°, S≈19.7%, V≈27.8%。
+const LANDSCAPE_TARGET_HSV = { h: 0, s: 19.7, v: 27.8 };
+const LANDSCAPE_HSV_TOLERANCE = 20;
+
+function rgbToHsv(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const d = max - min;
+  let h = 0;
+  if (d !== 0) {
+    if (max === r)      h = ((g - b) / d) % 6;
+    else if (max === g) h = (b - r) / d + 2;
+    else                h = (r - g) / d + 4;
+    h = (h * 60 + 360) % 360;
+  }
+  const s = max === 0 ? 0 : (d / max) * 100;
+  const v = max * 100;
+  return { h, s, v };
+}
+
+// 画像の右上1ピクセルの色を HSV で確認し、目標色に近ければ true。
+// canvas が tainted で読み取れない場合は従来の naturalWidth 判定にフォールバック。
+function isTwoCardImage(img) {
+  try {
+    const c = document.createElement("canvas");
+    c.width = 1;
+    c.height = 1;
+    const ctx = c.getContext("2d");
+    ctx.drawImage(img, img.naturalWidth - 1, 0, 1, 1, 0, 0, 1, 1);
+    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+    const { h, s, v } = rgbToHsv(r, g, b);
+    const t = LANDSCAPE_TARGET_HSV;
+    const tol = LANDSCAPE_HSV_TOLERANCE;
+    const hDist = Math.min(Math.abs(h - t.h), 360 - Math.abs(h - t.h));
+    return hDist <= tol
+      && Math.abs(s - t.s) <= tol
+      && Math.abs(v - t.v) <= tol;
+  } catch (e) {
+    return img.naturalWidth > 1500;
+  }
 }
