@@ -305,6 +305,10 @@ function setupEventListeners() {
       if (!lang || lang === currentLang) return;
       currentLang = lang;
       try { localStorage.setItem(STORAGE_KEY_LANG, currentLang); } catch (e) {}
+      // GA4 へ言語切替イベントを送信
+      if (typeof gtag === "function") {
+        gtag("event", "language_switch", { language: lang });
+      }
       applyTranslations();
       // カード行の stat-bar / レアチップ等を再描画
       applyFilters();
