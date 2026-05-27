@@ -12,9 +12,70 @@ let sortTarget = null;
 let maxByStat = {};
 
 const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEG6xUCvYOj4r4u3x0aaI-aSFupJvC1eaQQzlcjPWoO8DLDtur28zGqOpHeTiNc-TR81s7nFZWSadA/pub?output=csv";
+// 日英辞書 CSV（"ja, en" の2列を想定）
+const DICTIONARY_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEG6xUCvYOj4r4u3x0aaI-aSFupJvC1eaQQzlcjPWoO8DLDtur28zGqOpHeTiNc-TR81s7nFZWSadA/pub?gid=1896556978&single=true&output=csv";
 
 // 検索条件の開閉状態を localStorage に保存するためのキー
 const STORAGE_KEY_FILTER_OPEN = "ashtale.filterOpen";
+
+// i18n: 表示言語と辞書
+const STORAGE_KEY_LANG = "ashtale.lang";
+let currentLang = "ja";       // "ja" | "en"
+let sheetDict = {};           // スプレッドシートから読み込んだ辞書（ja → en）。ステータス名向け。
+
+// UI 文言の JA→EN 対応表（コード内ハードコード）。ステータス名は sheetDict が優先される。
+const UI_DICT = {
+  // ヘッダ・概要
+  "AshTale カード図鑑": "AshTale Card Index",
+  "前のデザインに戻す": "Back to old design",
+  "アッシュテイルの各カード(コラボカード、宝くじカード除く)を一覧にしております。ステータス検索等ご活用ください。各カードは、タップすると実際のカードデータを閲覧できます。":
+    "A list of all AshTale cards (collab and lottery cards excluded). Use the status filters to find what you need. Tap any card to view its full data.",
+  "5/25：試験的にデザインを変更しました。": "5/25: Trial redesign in progress.",
+  "もし良ければ右のボタンから教えてください。": "Let me know what you think with the buttons on the right.",
+  "ｲｲﾈ!": "Good!",
+  "ｲﾏｲﾁ...": "Meh...",
+  // 注意書き
+  "必ず最初にお読みください": "Please read this first",
+  "⚠️非公式攻略サイトです。そのため個人間でのトラブルなどがあっても対応はできません。また、その件に関して一切の責任は負えませんのでご了承下さい。":
+    "⚠️ This is an unofficial fan site. I cannot mediate issues that arise between individual users, and accept no responsibility for any such matters.",
+  "*『AshTale』『アッシュテイル -風の大陸-』は、X-LEGEND ENTERTAINMENT INC. の商標です。『AshTale』に関わる著作権その他一切の知的財産権は X-LEGEND ENTERTAINMENT INC. に属しており、このサイトは『AshTale』及び同社とは、一切関係がありません。":
+    "*『AshTale』 and 『アッシュテイル -風の大陸-』 are trademarks of X-LEGEND ENTERTAINMENT INC. All copyrights and other intellectual property rights related to 『AshTale』 belong to X-LEGEND ENTERTAINMENT INC. This site has no affiliation with 『AshTale』 or the said company.",
+  // 連絡
+  "なにかありましたら": "If you have any feedback, please contact me via ",
+  "マシュマロ": "Marshmallow",
+  "まで。": ".",
+  "最終更新日": "Last updated",
+  // 検索条件
+  "検索条件": "Filters",
+  "カード名で検索": "Search by card name",
+  "検索条件を表示": "Show filters",
+  "検索条件を隠す": "Hide filters",
+  "条件をリセット": "Reset filters",
+  "カテゴリ": "Category",
+  "レア度": "Rarity",
+  "ランク": "Rank",
+  "ステータス": "Status",
+  // 結果ヘッダ・空表示・ローディング
+  "件 ヒット": "hits",
+  "読み込み中…": "Loading…",
+  "該当するデータがありませんでした。": "No matching cards.",
+  // ソート
+  "手帳順": "Notebook order",
+  "ランク高い順": "Rank (high → low)",
+  "ランク低い順": "Rank (low → high)",
+  "レア度（幻→金）": "Rarity (rare → common)",
+  "レア度（金→幻）": "Rarity (common → rare)",
+  "名前（あ→ん）": "Name (A → Z)",
+  "名前（ん→あ）": "Name (Z → A)"
+};
+
+// 翻訳ヘルパ。EN モード時のみ辞書引きする。見つからなければ原文（JA）を返す。
+function t(ja) {
+  if (currentLang !== "en" || !ja) return ja;
+  if (UI_DICT[ja]) return UI_DICT[ja];
+  if (sheetDict[ja]) return sheetDict[ja];
+  return ja;
+}
 
 // 👍 / 👎 ボタンの送信先（GAS Web App の URL を貼る。空のままだと送信は行われない）
 // GAS 側の doPost(e) で `JSON.parse(e.postData.contents).vote` を読んでシートに append する想定。
@@ -99,6 +160,18 @@ function getSortOptions() {
   return DEFAULT_SORT_OPTIONS;
 }
 
+// ソートオプションのラベル翻訳。
+// ステータス系は {status}（高→低 / 低→高） の構造なので名前部分だけ辞書引き。
+function translateSortLabel(o) {
+  if (currentLang !== "en") return o.label;
+  if (o.mode === "status" && o.target) {
+    const name = t(o.target);
+    const suffix = o.dir === "desc" ? " (high → low)" : " (low → high)";
+    return name + suffix;
+  }
+  return t(o.label);
+}
+
 function isCurrentSortOption(o) {
   if (o.mode !== sortMode) return false;
   if (o.dir !== sortDir) return false;
@@ -126,12 +199,22 @@ function ensureValidSort() {
 
 // 1. 初期ロード処理
 document.addEventListener("DOMContentLoaded", async function () {
+  // 言語の復元（既定 JA）
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY_LANG);
+    if (saved === "en" || saved === "ja") currentLang = saved;
+  } catch (e) {}
+
   setupEventListeners();
   loadUpdateHistory();
+  // 辞書とカードは並列で読み込む
+  const dictPromise = loadDictionary();
   await loadCards();
+  await dictPromise;
   loadFiltersFromURL();
   applyInitialFilterState();
   applyFilters();
+  applyTranslations();
 });
 
 // イベントリスナーのセットアップ
@@ -202,7 +285,11 @@ function setupEventListeners() {
       animateFilterArea(filterArea, willOpen);
       filterToggle.classList.toggle("on", willOpen);
       filterToggle.setAttribute("aria-expanded", willOpen ? "true" : "false");
-      if (filterToggleLabel) filterToggleLabel.textContent = willOpen ? "検索条件を隠す" : "検索条件を表示";
+      if (filterToggleLabel) {
+        const jaLabel = willOpen ? "検索条件を隠す" : "検索条件を表示";
+        filterToggleLabel.setAttribute("data-i18n", jaLabel);
+        filterToggleLabel.textContent = t(jaLabel);
+      }
       try {
         localStorage.setItem(STORAGE_KEY_FILTER_OPEN, willOpen ? "open" : "closed");
       } catch (e) { /* localStorage が使えない環境では無視 */ }
@@ -210,6 +297,19 @@ function setupEventListeners() {
   }
 
   setupFeedback();
+
+  // 言語スイッチ（日本語 ／ EN）
+  document.querySelectorAll(".lang-opt").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const lang = btn.dataset.lang;
+      if (!lang || lang === currentLang) return;
+      currentLang = lang;
+      try { localStorage.setItem(STORAGE_KEY_LANG, currentLang); } catch (e) {}
+      applyTranslations();
+      // カード行の stat-bar / レアチップ等を再描画
+      applyFilters();
+    });
+  });
 
   // モーダル閉じる
   const modal = document.getElementById("imageModal");
@@ -238,6 +338,66 @@ function closeModal() {
   if (modal) modal.classList.remove("is-open");
 }
 
+// 日英辞書を読み込む（非同期・任意。失敗してもアプリは動く）。
+async function loadDictionary() {
+  try {
+    const res = await fetch(DICTIONARY_CSV_URL, { cache: "no-cache" });
+    if (!res.ok) throw new Error("Network response was not ok");
+    const csv = await res.text();
+    await new Promise((resolve) => {
+      Papa.parse(csv, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          sheetDict = {};
+          results.data.forEach((row) => {
+            const ja = (row.ja || "").trim();
+            const en = (row.en || "").trim();
+            if (ja && en) sheetDict[ja] = en;
+          });
+          resolve();
+        }
+      });
+    });
+  } catch (err) {
+    console.warn("辞書の読み込みに失敗:", err);
+  }
+}
+
+// HTML 上の data-i18n を一斉に翻訳。ボタンラベル、カードリスト、ソート系もリフレッシュ。
+function applyTranslations() {
+  document.documentElement.lang = currentLang;
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    if (!key) return;
+    el.textContent = t(key);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-placeholder");
+    if (!key) return;
+    el.placeholder = t(key);
+  });
+
+  // 言語スイッチの選択状態を更新
+  document.querySelectorAll(".lang-opt").forEach((btn) => {
+    btn.classList.toggle("on", btn.dataset.lang === currentLang);
+  });
+
+  // 「検索条件を表示／隠す」のラベルは状態依存なので再設定
+  const filterArea = document.getElementById("filterArea");
+  const filterToggleLabel = document.getElementById("filterToggleLabel");
+  if (filterArea && filterToggleLabel) {
+    const isOpen = filterArea.classList.contains("open");
+    const jaLabel = isOpen ? "検索条件を隠す" : "検索条件を表示";
+    filterToggleLabel.setAttribute("data-i18n", jaLabel);
+    filterToggleLabel.textContent = t(jaLabel);
+  }
+
+  // ソートメニューが開いていれば再描画
+  const sortMenu = document.getElementById("sortMenu");
+  if (sortMenu && !sortMenu.hasAttribute("hidden")) renderSortMenu();
+}
+
 function openSortMenu() {
   const menu = document.getElementById("sortMenu");
   const btn = document.getElementById("sortBtn");
@@ -263,8 +423,9 @@ function renderSortMenu() {
   menu.innerHTML = options
     .map((o, i) => {
       const cls = isCurrentSortOption(o) ? "sort-option current" : "sort-option";
+      const label = translateSortLabel(o);
       return `<button type="button" class="${cls}" role="menuitem" data-index="${i}">
-        <span class="arrow">${o.arrow}</span><span>${escapeHtml(o.label)}</span>
+        <span class="arrow">${o.arrow}</span><span>${escapeHtml(label)}</span>
       </button>`;
     })
     .join("");
@@ -515,8 +676,8 @@ function renderCards() {
       <div class="thumb-col">
         <div class="thumb">${thumbInner}</div>
         <div class="thumb-info">
-          <span class="rare-chip r-${escapeHtml(card.rare)}">${escapeHtml(card.rare)}<span class="rank-rom">${escapeHtml(rankLabel)}</span></span>
-          <span class="cat-name">${escapeHtml(card.category)}</span>
+          <span class="rare-chip r-${escapeHtml(card.rare)}"><span data-i18n="${escapeHtml(card.rare)}">${escapeHtml(t(card.rare))}</span><span class="rank-rom">${escapeHtml(rankLabel)}</span></span>
+          <span class="cat-name" data-i18n="${escapeHtml(card.category)}">${escapeHtml(t(card.category))}</span>
         </div>
       </div>
       <div class="body">
@@ -588,7 +749,7 @@ function buildStatBars(card, transformedActiveStatus) {
       return `
         <div class="stat-bar ${s.hi ? "hi" : ""}">
           <div class="row">
-            <div class="lbl">${escapeHtml(s.name)}</div>
+            <div class="lbl">${escapeHtml(t(s.name))}</div>
             ${valHtml}
           </div>
           <div class="track"><div class="fill" style="width:${pct}%"></div></div>
@@ -711,7 +872,10 @@ function applyInitialFilterState() {
     filterArea.style.maxHeight = "none";
     filterToggle.classList.add("on");
     filterToggle.setAttribute("aria-expanded", "true");
-    if (filterToggleLabel) filterToggleLabel.textContent = "検索条件を隠す";
+    if (filterToggleLabel) {
+      filterToggleLabel.setAttribute("data-i18n", "検索条件を隠す");
+      filterToggleLabel.textContent = t("検索条件を隠す");
+    }
   }
 }
 
@@ -817,14 +981,18 @@ function updateSortButtonLabel() {
   const current = options.find(isCurrentSortOption);
 
   let arrow = "↓";
-  let label = "手帳順";
+  let label = t("手帳順");
   if (current) {
     arrow = current.arrow;
-    label = current.label;
+    label = translateSortLabel(current);
   } else if (sortMode === "status" && sortTarget) {
     // フォールバック（フィルタ外のステータスが残っているケース）
     arrow = sortDir === "asc" ? "↑" : "↓";
-    label = `${sortTarget}（${sortDir === "asc" ? "低→高" : "高→低"}）`;
+    if (currentLang === "en") {
+      label = t(sortTarget) + (sortDir === "asc" ? " (low → high)" : " (high → low)");
+    } else {
+      label = `${sortTarget}（${sortDir === "asc" ? "低→高" : "高→低"}）`;
+    }
   }
 
   sortBtn.textContent = `${arrow} ${label}`;
@@ -867,13 +1035,13 @@ function renderActiveChips() {
   const container = document.getElementById("activeTags");
   if (!container) return;
   const chips = [
-    ...activeFilters.category.map((v) => ({ k: "カテゴリ", v })),
-    ...activeFilters.rare.map((v) => ({ k: "レア度", v })),
-    ...activeFilters.rank.map((v) => ({ k: "ランク", v: "R" + v })),
-    ...activeFilters.status.map((v) => ({ k: "ステータス", v }))
+    ...activeFilters.category.map((v) => ({ k: "カテゴリ", v, translateV: true })),
+    ...activeFilters.rare.map((v) => ({ k: "レア度", v, translateV: true })),
+    ...activeFilters.rank.map((v) => ({ k: "ランク", v: "R" + v, translateV: false })),
+    ...activeFilters.status.map((v) => ({ k: "ステータス", v, translateV: true }))
   ];
   container.innerHTML = chips
-    .map((c) => `<span class="active-tag">${escapeHtml(c.k)}: ${escapeHtml(c.v)}</span>`)
+    .map((c) => `<span class="active-tag">${escapeHtml(t(c.k))}: ${escapeHtml(c.translateV ? t(c.v) : c.v)}</span>`)
     .join("");
 }
 

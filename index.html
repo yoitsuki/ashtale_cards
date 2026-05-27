@@ -44,16 +44,22 @@
             <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>
           </svg>
         </span>
-        <h1 class="mark-text">AshTale カード図鑑</h1>
+        <h1 class="mark-text" data-i18n="AshTale カード図鑑">AshTale カード図鑑</h1>
       </div>
-      <a class="legacy-link" href="legacy.html">前のデザインに戻す</a>
+      <div class="head-right">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" class="lang-opt" data-lang="ja">日本語</button>
+          <button type="button" class="lang-opt" data-lang="en">EN</button>
+        </div>
+        <a class="legacy-link" href="legacy.html" data-i18n="前のデザインに戻す">前のデザインに戻す</a>
+      </div>
     </header>
 
     <div class="text-data">
-      <p>アッシュテイルの各カード(コラボカード、宝くじカード除く)を一覧にしております。ステータス検索等ご活用ください。各カードは、タップすると実際のカードデータを閲覧できます。</p>
+      <p data-i18n="アッシュテイルの各カード(コラボカード、宝くじカード除く)を一覧にしております。ステータス検索等ご活用ください。各カードは、タップすると実際のカードデータを閲覧できます。">アッシュテイルの各カード(コラボカード、宝くじカード除く)を一覧にしております。ステータス検索等ご活用ください。各カードは、タップすると実際のカードデータを閲覧できます。</p>
 
       <div class="redesign-note">
-        <p class="redesign-note-text">5/25：試験的にデザインを変更しました。<br>もし良ければ右のボタンから教えてください。</p>
+        <p class="redesign-note-text"><span data-i18n="5/25：試験的にデザインを変更しました。">5/25：試験的にデザインを変更しました。</span><br><span data-i18n="もし良ければ右のボタンから教えてください。">もし良ければ右のボタンから教えてください。</span></p>
         <div class="feedback" aria-label="新デザインの感想">
           <div class="feedback-item">
             <button type="button" class="feedback-btn" data-vote="good" aria-label="良かった">
@@ -62,7 +68,7 @@
                 <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H7V10l5-8a3 3 0 0 1 3 3z"/>
               </svg>
             </button>
-            <span class="feedback-label">ｲｲﾈ!</span>
+            <span class="feedback-label" data-i18n="ｲｲﾈ!">ｲｲﾈ!</span>
           </div>
           <div class="feedback-item">
             <button type="button" class="feedback-btn" data-vote="bad" aria-label="残念">
@@ -71,45 +77,58 @@
                 <path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H17v12l-5 8a3 3 0 0 1-3-3z"/>
               </svg>
             </button>
-            <span class="feedback-label">ｲﾏｲﾁ...</span>
+            <span class="feedback-label" data-i18n="ｲﾏｲﾁ...">ｲﾏｲﾁ...</span>
           </div>
         </div>
       </div>
 
       <details class="notice">
-        <summary>必ず最初にお読みください</summary>
+        <summary data-i18n="必ず最初にお読みください">必ず最初にお読みください</summary>
         <div class="notice-body">
-          <p>⚠️非公式攻略サイトです。<br>
+          <p data-i18n="⚠️非公式攻略サイトです。そのため個人間でのトラブルなどがあっても対応はできません。また、その件に関して一切の責任は負えませんのでご了承下さい。">⚠️非公式攻略サイトです。<br>
           そのため個人間でのトラブルなどがあっても対応はできません。<br>
           また、その件に関して一切の責任は負えませんのでご了承下さい。</p>
-          <p class="notice-fine">*『AshTale』『アッシュテイル -風の大陸-』は、X-LEGEND ENTERTAINMENT INC. の商標です。『AshTale』に関わる著作権その他一切の知的財産権は X-LEGEND ENTERTAINMENT INC. に属しており、このサイトは『AshTale』及び同社とは、一切関係がありません。</p>
+          <p class="notice-fine" data-i18n="*『AshTale』『アッシュテイル -風の大陸-』は、X-LEGEND ENTERTAINMENT INC. の商標です。『AshTale』に関わる著作権その他一切の知的財産権は X-LEGEND ENTERTAINMENT INC. に属しており、このサイトは『AshTale』及び同社とは、一切関係がありません。">*『AshTale』『アッシュテイル -風の大陸-』は、X-LEGEND ENTERTAINMENT INC. の商標です。『AshTale』に関わる著作権その他一切の知的財産権は X-LEGEND ENTERTAINMENT INC. に属しており、このサイトは『AshTale』及び同社とは、一切関係がありません。</p>
         </div>
       </details>
 
-      <p>なにかありましたら<a href="https://marshmallow-qa.com/re3ig61uxuunbsn">マシュマロ</a>まで。</p>
+      <div class="en-only en-note" lang="en">
+        <p>A couple of notes:</p>
+        <ul>
+          <li>Only cards from the Japanese version of AshTale are listed here.</li>
+          <li>Some terms appear in Japanese where I'm not sure of the official English equivalent.</li>
+        </ul>
+      </div>
+
+      <p><span data-i18n="なにかありましたら">なにかありましたら</span><a href="https://marshmallow-qa.com/re3ig61uxuunbsn" target="_blank" rel="noopener noreferrer" data-i18n="マシュマロ">マシュマロ</a><span data-i18n="まで。">まで。</span></p>
 
       <div class="update-history" id="updateHistory">
         <div class="latest-update" onclick="toggleHistory(event)">
-          <span>最終更新日：<span id="latestUpdateText">--</span></span>
+          <span><span data-i18n="最終更新日">最終更新日</span>：<span id="latestUpdateText">--</span></span>
           <span class="history-toggle-icon">▼</span>
         </div>
         <div id="historyList" class="history-list"></div>
       </div>
     </div>
 
-    <h3 class="visually-hidden">検索条件</h3>
+    <h3 class="visually-hidden" data-i18n="検索条件">検索条件</h3>
 
     <div class="filter-container">
       <div class="search-row">
         <div class="search">
-          <span class="icon" aria-hidden="true">⌕</span>
-          <input type="text" id="nameSearchInput" placeholder="カード名で検索" />
+          <span class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.3-4.3"/>
+            </svg>
+          </span>
+          <input type="text" id="nameSearchInput" placeholder="カード名で検索" data-i18n-placeholder="カード名で検索" />
         </div>
         <button type="button" class="filter-toggle" id="filterToggle" aria-expanded="false" aria-controls="filterArea">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true">
             <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
           </svg>
-          <span class="filter-toggle-label" id="filterToggleLabel">検索条件を表示</span>
+          <span class="filter-toggle-label" id="filterToggleLabel" data-i18n="検索条件を表示">検索条件を表示</span>
           <span class="filter-count" id="filterCount" hidden>0</span>
         </button>
       </div>
@@ -121,40 +140,40 @@
           <button type="button" id="modeOr" data-mode="OR">OR</button>
         </div>
         <div class="grow"></div>
-        <button type="button" class="btn-link" onclick="resetFilters()">条件をリセット</button>
+        <button type="button" class="btn-link" onclick="resetFilters()" data-i18n="条件をリセット">条件をリセット</button>
       </div>
 
       <div class="taggroup">
         <div class="ghead">
-          <span class="glabel">カテゴリ</span>
+          <span class="glabel" data-i18n="カテゴリ">カテゴリ</span>
           <span class="gcount" id="gcount-category">0 / 5</span>
         </div>
         <div class="tags">
-          <button type="button" class="tag" data-type="category" data-value="武器" onclick="toggleFilter('category', '武器', this)">武器</button>
-          <button type="button" class="tag" data-type="category" data-value="腕" onclick="toggleFilter('category', '腕', this)">腕</button>
-          <button type="button" class="tag" data-type="category" data-value="防具" onclick="toggleFilter('category', '防具', this)">防具</button>
-          <button type="button" class="tag" data-type="category" data-value="装飾" onclick="toggleFilter('category', '装飾', this)">装飾</button>
-          <button type="button" class="tag" data-type="category" data-value="頭" onclick="toggleFilter('category', '頭', this)">頭</button>
+          <button type="button" class="tag" data-type="category" data-i18n="武器" data-value="武器" onclick="toggleFilter('category', '武器', this)">武器</button>
+          <button type="button" class="tag" data-type="category" data-i18n="腕" data-value="腕" onclick="toggleFilter('category', '腕', this)">腕</button>
+          <button type="button" class="tag" data-type="category" data-i18n="防具" data-value="防具" onclick="toggleFilter('category', '防具', this)">防具</button>
+          <button type="button" class="tag" data-type="category" data-i18n="装飾" data-value="装飾" onclick="toggleFilter('category', '装飾', this)">装飾</button>
+          <button type="button" class="tag" data-type="category" data-i18n="頭" data-value="頭" onclick="toggleFilter('category', '頭', this)">頭</button>
         </div>
       </div>
 
       <div class="taggroup">
         <div class="ghead">
-          <span class="glabel">レア度</span>
+          <span class="glabel" data-i18n="レア度">レア度</span>
           <span class="gcount" id="gcount-rare">0 / 5</span>
         </div>
         <div class="tags">
-          <button type="button" class="tag rare rare-幻" data-type="rare" data-value="幻" onclick="toggleFilter('rare', '幻', this)">幻</button>
-          <button type="button" class="tag rare rare-鋼" data-type="rare" data-value="鋼" onclick="toggleFilter('rare', '鋼', this)">鋼</button>
-          <button type="button" class="tag rare rare-天" data-type="rare" data-value="天" onclick="toggleFilter('rare', '天', this)">天</button>
-          <button type="button" class="tag rare rare-赤" data-type="rare" data-value="赤" onclick="toggleFilter('rare', '赤', this)">赤</button>
-          <button type="button" class="tag rare rare-金" data-type="rare" data-value="金" onclick="toggleFilter('rare', '金', this)">金</button>
+          <button type="button" class="tag rare rare-幻" data-type="rare" data-i18n="幻" data-value="幻" onclick="toggleFilter('rare', '幻', this)">幻</button>
+          <button type="button" class="tag rare rare-鋼" data-type="rare" data-i18n="鋼" data-value="鋼" onclick="toggleFilter('rare', '鋼', this)">鋼</button>
+          <button type="button" class="tag rare rare-天" data-type="rare" data-i18n="天" data-value="天" onclick="toggleFilter('rare', '天', this)">天</button>
+          <button type="button" class="tag rare rare-赤" data-type="rare" data-i18n="赤" data-value="赤" onclick="toggleFilter('rare', '赤', this)">赤</button>
+          <button type="button" class="tag rare rare-金" data-type="rare" data-i18n="金" data-value="金" onclick="toggleFilter('rare', '金', this)">金</button>
         </div>
       </div>
 
       <div class="taggroup">
         <div class="ghead">
-          <span class="glabel">ランク</span>
+          <span class="glabel" data-i18n="ランク">ランク</span>
           <span class="gcount" id="gcount-rank">0 / 9</span>
         </div>
         <div class="tags">
@@ -172,39 +191,39 @@
 
       <div class="taggroup" id="status-group">
         <div class="ghead">
-          <span class="glabel">ステータス</span>
+          <span class="glabel" data-i18n="ステータス">ステータス</span>
           <span class="gcount" id="gcount-status">0 / 29</span>
         </div>
         <div class="tags" id="status-tags">
-          <button type="button" class="tag" data-type="status" data-value="攻撃%" onclick="toggleFilter('status', '攻撃%', this)">攻撃%</button>
-          <button type="button" class="tag" data-type="status" data-value="会心率" onclick="toggleFilter('status', '会心率', this)">会心率</button>
-          <button type="button" class="tag" data-type="status" data-value="会心ダメージ" onclick="toggleFilter('status', '会心ダメージ', this)">会心ダメージ</button>
-          <button type="button" class="tag" data-type="status" data-value="防御無視" onclick="toggleFilter('status', '防御無視', this)">防御無視</button>
-          <button type="button" class="tag" data-type="status" data-value="ダメージ倍率" onclick="toggleFilter('status', 'ダメージ倍率', this)">ダメージ倍率</button>
-          <button type="button" class="tag" data-type="status" data-value="対ボス与ダメ増" onclick="toggleFilter('status', '対ボス与ダメ増', this)">対ボス与ダメ増</button>
-          <button type="button" class="tag" data-type="status" data-value="対高HP与ダメ増" onclick="toggleFilter('status', '対高HP与ダメ増', this)">対高HP与ダメ増</button>
-          <button type="button" class="tag" data-type="status" data-value="対低HP与ダメ増" onclick="toggleFilter('status', '対低HP与ダメ増', this)">対低HP与ダメ増</button>
-          <button type="button" class="tag" data-type="status" data-value="状態異常与ダメ増" onclick="toggleFilter('status', '状態異常与ダメ増', this)">状態異常与ダメ増</button>
-          <button type="button" class="tag" data-type="status" data-value="命中率" onclick="toggleFilter('status', '命中率', this)">命中率</button>
-          <button type="button" class="tag" data-type="status" data-value="状態異常命中率" onclick="toggleFilter('status', '状態異常命中率', this)">状態異常命中率</button>
-          <button type="button" class="tag" data-type="status" data-value="防御%" onclick="toggleFilter('status', '防御%', this)">防御%</button>
-          <button type="button" class="tag" data-type="status" data-value="HP%" onclick="toggleFilter('status', 'HP%', this)">HP%</button>
-          <button type="button" class="tag" data-type="status" data-value="ガード率" onclick="toggleFilter('status', 'ガード率', this)">ガード率</button>
-          <button type="button" class="tag" data-type="status" data-value="回避率" onclick="toggleFilter('status', '回避率', this)">回避率</button>
-          <button type="button" class="tag" data-type="status" data-value="会心率耐性" onclick="toggleFilter('status', '会心率耐性', this)">会心率耐性</button>
-          <button type="button" class="tag" data-type="status" data-value="会心ダメ耐性" onclick="toggleFilter('status', '会心ダメ耐性', this)">会心ダメ耐性</button>
-          <button type="button" class="tag" data-type="status" data-value="対高低HPダメ耐性" onclick="toggleFilter('status', '対高低HPダメ耐性', this)">対高低HPダメ耐性</button>
-          <button type="button" class="tag" data-type="status" data-value="対ボス被ダメ減" onclick="toggleFilter('status', '対ボス被ダメ減', this)">対ボス被ダメ減</button>
-          <button type="button" class="tag" data-type="status" data-value="状態異常耐性" onclick="toggleFilter('status', '状態異常耐性', this)">状態異常耐性</button>
-          <button type="button" class="tag" data-type="status" data-value="状態異常ダメ耐性" onclick="toggleFilter('status', '状態異常ダメ耐性', this)">状態異常ダメ耐性</button>
-          <button type="button" class="tag" data-type="status" data-value="与治療効果" onclick="toggleFilter('status', '与治療効果', this)">与治療効果</button>
-          <button type="button" class="tag" data-type="status" data-value="被治療効果" onclick="toggleFilter('status', '被治療効果', this)">被治療効果</button>
-          <button type="button" class="tag" data-type="status" data-value="HP吸収率" onclick="toggleFilter('status', 'HP吸収率', this)">HP吸収率</button>
-          <button type="button" class="tag" data-type="status" data-value="対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増" onclick="toggleFilter('status', '対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増', this)">対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増</button>
-          <button type="button" class="tag" data-type="status" data-value="対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減" onclick="toggleFilter('status', '対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減', this)">対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減</button>
-          <button type="button" class="tag" data-type="status" data-value="対高HPダメ倍率" onclick="toggleFilter('status', '対高HPダメ倍率', this)">対高HPダメ倍率</button>
-          <button type="button" class="tag" data-type="status" data-value="対低HPダメ倍率" onclick="toggleFilter('status', '対低HPダメ倍率', this)">対低HPダメ倍率</button>
-          <button type="button" class="tag" data-type="status" data-value="状態異常ダメ倍率" onclick="toggleFilter('status', '状態異常ダメ倍率', this)">状態異常ダメ倍率</button>
+          <button type="button" class="tag" data-type="status" data-i18n="攻撃%" data-value="攻撃%" onclick="toggleFilter('status', '攻撃%', this)">攻撃%</button>
+          <button type="button" class="tag" data-type="status" data-i18n="会心率" data-value="会心率" onclick="toggleFilter('status', '会心率', this)">会心率</button>
+          <button type="button" class="tag" data-type="status" data-i18n="会心ダメージ" data-value="会心ダメージ" onclick="toggleFilter('status', '会心ダメージ', this)">会心ダメージ</button>
+          <button type="button" class="tag" data-type="status" data-i18n="防御無視" data-value="防御無視" onclick="toggleFilter('status', '防御無視', this)">防御無視</button>
+          <button type="button" class="tag" data-type="status" data-i18n="ダメージ倍率" data-value="ダメージ倍率" onclick="toggleFilter('status', 'ダメージ倍率', this)">ダメージ倍率</button>
+          <button type="button" class="tag" data-type="status" data-i18n="対ボス与ダメ増" data-value="対ボス与ダメ増" onclick="toggleFilter('status', '対ボス与ダメ増', this)">対ボス与ダメ増</button>
+          <button type="button" class="tag" data-type="status" data-i18n="対高HP与ダメ増" data-value="対高HP与ダメ増" onclick="toggleFilter('status', '対高HP与ダメ増', this)">対高HP与ダメ増</button>
+          <button type="button" class="tag" data-type="status" data-i18n="対低HP与ダメ増" data-value="対低HP与ダメ増" onclick="toggleFilter('status', '対低HP与ダメ増', this)">対低HP与ダメ増</button>
+          <button type="button" class="tag" data-type="status" data-i18n="状態異常与ダメ増" data-value="状態異常与ダメ増" onclick="toggleFilter('status', '状態異常与ダメ増', this)">状態異常与ダメ増</button>
+          <button type="button" class="tag" data-type="status" data-i18n="命中率" data-value="命中率" onclick="toggleFilter('status', '命中率', this)">命中率</button>
+          <button type="button" class="tag" data-type="status" data-i18n="状態異常命中率" data-value="状態異常命中率" onclick="toggleFilter('status', '状態異常命中率', this)">状態異常命中率</button>
+          <button type="button" class="tag" data-type="status" data-i18n="防御%" data-value="防御%" onclick="toggleFilter('status', '防御%', this)">防御%</button>
+          <button type="button" class="tag" data-type="status" data-i18n="HP%" data-value="HP%" onclick="toggleFilter('status', 'HP%', this)">HP%</button>
+          <button type="button" class="tag" data-type="status" data-i18n="ガード率" data-value="ガード率" onclick="toggleFilter('status', 'ガード率', this)">ガード率</button>
+          <button type="button" class="tag" data-type="status" data-i18n="回避率" data-value="回避率" onclick="toggleFilter('status', '回避率', this)">回避率</button>
+          <button type="button" class="tag" data-type="status" data-i18n="会心率耐性" data-value="会心率耐性" onclick="toggleFilter('status', '会心率耐性', this)">会心率耐性</button>
+          <button type="button" class="tag" data-type="status" data-i18n="会心ダメ耐性" data-value="会心ダメ耐性" onclick="toggleFilter('status', '会心ダメ耐性', this)">会心ダメ耐性</button>
+          <button type="button" class="tag" data-type="status" data-i18n="対高低HPダメ耐性" data-value="対高低HPダメ耐性" onclick="toggleFilter('status', '対高低HPダメ耐性', this)">対高低HPダメ耐性</button>
+          <button type="button" class="tag" data-type="status" data-i18n="対ボス被ダメ減" data-value="対ボス被ダメ減" onclick="toggleFilter('status', '対ボス被ダメ減', this)">対ボス被ダメ減</button>
+          <button type="button" class="tag" data-type="status" data-i18n="状態異常耐性" data-value="状態異常耐性" onclick="toggleFilter('status', '状態異常耐性', this)">状態異常耐性</button>
+          <button type="button" class="tag" data-type="status" data-i18n="状態異常ダメ耐性" data-value="状態異常ダメ耐性" onclick="toggleFilter('status', '状態異常ダメ耐性', this)">状態異常ダメ耐性</button>
+          <button type="button" class="tag" data-type="status" data-i18n="与治療効果" data-value="与治療効果" onclick="toggleFilter('status', '与治療効果', this)">与治療効果</button>
+          <button type="button" class="tag" data-type="status" data-i18n="被治療効果" data-value="被治療効果" onclick="toggleFilter('status', '被治療効果', this)">被治療効果</button>
+          <button type="button" class="tag" data-type="status" data-i18n="HP吸収率" data-value="HP吸収率" onclick="toggleFilter('status', 'HP吸収率', this)">HP吸収率</button>
+          <button type="button" class="tag" data-type="status" data-i18n="対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増" data-value="対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増" onclick="toggleFilter('status', '対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増', this)">対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増</button>
+          <button type="button" class="tag" data-type="status" data-i18n="対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減" data-value="対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減" onclick="toggleFilter('status', '対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減', this)">対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減</button>
+          <button type="button" class="tag" data-type="status" data-i18n="対高HPダメ倍率" data-value="対高HPダメ倍率" onclick="toggleFilter('status', '対高HPダメ倍率', this)">対高HPダメ倍率</button>
+          <button type="button" class="tag" data-type="status" data-i18n="対低HPダメ倍率" data-value="対低HPダメ倍率" onclick="toggleFilter('status', '対低HPダメ倍率', this)">対低HPダメ倍率</button>
+          <button type="button" class="tag" data-type="status" data-i18n="状態異常ダメ倍率" data-value="状態異常ダメ倍率" onclick="toggleFilter('status', '状態異常ダメ倍率', this)">状態異常ダメ倍率</button>
         </div>
       </div>
       </div><!-- /.filter-area -->
@@ -401,7 +420,7 @@
 
     <div class="results-h">
       <h3 class="visually-hidden">検索結果</h3>
-      <div class="left"><span class="num" id="hitCount">0</span> <span>件 ヒット</span></div>
+      <div class="left"><span class="num" id="hitCount">0</span> <span data-i18n="件 ヒット">件 ヒット</span></div>
       <div class="sort-control">
         <button type="button" class="sort-mini" id="sortBtn" aria-haspopup="true" aria-expanded="false">↓ 手帳順</button>
         <div class="sort-menu" id="sortMenu" hidden role="menu" aria-labelledby="sortBtn"></div>
@@ -414,12 +433,12 @@
 
     <div id="loading-msg" class="empty">
       <div class="face">LOADING</div>
-      読み込み中…
+      <span data-i18n="読み込み中…">読み込み中…</span>
     </div>
 
     <div id="no-data-msg" class="empty" style="display:none">
       <div class="face">NO RESULT</div>
-      該当するデータがありませんでした。
+      <span data-i18n="該当するデータがありませんでした。">該当するデータがありませんでした。</span>
     </div>
 
     <div class="foot">
