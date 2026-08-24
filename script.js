@@ -30,10 +30,6 @@ const UI_DICT = {
   "前のデザインに戻す": "Back to old design",
   "アッシュテイルの各カード(コラボカード、宝くじカード除く)を一覧にしております。ステータス検索等ご活用ください。各カードは、タップすると実際のカードデータを閲覧できます。":
     "A list of all AshTale cards (collab and lottery cards excluded). Use the status filters to find what you need. Tap any card to view its full data.",
-  "5/25：試験的にデザインを変更しました。": "5/25: Trial redesign in progress.",
-  "もし良ければ右のボタンから教えてください。": "Let me know what you think with the buttons on the right.",
-  "ｲｲﾈ!": "Good!",
-  "ｲﾏｲﾁ...": "Meh...",
   // 注意書き
   "必ず最初にお読みください": "Please read this first",
   "⚠️非公式攻略サイトです。そのため個人間でのトラブルなどがあっても対応はできません。また、その件に関して一切の責任は負えませんのでご了承下さい。":
@@ -76,11 +72,6 @@ function t(ja) {
   if (sheetDict[ja]) return sheetDict[ja];
   return ja;
 }
-
-// 👍 / 👎 ボタンの送信先（GAS Web App の URL を貼る。空のままだと送信は行われない）
-// GAS 側の doPost(e) で `JSON.parse(e.postData.contents).vote` を読んでシートに append する想定。
-const FEEDBACK_API_URL = "https://script.google.com/macros/s/AKfycbyii-MADeEvO_42fEP6vMPXjF2z1HhyCHDAUzp1w9jdYs2_K_HRopIDJIbKjh6-R7x69w/exec";
-const STORAGE_KEY_FEEDBACK = "ashtale.feedbackVote";
 
 // 特殊フィルタ変換マップ
 const specialFilters = {
@@ -296,8 +287,6 @@ function setupEventListeners() {
     });
   }
 
-  setupFeedback();
-
   // 言語スイッチ（日本語 ／ EN）
   document.querySelectorAll(".lang-opt").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -489,63 +478,6 @@ function animateFilterArea(el, willOpen) {
     el._faOnEnd = onEnd;
     el.addEventListener("transitionend", onEnd);
   }
-}
-
-// 👍 / 👎 ボタンの初期化。FEEDBACK_API_URL が空のときは送信せずローカルにのみ記録する。
-function setupFeedback() {
-  const buttons = document.querySelectorAll(".feedback-btn");
-  if (!buttons.length) return;
-
-  // 既投票の状態を復元
-  let already = null;
-  try { already = localStorage.getItem(STORAGE_KEY_FEEDBACK); } catch (e) {}
-  if (already) markVoted(already);
-
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const vote = btn.dataset.vote;
-      if (!vote) return;
-
-      // 二重投票防止
-      let prev = null;
-      try { prev = localStorage.getItem(STORAGE_KEY_FEEDBACK); } catch (e) {}
-      if (prev) return;
-
-      // 楽観的に投票済みに（連打防止）。送信失敗時のみ巻き戻す。
-      markVoted(vote);
-      try { localStorage.setItem(STORAGE_KEY_FEEDBACK, vote); } catch (e) {}
-
-      if (!FEEDBACK_API_URL) return;
-
-      // GAS Web App は 302 リダイレクトで googleusercontent.com に飛ばすため、
-      // CORS モードだと cross-origin の preflight/redirect で失敗しやすい。
-      // 投票はファイア・アンド・フォーゲットでよいので no-cors で送る。
-      // body は application/x-www-form-urlencoded（CORS safelisted）で送り、
-      // GAS 側では e.parameter.vote として受け取れる形にする。
-      const form = new URLSearchParams();
-      form.append("vote", vote);
-      fetch(FEEDBACK_API_URL, {
-        method: "POST",
-        mode: "no-cors",
-        body: form
-      }).catch((err) => {
-        console.error("フィードバック送信失敗:", err);
-        // 失敗時は投票済み状態を解除
-        try { localStorage.removeItem(STORAGE_KEY_FEEDBACK); } catch (e) {}
-        document.querySelectorAll(".feedback-btn").forEach((b) => {
-          b.classList.remove("voted");
-          b.disabled = false;
-        });
-      });
-    });
-  });
-}
-
-function markVoted(vote) {
-  document.querySelectorAll(".feedback-btn").forEach((b) => {
-    b.classList.toggle("voted", b.dataset.vote === vote);
-    b.disabled = true;
-  });
 }
 
 // 更新履歴を読み込んで表示

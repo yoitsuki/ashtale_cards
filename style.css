@@ -269,63 +269,6 @@ a:hover { border-color: var(--accent); }
   margin: 0 0 12px;
 }
 
-/* ====== REDESIGN NOTE + FEEDBACK BUTTONS (subtle) ====== */
-.redesign-note {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0 0 14px;
-}
-.redesign-note-text {
-  flex: 1;
-  margin: 0;
-  font-size: 0.76rem;
-  color: var(--ink-3);
-  line-height: 1.55;
-  letter-spacing: 0.01em;
-}
-.feedback {
-  display: flex;
-  gap: 4px;
-  flex-shrink: 0;
-}
-.feedback-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-}
-.feedback-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  background: transparent;
-  border: 0;
-  color: var(--ink-3);
-  cursor: pointer;
-  border-radius: var(--r-input);
-  transition: color 0.15s ease, background 0.15s ease;
-}
-.feedback-btn:hover { color: var(--accent); background: var(--accent-soft); }
-.feedback-btn.voted {
-  color: var(--accent);
-  cursor: default;
-}
-.feedback-btn.voted:hover { background: transparent; }
-.feedback-btn[disabled] { cursor: default; }
-.feedback-btn svg { display: block; }
-.feedback-label {
-  font-size: 0.6rem;
-  color: var(--ink-3);
-  letter-spacing: 0;
-  line-height: 1;
-  white-space: nowrap;
-  margin-top: -2px;
-}
-
 /* ====== SEARCH ====== */
 .filter-container { margin: 0; }
 .search-row {
