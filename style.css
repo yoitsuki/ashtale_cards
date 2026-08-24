@@ -900,16 +900,14 @@ html[lang="en"] .thumb-info {
 }
 .modal-content {
   display: block;
-  max-width: 90%;
-  max-height: 90%;
+  /* --modal-ar（画像の 幅/高さ、JS がセット）を使い、縦横比を保ったまま
+     横いっぱい・縦いっぱいの先に収まる方までフィットさせる（拡大も含む） */
+  --modal-ar: 1;
+  width: min(calc(100vw - 40px), calc((100vh - 40px) * var(--modal-ar)));
+  width: min(calc(100vw - 40px), calc((100dvh - 40px) * var(--modal-ar)));
+  height: auto;
   border-radius: var(--r-card);
   box-shadow: 0 20px 60px -20px rgba(15, 24, 48, 0.55);
-}
-/* 横長カード（2枚分）の画像のみ横幅いっぱいに広げる */
-.modal.landscape { padding: 8px; }
-.modal.landscape .modal-content {
-  width: calc(100vw - 16px);
-  max-width: none;
 }
 .modal-close,
 .modal .close {
