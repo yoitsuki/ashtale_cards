@@ -83,6 +83,16 @@ const specialFilters = {
 };
 const aliasOf = (s) => specialFilters[s] || s;
 
+// % を付けずに表示するステータス（ブレイク関連と、ルーン / BOX などのアイテム系）。
+// card_uploader の stats.js（NO_PERCENT_STATS / SPECIAL_ITEM_KEYWORDS）と同じ基準。
+const NO_PERCENT_STATS = ["ブレイク", "ブレイク(スキル)"];
+const SPECIAL_ITEM_KEYWORDS = ["ルーン", "BOX", "欠片", "ギフト", "聖痕"];
+function isPercentStat(name) {
+  if (NO_PERCENT_STATS.includes(name)) return false;
+  if (SPECIAL_ITEM_KEYWORDS.some((k) => name.includes(k))) return false;
+  return true;
+}
+
 // ステータス値の数値抽出（"+19%" -> 19, "-12" -> -12）
 function numOf(val) {
   if (val == null) return 0;
@@ -545,7 +555,7 @@ async function loadCards() {
             if (!baseColumns.includes(colName) && row[colName] !== undefined && row[colName].trim() !== "") {
               let val = row[colName].trim();
               if (!val.startsWith("+") && !val.startsWith("-")) val = "+" + val;
-              if (!val.endsWith("%")) val = val + "%";
+              if (isPercentStat(colName) && !val.endsWith("%")) val = val + "%";
               const displayName = colName.replace("%", "");
               status.push(colName);
               full_status.push(`${displayName}${val}`);

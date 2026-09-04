@@ -98,6 +98,16 @@ function toggleHistory(event) {
   if (history) history.classList.toggle("open");
 }
 
+// % を付けずに表示するステータス（ブレイク関連と、ルーン / BOX などのアイテム系）
+// card_uploader の stats.js（NO_PERCENT_STATS / SPECIAL_ITEM_KEYWORDS）と同じ基準
+const NO_PERCENT_STATS = ['ブレイク', 'ブレイク(スキル)'];
+const SPECIAL_ITEM_KEYWORDS = ['ルーン', 'BOX', '欠片', 'ギフト', '聖痕'];
+function isPercentStat(name) {
+  if (NO_PERCENT_STATS.includes(name)) return false;
+  if (SPECIAL_ITEM_KEYWORDS.some(k => name.includes(k))) return false;
+  return true;
+}
+
 // 2. カード用JSONデータを取得＆テーブル描画（DocumentFragment使用）
 async function loadCards() {
   try {
@@ -135,8 +145,8 @@ async function loadCards() {
               if (!val.startsWith('+') && !val.startsWith('-')) {
                 val = '+' + val;
               }
-              // 入力された数値の末尾に「%」が無ければ自動補完
-              if (!val.endsWith('%')) {
+              // 入力された数値の末尾に「%」が無ければ自動補完（ブレイク関連・アイテム系は付けない）
+              if (isPercentStat(colName) && !val.endsWith('%')) {
                 val = val + '%';
               }
 
