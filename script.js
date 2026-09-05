@@ -93,6 +93,14 @@ function isPercentStat(name) {
   return true;
 }
 
+// バーの長さを決めるときだけ最大値を共有するステータスの対応表。
+// 「ブレイク」と「ブレイク(スキル)」は同じ指標なので、別々に正規化すると
+// 値が近くてもバーの長さが食い違って見える。表示名・検索・並び替えは変えない。
+const BAR_SCALE_GROUP = {
+  "ブレイク(スキル)": "ブレイク"
+};
+const barScaleOf = (alias) => BAR_SCALE_GROUP[alias] || alias;
+
 // ステータス値の数値抽出（"+19%" -> 19, "-12" -> -12）
 function numOf(val) {
   if (val == null) return 0;
@@ -579,7 +587,7 @@ async function loadCards() {
         maxByStat = {};
         cardData.forEach((card) => {
           card.status.forEach((s, i) => {
-            const a = aliasOf(s);
+            const a = barScaleOf(aliasOf(s));
             const num = Math.abs(numOf(card.full_status[i]));
             if (!maxByStat[a] || num > maxByStat[a]) maxByStat[a] = num;
           });
@@ -689,7 +697,7 @@ function buildStatBars(card, transformedActiveStatus) {
 
   return items
     .map((s) => {
-      const max = maxByStat[s.alias] || 50;
+      const max = maxByStat[barScaleOf(s.alias)] || 50;
       const pct = Math.min(100, Math.max(6, (Math.abs(s.n) / max) * 100));
       const valHtml = s.display ? `<div class="val">${escapeHtml(s.display)}</div>` : "";
       return `
