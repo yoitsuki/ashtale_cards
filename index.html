@@ -41,7 +41,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=020108" />
+  <link rel="stylesheet" href="style.css?v=020109" />
   <title>Ash Tale カード図鑑</title>
 </head>
 <body>
@@ -162,7 +162,7 @@
       <div class="taggroup">
         <div class="ghead">
           <span class="glabel" data-i18n="ランク">ランク</span>
-          <span class="gcount" id="gcount-rank">0 / 9</span>
+          <span class="gcount" id="gcount-rank">0 / 11</span>
         </div>
         <div class="tags">
           <button type="button" class="tag mono" data-type="rank" data-value="12" onclick="toggleFilter('rank', '12', this)">12</button>
@@ -172,6 +172,8 @@
           <button type="button" class="tag mono" data-type="rank" data-value="8" onclick="toggleFilter('rank', '8', this)">8</button>
           <button type="button" class="tag mono" data-type="rank" data-value="7" onclick="toggleFilter('rank', '7', this)">7</button>
           <button type="button" class="tag mono" data-type="rank" data-value="6" onclick="toggleFilter('rank', '6', this)">6</button>
+          <button type="button" class="tag mono" data-type="rank" data-value="5" onclick="toggleFilter('rank', '5', this)">5</button>
+          <button type="button" class="tag mono" data-type="rank" data-value="4" onclick="toggleFilter('rank', '4', this)">4</button>
           <button type="button" class="tag mono" data-type="rank" data-value="3" onclick="toggleFilter('rank', '3', this)">3</button>
           <button type="button" class="tag mono" data-type="rank" data-value="1" onclick="toggleFilter('rank', '1', this)">1</button>
         </div>
@@ -180,7 +182,7 @@
       <div class="taggroup" id="status-group">
         <div class="ghead">
           <span class="glabel" data-i18n="ステータス">ステータス</span>
-          <span class="gcount" id="gcount-status">0 / 29</span>
+          <span class="gcount" id="gcount-status">0 / 30</span>
         </div>
         <div class="tags" id="status-tags">
           <button type="button" class="tag" data-type="status" data-i18n="攻撃%" data-value="攻撃%" onclick="toggleFilter('status', '攻撃%', this)">攻撃%</button>
@@ -198,6 +200,7 @@
           <button type="button" class="tag" data-type="status" data-i18n="HP%" data-value="HP%" onclick="toggleFilter('status', 'HP%', this)">HP%</button>
           <button type="button" class="tag" data-type="status" data-i18n="ガード率" data-value="ガード率" onclick="toggleFilter('status', 'ガード率', this)">ガード率</button>
           <button type="button" class="tag" data-type="status" data-i18n="回避率" data-value="回避率" onclick="toggleFilter('status', '回避率', this)">回避率</button>
+          <button type="button" class="tag" data-type="status" data-i18n="反撃率" data-value="反撃率" onclick="toggleFilter('status', '反撃率', this)">反撃率</button>
           <button type="button" class="tag" data-type="status" data-i18n="会心率耐性" data-value="会心率耐性" onclick="toggleFilter('status', '会心率耐性', this)">会心率耐性</button>
           <button type="button" class="tag" data-type="status" data-i18n="会心ダメ耐性" data-value="会心ダメ耐性" onclick="toggleFilter('status', '会心ダメ耐性', this)">会心ダメ耐性</button>
           <button type="button" class="tag" data-type="status" data-i18n="対高低HPダメ耐性" data-value="対高低HPダメ耐性" onclick="toggleFilter('status', '対高低HPダメ耐性', this)">対高低HPダメ耐性</button>
@@ -450,7 +453,7 @@
 
     <div class="foot">
       <span>AshTale Card Index</span>
-      <span>v2.1.8</span>
+      <span>v2.1.9</span>
     </div>
   </div>
 
@@ -460,6 +463,6 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <script src="script.js?v=020108"></script>
+  <script src="script.js?v=020109"></script>
 </body>
 </html>
