@@ -41,7 +41,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=020110" />
+  <link rel="stylesheet" href="style.css?v=020111" />
   <title>Ash Tale カード図鑑</title>
 </head>
 <body>
@@ -183,7 +183,7 @@
       <div class="taggroup" id="status-group">
         <div class="ghead">
           <span class="glabel" data-i18n="ステータス">ステータス</span>
-          <span class="gcount" id="gcount-status">0 / 30</span>
+          <span class="gcount" id="gcount-status">0 / 33</span>
         </div>
         <div class="tags" id="status-tags">
           <button type="button" class="tag" data-type="status" data-i18n="攻撃%" data-value="攻撃%" onclick="toggleFilter('status', '攻撃%', this)">攻撃%</button>
@@ -192,6 +192,7 @@
           <button type="button" class="tag" data-type="status" data-i18n="防御無視" data-value="防御無視" onclick="toggleFilter('status', '防御無視', this)">防御無視</button>
           <button type="button" class="tag" data-type="status" data-i18n="ダメージ倍率" data-value="ダメージ倍率" onclick="toggleFilter('status', 'ダメージ倍率', this)">ダメージ倍率</button>
           <button type="button" class="tag" data-type="status" data-i18n="対ボス与ダメ増" data-value="対ボス与ダメ増" onclick="toggleFilter('status', '対ボス与ダメ増', this)">対ボス与ダメ増</button>
+          <button type="button" class="tag" data-type="status" data-i18n="対魔物与ダメ増" data-value="対魔物与ダメ増" onclick="toggleFilter('status', '対魔物与ダメ増', this)">対魔物与ダメ増</button>
           <button type="button" class="tag" data-type="status" data-i18n="対高HP与ダメ増" data-value="対高HP与ダメ増" onclick="toggleFilter('status', '対高HP与ダメ増', this)">対高HP与ダメ増</button>
           <button type="button" class="tag" data-type="status" data-i18n="対低HP与ダメ増" data-value="対低HP与ダメ増" onclick="toggleFilter('status', '対低HP与ダメ増', this)">対低HP与ダメ増</button>
           <button type="button" class="tag" data-type="status" data-i18n="状態異常与ダメ増" data-value="状態異常与ダメ増" onclick="toggleFilter('status', '状態異常与ダメ増', this)">状態異常与ダメ増</button>
@@ -206,6 +207,7 @@
           <button type="button" class="tag" data-type="status" data-i18n="会心ダメ耐性" data-value="会心ダメ耐性" onclick="toggleFilter('status', '会心ダメ耐性', this)">会心ダメ耐性</button>
           <button type="button" class="tag" data-type="status" data-i18n="対高低HPダメ耐性" data-value="対高低HPダメ耐性" onclick="toggleFilter('status', '対高低HPダメ耐性', this)">対高低HPダメ耐性</button>
           <button type="button" class="tag" data-type="status" data-i18n="対ボス被ダメ減" data-value="対ボス被ダメ減" onclick="toggleFilter('status', '対ボス被ダメ減', this)">対ボス被ダメ減</button>
+          <button type="button" class="tag" data-type="status" data-i18n="対魔物被ダメ減" data-value="対魔物被ダメ減" onclick="toggleFilter('status', '対魔物被ダメ減', this)">対魔物被ダメ減</button>
           <button type="button" class="tag" data-type="status" data-i18n="状態異常耐性" data-value="状態異常耐性" onclick="toggleFilter('status', '状態異常耐性', this)">状態異常耐性</button>
           <button type="button" class="tag" data-type="status" data-i18n="状態異常ダメ耐性" data-value="状態異常ダメ耐性" onclick="toggleFilter('status', '状態異常ダメ耐性', this)">状態異常ダメ耐性</button>
           <button type="button" class="tag" data-type="status" data-i18n="与治療効果" data-value="与治療効果" onclick="toggleFilter('status', '与治療効果', this)">与治療効果</button>
@@ -216,6 +218,7 @@
           <button type="button" class="tag" data-type="status" data-i18n="対高HPダメ倍率" data-value="対高HPダメ倍率" onclick="toggleFilter('status', '対高HPダメ倍率', this)">対高HPダメ倍率</button>
           <button type="button" class="tag" data-type="status" data-i18n="対低HPダメ倍率" data-value="対低HPダメ倍率" onclick="toggleFilter('status', '対低HPダメ倍率', this)">対低HPダメ倍率</button>
           <button type="button" class="tag" data-type="status" data-i18n="状態異常ダメ倍率" data-value="状態異常ダメ倍率" onclick="toggleFilter('status', '状態異常ダメ倍率', this)">状態異常ダメ倍率</button>
+          <button type="button" class="tag" data-type="status" data-i18n="ブレイク" data-value="ブレイク" onclick="toggleFilter('status', 'ブレイク', this)">ブレイク</button>
         </div>
       </div>
       </div><!-- /.filter-area -->
@@ -467,7 +470,7 @@
 
     <div class="foot">
       <span>AshTale Card Index</span>
-      <span>v2.1.10</span>
+      <span>v2.1.11</span>
     </div>
   </div>
 
@@ -477,6 +480,6 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <script src="script.js?v=020110"></script>
+  <script src="script.js?v=020111"></script>
 </body>
 </html>
