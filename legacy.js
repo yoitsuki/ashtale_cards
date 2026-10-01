@@ -316,8 +316,12 @@ function applyFilters() {
       // ステータス強調（赤文字）処理
       if (hasStatusFilters) {
         let html = row.fullStatusHtml;
-        transformedActiveStatus.forEach(filter => {
-          const regex = new RegExp(`(^|<br>)(${filter}[-+]?\\d+%?)`, "gi");
+        // 「ブレイク」選択時は「ブレイク(スキル)」も強調する（絞り込み条件は変えない）
+        const highlightTargets = transformedActiveStatus.flatMap(filter =>
+          filter === "ブレイク" ? [filter, "ブレイク(スキル)"] : [filter]);
+        highlightTargets.forEach(filter => {
+          const escaped = filter.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          const regex = new RegExp(`(^|<br>)(${escaped}[-+]?\\d+%?)`, "gi");
           html = html.replace(regex, '$1<span class="highlight-text">$2</span>');
         });
         row.statusCell.innerHTML = html;

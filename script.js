@@ -95,7 +95,8 @@ function isPercentStat(name) {
 
 // バーの長さを決めるときだけ最大値を共有するステータスの対応表。
 // 「ブレイク」と「ブレイク(スキル)」は同じ指標なので、別々に正規化すると
-// 値が近くてもバーの長さが食い違って見える。表示名・検索・並び替えは変えない。
+// 値が近くてもバーの長さが食い違って見える。表示名・絞り込み・値での並び替えは変えない。
+// stat-bar の強調と先頭寄せ（buildStatBars）にも使う。
 const BAR_SCALE_GROUP = {
   "ブレイク(スキル)": "ブレイク"
 };
@@ -666,8 +667,10 @@ function renderCards() {
 
 // stat-bar の HTML を生成。
 // ステータスフィルタが当たっている時のみ、一致したものを先頭に並び替える（その後ろは元の並び）。
+// 強調・並び替えは BAR_SCALE_GROUP でまとめて判定する（「ブレイク」選択時は「ブレイク(スキル)」も強調）。
+// 絞り込み条件そのものは変えない。
 function buildStatBars(card, transformedActiveStatus) {
-  const targets = transformedActiveStatus;
+  const targets = transformedActiveStatus.map(barScaleOf);
   const items = card.status.map((name, i) => {
     const fullVal = card.full_status[i] || "";
     const display = valFromFull(fullVal, name);
@@ -678,7 +681,7 @@ function buildStatBars(card, transformedActiveStatus) {
       display,
       n: numOf(display || fullVal),
       origIndex: i,
-      hi: targets.includes(alias)
+      hi: targets.includes(barScaleOf(alias))
     };
   });
 
@@ -687,8 +690,8 @@ function buildStatBars(card, transformedActiveStatus) {
     items.sort((a, b) => {
       if (a.hi !== b.hi) return a.hi ? -1 : 1;
       if (a.hi && b.hi) {
-        const ai = targets.indexOf(a.alias);
-        const bi = targets.indexOf(b.alias);
+        const ai = targets.indexOf(barScaleOf(a.alias));
+        const bi = targets.indexOf(barScaleOf(b.alias));
         if (ai !== bi) return ai - bi;
       }
       return a.origIndex - b.origIndex;
