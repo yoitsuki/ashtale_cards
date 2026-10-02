@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="AshTale（アッシュテイル）のカード図鑑。全カード（コラボ・宝くじ除く）を一覧表示し、カテゴリ・レア度・ランク・ステータスで絞り込み検索ができます。幻/鋼/天/赤/金 × 武器/腕/防具/装飾/頭。">
-  <meta name="keywords" content="AshTale,アッシュテイル,アシュテ,カード,図鑑,一覧,検索,幻,鋼,天,赤,金,武器,腕,防具,装飾,頭,ランク">
+  <meta name="keywords" content="AshTale,アッシュテイル,アシュテ,カード,図鑑,一覧,検索,晶,幻,鋼,天,赤,金,武器,腕,防具,装飾,頭,ランク">
   <meta property="og:title" content="Ash Tale カード図鑑">
   <meta property="og:description" content="AshTale（アッシュテイル）の各カードを一覧・絞り込み検索できるカード図鑑。">
   <meta property="og:type" content="website">
@@ -80,6 +80,7 @@
         <div class="filter-header" onclick="toggleCollapsible('rare-filter')">レア度<span class="toggle-label">[閉じる]</span></div>
         <div id="rare-filter" class="filter-content">
             <div class="filter-group">
+              <button data-type="rare" data-value="晶" onclick="toggleFilter('rare', '晶', this)">晶</button>
               <button data-type="rare" data-value="幻" onclick="toggleFilter('rare', '幻', this)">幻</button>
               <button data-type="rare" data-value="鋼" onclick="toggleFilter('rare', '鋼', this)">鋼</button>
               <button data-type="rare" data-value="天" onclick="toggleFilter('rare', '天', this)">天</button>

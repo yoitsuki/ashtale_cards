@@ -21,6 +21,7 @@
   --accent-ink: #ffffff;
 
   /* rarity dots */
+  --r-sho: #8b85d8; /* 晶: 淡い藤色〜青紫（カード枠色寄せ） */
   --r-gen: #6a5fa8;
   --r-hagane: #7d8597;
   --r-ten: #e57aac; /* 天: ピンク（カード枠色寄せ） */
@@ -503,6 +504,7 @@ a:hover { border-color: var(--accent); }
   border-radius: 50%;
   background: var(--rare-dot);
 }
+.tag.rare-晶 { --rare-dot: var(--r-sho); }
 .tag.rare-幻 { --rare-dot: var(--r-gen); }
 .tag.rare-鋼 { --rare-dot: var(--r-hagane); }
 .tag.rare-天 { --rare-dot: var(--r-ten); }
@@ -771,6 +773,7 @@ html[lang="en"] .thumb-info {
   line-height: 1;
   letter-spacing: 0;
 }
+.rare-chip.r-晶 { background: var(--r-sho); }
 .rare-chip.r-幻 { background: var(--r-gen); }
 .rare-chip.r-鋼 { background: var(--r-hagane); }
 .rare-chip.r-天 { background: var(--r-ten); }

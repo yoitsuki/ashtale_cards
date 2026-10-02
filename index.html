@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="AshTale（アッシュテイル -風の大陸-） / Tales of Wind のカード図鑑。全カード（コラボ・宝くじ除く）を一覧表示し、カテゴリ・レア度・ランク・ステータスで絞り込み検索ができます。幻/鋼/天/赤/金 × 武器/腕/防具/装飾/頭。">
-  <meta name="keywords" content="AshTale,アッシュテイル,アシュテ,Tales of Wind,Card Index,カード,図鑑,一覧,検索,幻,鋼,天,赤,金,武器,腕,防具,装飾,頭,ランク">
+  <meta name="keywords" content="AshTale,アッシュテイル,アシュテ,Tales of Wind,Card Index,カード,図鑑,一覧,検索,晶,幻,鋼,天,赤,金,武器,腕,防具,装飾,頭,ランク">
   <meta property="og:title" content="Ash Tale カード図鑑">
   <meta property="og:description" content="AshTale（アッシュテイル）/ Tales of Wind の各カードを一覧・絞り込み検索できるカード図鑑。">
   <meta property="og:type" content="website">
@@ -41,7 +41,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=020115" />
+  <link rel="stylesheet" href="style.css?v=020116" />
   <title>Ash Tale カード図鑑</title>
 </head>
 <body>
@@ -148,9 +148,10 @@
       <div class="taggroup">
         <div class="ghead">
           <span class="glabel" data-i18n="レア度">レア度</span>
-          <span class="gcount" id="gcount-rare">0 / 5</span>
+          <span class="gcount" id="gcount-rare">0 / 6</span>
         </div>
         <div class="tags">
+          <button type="button" class="tag rare rare-晶" data-type="rare" data-i18n="晶" data-value="晶" onclick="toggleFilter('rare', '晶', this)">晶</button>
           <button type="button" class="tag rare rare-幻" data-type="rare" data-i18n="幻" data-value="幻" onclick="toggleFilter('rare', '幻', this)">幻</button>
           <button type="button" class="tag rare rare-鋼" data-type="rare" data-i18n="鋼" data-value="鋼" onclick="toggleFilter('rare', '鋼', this)">鋼</button>
           <button type="button" class="tag rare rare-天" data-type="rare" data-i18n="天" data-value="天" onclick="toggleFilter('rare', '天', this)">天</button>
@@ -485,7 +486,7 @@
 
     <div class="foot">
       <span>AshTale Card Index</span>
-      <span>v2.1.15</span>
+      <span>v2.1.16</span>
     </div>
   </div>
 
@@ -495,6 +496,6 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <script src="script.js?v=020115"></script>
+  <script src="script.js?v=020116"></script>
 </body>
 </html>

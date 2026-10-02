@@ -59,8 +59,8 @@ const UI_DICT = {
   "手帳順": "Notebook order",
   "ランク高い順": "Rank (high → low)",
   "ランク低い順": "Rank (low → high)",
-  "レア度（幻→金）": "Rarity (rare → common)",
-  "レア度（金→幻）": "Rarity (common → rare)",
+  "レア度（晶→金）": "Rarity (rare → common)",
+  "レア度（金→晶）": "Rarity (common → rare)",
   "名前（あ→ん）": "Name (A → Z)",
   "名前（ん→あ）": "Name (Z → A)"
 };
@@ -136,7 +136,7 @@ function valFromFull(full, name) {
 }
 
 // レア度の表示順
-const RARE_ORDER = { "幻": 0, "鋼": 1, "天": 2, "赤": 3, "金": 4 };
+const RARE_ORDER = { "晶": 0, "幻": 1, "鋼": 2, "天": 3, "赤": 4, "金": 5 };
 
 // ローマ数字（Ⅰ〜Ⅻ）。範囲外はそのまま数字で表示。
 const ROMAN_NUMERALS = ["", "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ"];
@@ -151,8 +151,8 @@ const DEFAULT_SORT_OPTIONS = [
   { mode: "default", dir: "asc",  arrow: "↓", label: "手帳順" },
   { mode: "rank",    dir: "desc", arrow: "↓", label: "ランク高い順" },
   { mode: "rank",    dir: "asc",  arrow: "↑", label: "ランク低い順" },
-  { mode: "rare",    dir: "asc",  arrow: "↓", label: "レア度（幻→金）" },
-  { mode: "rare",    dir: "desc", arrow: "↑", label: "レア度（金→幻）" },
+  { mode: "rare",    dir: "asc",  arrow: "↓", label: "レア度（晶→金）" },
+  { mode: "rare",    dir: "desc", arrow: "↑", label: "レア度（金→晶）" },
   { mode: "name",    dir: "asc",  arrow: "↓", label: "名前（あ→ん）" },
   { mode: "name",    dir: "desc", arrow: "↑", label: "名前（ん→あ）" }
 ];
