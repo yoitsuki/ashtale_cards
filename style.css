@@ -466,16 +466,18 @@ a:hover { border-color: var(--accent); }
   border-color: var(--accent);
 }
 /* ステータスタグの系統色: 攻撃=赤 / 防御=青 / ブレイク=オレンジ。
-   未選択は薄い地色、選択時は濃い地色に白文字。 */
-.tag.stat-atk { --tc: #c62828; --tc-ink: #a01f1f; --tc-soft: #fdeeee; --tc-line: #f3c6c6; }
-.tag.stat-def { --tc: #1d5fd1; --tc-ink: #1a4fae; --tc-soft: #edf3fd; --tc-line: #c3d5f5; }
-.tag.stat-brk { --tc: #c2570c; --tc-ink: #9a4508; --tc-soft: #fff2e5; --tc-line: #f6cfa6; }
+   未選択はごく薄い地色、選択時は濃い地色に白文字。 */
+.tag.stat-atk { --tc: #a8414a; --tc-ink: #8e3a41; --tc-soft: #fcf7f7; --tc-line: #ecd6d8; }
+.tag.stat-def { --tc: #345f9e; --tc-ink: #2f5590; --tc-soft: #f6f8fc; --tc-line: #d4ddeb; }
+.tag.stat-brk { --tc: #e2690b; --tc-ink: #b25a17; --tc-soft: #fdf8f3; --tc-line: #efdcc8; }
 .tag.stat {
   background: var(--tc-soft);
   color: var(--tc-ink);
   border-color: var(--tc-line);
 }
 .tag.stat:hover { border-color: var(--tc); color: var(--tc-ink); }
+/* ブレイクを別の行に送るための改行要素 */
+.tags-break { flex-basis: 100%; height: 0; }
 .tag.stat.on {
   background: var(--tc);
   color: #ffffff;
