@@ -41,7 +41,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=020114" />
+  <link rel="stylesheet" href="style.css?v=020115" />
   <title>Ash Tale カード図鑑</title>
 </head>
 <body>
@@ -198,6 +198,10 @@
           <button type="button" class="tag stat stat-atk" data-type="status" data-i18n="状態異常与ダメ増" data-value="状態異常与ダメ増" onclick="toggleFilter('status', '状態異常与ダメ増', this)">状態異常与ダメ増</button>
           <button type="button" class="tag stat stat-atk" data-type="status" data-i18n="命中率" data-value="命中率" onclick="toggleFilter('status', '命中率', this)">命中率</button>
           <button type="button" class="tag stat stat-atk" data-type="status" data-i18n="状態異常命中率" data-value="状態異常命中率" onclick="toggleFilter('status', '状態異常命中率', this)">状態異常命中率</button>
+          <button type="button" class="tag stat stat-atk" data-type="status" data-i18n="対高HPダメ倍率" data-value="対高HPダメ倍率" onclick="toggleFilter('status', '対高HPダメ倍率', this)">対高HPダメ倍率</button>
+          <button type="button" class="tag stat stat-atk" data-type="status" data-i18n="対低HPダメ倍率" data-value="対低HPダメ倍率" onclick="toggleFilter('status', '対低HPダメ倍率', this)">対低HPダメ倍率</button>
+          <button type="button" class="tag stat stat-atk" data-type="status" data-i18n="状態異常ダメ倍率" data-value="状態異常ダメ倍率" onclick="toggleFilter('status', '状態異常ダメ倍率', this)">状態異常ダメ倍率</button>
+          <button type="button" class="tag stat stat-atk" data-type="status" data-i18n="対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増" data-value="対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増" onclick="toggleFilter('status', '対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増', this)">対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増</button>
           <button type="button" class="tag stat stat-def" data-type="status" data-i18n="防御%" data-value="防御%" onclick="toggleFilter('status', '防御%', this)">防御%</button>
           <button type="button" class="tag stat stat-def" data-type="status" data-i18n="HP%" data-value="HP%" onclick="toggleFilter('status', 'HP%', this)">HP%</button>
           <button type="button" class="tag stat stat-def" data-type="status" data-i18n="ガード率" data-value="ガード率" onclick="toggleFilter('status', 'ガード率', this)">ガード率</button>
@@ -213,11 +217,7 @@
           <button type="button" class="tag stat stat-def" data-type="status" data-i18n="与治療効果" data-value="与治療効果" onclick="toggleFilter('status', '与治療効果', this)">与治療効果</button>
           <button type="button" class="tag stat stat-def" data-type="status" data-i18n="被治療効果" data-value="被治療効果" onclick="toggleFilter('status', '被治療効果', this)">被治療効果</button>
           <button type="button" class="tag stat stat-def" data-type="status" data-i18n="HP吸収率" data-value="HP吸収率" onclick="toggleFilter('status', 'HP吸収率', this)">HP吸収率</button>
-          <button type="button" class="tag stat stat-atk" data-type="status" data-i18n="対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増" data-value="対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増" onclick="toggleFilter('status', '対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増', this)">対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ与ダメ増</button>
           <button type="button" class="tag stat stat-def" data-type="status" data-i18n="対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減" data-value="対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減" onclick="toggleFilter('status', '対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減', this)">対ファイ/ウィ/スカ/プリ/サモ/剣豪/プレ被ダメ減</button>
-          <button type="button" class="tag stat stat-atk" data-type="status" data-i18n="対高HPダメ倍率" data-value="対高HPダメ倍率" onclick="toggleFilter('status', '対高HPダメ倍率', this)">対高HPダメ倍率</button>
-          <button type="button" class="tag stat stat-atk" data-type="status" data-i18n="対低HPダメ倍率" data-value="対低HPダメ倍率" onclick="toggleFilter('status', '対低HPダメ倍率', this)">対低HPダメ倍率</button>
-          <button type="button" class="tag stat stat-atk" data-type="status" data-i18n="状態異常ダメ倍率" data-value="状態異常ダメ倍率" onclick="toggleFilter('status', '状態異常ダメ倍率', this)">状態異常ダメ倍率</button>
           <span class="tags-break" aria-hidden="true"></span>
           <button type="button" class="tag stat stat-brk" data-type="status" data-i18n="ブレイク" data-value="ブレイク" onclick="toggleFilter('status', 'ブレイク', this)">ブレイク</button>
         </div>
@@ -485,7 +485,7 @@
 
     <div class="foot">
       <span>AshTale Card Index</span>
-      <span>v2.1.14</span>
+      <span>v2.1.15</span>
     </div>
   </div>
 
@@ -495,6 +495,6 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <script src="script.js?v=020114"></script>
+  <script src="script.js?v=020115"></script>
 </body>
 </html>
